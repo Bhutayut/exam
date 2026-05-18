@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>แบบทดสอบ 100 ข้อ | หลักบริหาร & Competency ปี 69</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&family=Kanit:wght@400;600;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #C9A84C; --gold-light: #F0D080; --navy: #0D1B2A;
+  --navy-mid: #1A2E42; --teal: #1AB3A6; --teal-light: #4DD9CC;
+  --white: #FAFAF8; --text-muted: #8A9BB0;
+  --card-bg: rgba(255,255,255,0.04); --border: rgba(201,168,76,0.2);
+  --green: #22c55e; --red: #ef4444;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  font-family:'Sarabun',sans-serif; background:var(--navy);
+  color:var(--white); min-height:100vh; overflow-x:hidden;
+}
+body::before {
+  content:''; position:fixed; inset:0;
+  background-image: linear-gradient(rgba(201,168,76,0.03) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(201,168,76,0.03) 1px,transparent 1px);
+  background-size:60px 60px; pointer-events:none; z-index:0;
+}
+
+/* ── HEADER ── */
+.top-bar {
+  position:sticky; top:0; z-index:100;
+  background:rgba(13,27,42,0.95); backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  padding:12px 24px; display:flex; align-items:center; gap:16px; flex-wrap:wrap;
+}
+.top-bar-title { font-family:'Kanit',sans-serif; font-size:15px; font-weight:600; flex:1; }
+.top-bar-progress { font-family:'Space Mono',monospace; font-size:12px; color:var(--text-muted); }
+.top-bar-timer { font-family:'Space Mono',monospace; font-size:13px; color:var(--gold); font-weight:700; }
+.progress-track { height:3px; background:rgba(255,255,255,0.06); position:relative; }
+.progress-fill { height:100%; background:linear-gradient(90deg,var(--teal),var(--gold)); transition:width .4s ease; width:0%; }
+
+/* ── SCREENS ── */
+.screen { display:none; position:relative; z-index:5; }
+.screen.active { display:block; }
+
+/* ── START SCREEN ── */
+.start-wrap {
+  min-height:100vh; display:flex; align-items:center; justify-content:center;
+  padding:40px 20px;
+}
+.start-card {
+  background:linear-gradient(135deg,rgba(26,179,166,0.07),rgba(201,168,76,0.05));
+  border:1px solid rgba(26,179,166,0.3); border-radius:24px;
+  padding:clamp(32px,6vw,56px) clamp(24px,6vw,56px);
+  text-align:center; max-width:580px; width:100%;
+}
+.start-icon { font-size:60px; margin-bottom:20px; }
+.start-title { font-family:'Kanit',sans-serif; font-size:clamp(22px,5vw,34px); font-weight:700; margin-bottom:12px; }
+.start-desc { font-size:14px; line-height:1.85; color:var(--text-muted); margin-bottom:32px; }
+.info-row { display:flex; justify-content:center; gap:14px; flex-wrap:wrap; margin-bottom:36px; }
+.info-box {
+  background:rgba(255,255,255,0.05); border:1px solid var(--border);
+  border-radius:14px; padding:16px 22px; min-width:90px;
+  display:flex; flex-direction:column; align-items:center; gap:4px;
+}
+.info-box .num { font-family:'Kanit',sans-serif; font-size:28px; font-weight:700; color:var(--teal); }
+.info-box .lbl { font-size:12px; color:var(--text-muted); }
+.cat-list {
+  display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-bottom:32px;
+}
+.cat-badge {
+  background:rgba(201,168,76,0.09); border:1px solid rgba(201,168,76,0.25);
+  border-radius:20px; padding:5px 14px; font-size:12px; color:var(--gold-light);
+}
+.btn-start {
+  background:linear-gradient(135deg,var(--teal),#0d9e92); color:#fff;
+  border:none; border-radius:14px; padding:16px 48px;
+  font-family:'Kanit',sans-serif; font-size:18px; font-weight:700;
+  cursor:pointer; transition:all .2s; box-shadow:0 4px 24px rgba(26,179,166,0.3);
+  width:100%; max-width:320px;
+}
+.btn-start:hover { transform:translateY(-2px); box-shadow:0 8px 32px rgba(26,179,166,0.4); }
+
+/* ── QUIZ SCREEN ── */
+.quiz-wrap { max-width:760px; margin:0 auto; padding:28px 20px 60px; }
+.q-card {
+  background:var(--card-bg); border:1px solid var(--border);
+  border-radius:20px; padding:clamp(20px,4vw,36px); margin-bottom:16px;
+}
+.q-meta { display:flex; align-items:center; gap:10px; margin-bottom:16px; flex-wrap:wrap; }
+.q-num-badge {
+  font-family:'Space Mono',monospace; font-size:11px; color:var(--teal);
+  background:rgba(26,179,166,0.1); border:1px solid rgba(26,179,166,0.25);
+  border-radius:6px; padding:3px 10px; letter-spacing:1px;
+}
+.q-cat-badge {
+  font-size:11px; color:var(--text-muted); background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08); border-radius:6px; padding:3px 10px;
+}
+.q-text {
+  font-size:clamp(15px,2.5vw,19px); font-weight:600; line-height:1.65;
+  color:var(--white); margin-bottom:24px;
+}
+.choices { display:flex; flex-direction:column; gap:10px; }
+.choice {
+  background:rgba(255,255,255,0.04); border:1.5px solid rgba(255,255,255,0.1);
+  border-radius:12px; padding:13px 18px; cursor:pointer;
+  font-size:14px; color:var(--white); text-align:left;
+  transition:all .18s; display:flex; align-items:flex-start;
+  gap:12px; font-family:'Sarabun',sans-serif; line-height:1.55;
+  width:100%;
+}
+.choice:hover:not(:disabled) { border-color:rgba(26,179,166,0.5); background:rgba(26,179,166,0.08); }
+.choice.correct { border-color:rgba(34,197,94,0.7); background:rgba(34,197,94,0.1); color:#86efac; }
+.choice.wrong   { border-color:rgba(239,68,68,0.6);  background:rgba(239,68,68,0.08);  color:#fca5a5; }
+.choice.reveal  { border-color:rgba(34,197,94,0.35); background:rgba(34,197,94,0.05); }
+.alpha {
+  width:28px; height:28px; border-radius:7px; background:rgba(255,255,255,0.07);
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Space Mono',monospace; font-size:11px; font-weight:700;
+  flex-shrink:0; margin-top:1px;
+}
+.feedback {
+  margin-top:18px; padding:14px 18px; border-radius:12px;
+  font-size:13.5px; line-height:1.75; display:none;
+}
+.feedback.ok  { background:rgba(34,197,94,0.08);  border:1px solid rgba(34,197,94,0.25);  color:#86efac; }
+.feedback.err { background:rgba(239,68,68,0.07);  border:1px solid rgba(239,68,68,0.22);  color:#fca5a5; }
+.q-footer { display:flex; align-items:center; justify-content:space-between; margin-top:20px; flex-wrap:wrap; gap:10px; }
+.answered-info { font-size:12px; color:var(--text-muted); font-family:'Space Mono',monospace; }
+.nav-row { display:flex; gap:10px; }
+.btn-next {
+  background:linear-gradient(135deg,var(--gold),#b8933e); color:var(--navy);
+  border:none; border-radius:10px; padding:11px 28px;
+  font-family:'Kanit',sans-serif; font-size:15px; font-weight:700;
+  cursor:pointer; transition:all .2s; display:none;
+}
+.btn-next:hover { transform:translateY(-1px); box-shadow:0 6px 20px rgba(201,168,76,.35); }
+.btn-submit {
+  background:rgba(201,168,76,0.1); border:1px solid rgba(201,168,76,0.35);
+  color:var(--gold); border-radius:10px; padding:10px 22px;
+  font-family:'Kanit',sans-serif; font-size:14px; font-weight:600;
+  cursor:pointer; transition:all .2s;
+}
+.btn-submit:hover { background:rgba(201,168,76,0.18); }
+
+/* ── RESULT SCREEN ── */
+.result-wrap {
+  min-height:100vh; display:flex; align-items:center; justify-content:center;
+  padding:40px 20px;
+}
+.result-card {
+  background:var(--card-bg); border:1px solid var(--border);
+  border-radius:24px; padding:clamp(28px,5vw,52px);
+  text-align:center; max-width:680px; width:100%;
+}
+.res-icon { font-size:52px; margin-bottom:14px; }
+.res-title { font-family:'Kanit',sans-serif; font-size:clamp(20px,4vw,30px); font-weight:700; margin-bottom:24px; }
+.ring-wrap { position:relative; display:inline-flex; align-items:center; justify-content:center; margin-bottom:20px; }
+.ring-text { position:absolute; display:flex; flex-direction:column; align-items:center; line-height:1; }
+.ring-score { font-family:'Kanit',sans-serif; font-size:40px; font-weight:900; color:var(--teal); }
+.ring-max   { font-size:13px; color:var(--text-muted); margin-top:3px; }
+.res-grade  { font-family:'Kanit',sans-serif; font-size:24px; font-weight:700; margin-bottom:28px; }
+.meta-row { display:flex; justify-content:center; gap:14px; margin-bottom:28px; flex-wrap:wrap; }
+.meta-box {
+  background:rgba(255,255,255,0.04); border:1px solid var(--border);
+  border-radius:12px; padding:14px 22px; min-width:90px;
+}
+.meta-box .mv { font-family:'Kanit',sans-serif; font-size:26px; font-weight:700; }
+.meta-box .ml { font-size:12px; color:var(--text-muted); margin-top:3px; }
+.breakdown {
+  text-align:left; background:rgba(255,255,255,0.03);
+  border:1px solid var(--border); border-radius:14px;
+  padding:20px; margin-bottom:28px;
+}
+.breakdown h4 {
+  font-family:'Kanit',sans-serif; font-size:13px; color:var(--text-muted);
+  letter-spacing:1.5px; text-transform:uppercase; margin-bottom:16px;
+}
+.bd-row { display:flex; align-items:center; gap:10px; margin-bottom:10px; font-size:13px; }
+.bd-label { flex:1; color:var(--white); font-size:12.5px; }
+.bd-bar-bg { width:100px; height:6px; background:rgba(255,255,255,0.06); border-radius:99px; overflow:hidden; flex-shrink:0; }
+.bd-bar-fill { height:100%; background:linear-gradient(90deg,var(--teal),var(--gold)); border-radius:99px; }
+.bd-score { font-family:'Space Mono',monospace; font-size:11px; color:var(--teal); min-width:38px; text-align:right; }
+.res-actions { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+.btn-review {
+  background:linear-gradient(135deg,var(--teal),#0d9e92); color:#fff;
+  border:none; border-radius:12px; padding:13px 32px;
+  font-family:'Kanit',sans-serif; font-size:16px; font-weight:700; cursor:pointer; transition:all .2s;
+}
+.btn-review:hover { transform:translateY(-2px); box-shadow:0 8px 28px rgba(26,179,166,.35); }
+.btn-retry {
+  background:transparent; border:1px solid var(--border); color:var(--gold);
+  border-radius:12px; padding:13px 28px;
+  font-family:'Kanit',sans-serif; font-size:16px; font-weight:600; cursor:pointer; transition:all .2s;
+}
+.btn-retry:hover { background:rgba(201,168,76,0.08); border-color:rgba(201,168,76,.5); }
+
+/* ── REVIEW SCREEN ── */
+.review-wrap { max-width:800px; margin:0 auto; padding:28px 20px 80px; }
+.review-head {
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:28px; flex-wrap:wrap; gap:12px;
+}
+.review-head h2 { font-family:'Kanit',sans-serif; font-size:22px; font-weight:700; }
+.review-stats { display:flex; gap:16px; flex-wrap:wrap; margin-bottom:24px; }
+.rstat {
+  display:flex; align-items:center; gap:8px;
+  font-size:13px; font-family:'Space Mono',monospace;
+}
+.rstat-dot { width:10px; height:10px; border-radius:50%; }
+.ri {
+  background:var(--card-bg); border:1px solid var(--border);
+  border-radius:14px; padding:20px 22px; margin-bottom:10px;
+  border-left:4px solid transparent;
+}
+.ri.ok  { border-left-color:rgba(34,197,94,0.6); }
+.ri.err { border-left-color:rgba(239,68,68,0.5); }
+.ri-head { display:flex; align-items:center; gap:10px; margin-bottom:10px; flex-wrap:wrap; }
+.ri-num  { font-family:'Space Mono',monospace; font-size:11px; color:var(--text-muted); }
+.badge { font-size:11px; padding:3px 10px; border-radius:20px; font-weight:700; }
+.badge.ok  { background:rgba(34,197,94,0.15); color:#86efac; }
+.badge.err { background:rgba(239,68,68,0.12); color:#fca5a5; }
+.ri-q  { font-size:14px; font-weight:600; margin-bottom:10px; line-height:1.55; }
+.ri-ans { font-size:13px; color:var(--text-muted); margin-bottom:3px; }
+.ri-ans span.ok-text  { color:#86efac; font-weight:600; }
+.ri-ans span.err-text { color:#fca5a5; font-weight:600; }
+.ri-exp {
+  font-size:12.5px; color:var(--text-muted); margin-top:10px;
+  padding-top:10px; border-top:1px solid rgba(255,255,255,0.05); line-height:1.7;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width:600px) {
+  .top-bar { padding:10px 16px; }
+  .quiz-wrap, .review-wrap { padding:16px 12px 60px; }
+  .q-card { padding:18px 14px; border-radius:14px; }
+  .choice { padding:11px 13px; font-size:13px; gap:10px; }
+  .alpha { width:24px; height:24px; font-size:10px; }
+  .q-text { font-size:15px; }
+  .result-card { padding:24px 16px; }
+  .bd-bar-bg { width:70px; }
+  .ri { padding:16px 14px; }
+  .meta-box { padding:12px 16px; }
+  .btn-start { font-size:16px; padding:14px 32px; }
+}
+@media (max-width:380px) {
+  .info-row { gap:8px; }
+  .info-box { padding:12px 14px; min-width:72px; }
+  .info-box .num { font-size:22px; }
+}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR (hidden on start/result) -->
+<div class="top-bar" id="top-bar" style="display:none;">
+  <div class="top-bar-title">📝 แบบทดสอบหลักบริหาร & Competency ปี 69</div>
+  <div class="top-bar-progress"><span id="tb-current">1</span>/100 ข้อ</div>
+  <div class="top-bar-timer" id="tb-timer">⏱ 00:00</div>
+</div>
+<div class="progress-track" id="progress-track" style="display:none;">
+  <div class="progress-fill" id="prog-fill"></div>
+</div>
+
+<!-- ══ START SCREEN ══ -->
+<div class="screen active" id="scr-start">
+  <div class="start-wrap">
+    <div class="start-card">
+      <div class="start-icon">🎓</div>
+      <h1 class="start-title">แบบทดสอบหลักบริหาร &<br>Competency ปี 69</h1>
+      <p class="start-desc">ทดสอบความเข้าใจครอบคลุมทุกเนื้อหาในหลักสูตร<br>Strategic Management · SWOT · OKR/KPI · Competency · Future Skills</p>
+      <div class="info-row">
+        <div class="info-box"><span class="num">100</span><span class="lbl">ข้อ</span></div>
+        <div class="info-box"><span class="num">1</span><span class="lbl">คะแนน/ข้อ</span></div>
+        <div class="info-box"><span class="num">60%</span><span class="lbl">เกณฑ์ผ่าน</span></div>
+        <div class="info-box"><span class="num">∞</span><span class="lbl">เวลา</span></div>
+      </div>
+      <div class="cat-list">
+        <span class="cat-badge">Strategic Management</span>
+        <span class="cat-badge">POLC / PDCA</span>
+        <span class="cat-badge">SWOT / 5W1H</span>
+        <span class="cat-badge">SMART / OKR / KPI</span>
+        <span class="cat-badge">People & Budget</span>
+        <span class="cat-badge">4M & Transformation</span>
+        <span class="cat-badge">Katz Skills</span>
+        <span class="cat-badge">Future Skills</span>
+        <span class="cat-badge">Action Plan</span>
+        <span class="cat-badge">Quality Management</span>
+      </div>
+      <button class="btn-start" onclick="startExam()">🚀 เริ่มทำข้อสอบ</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ QUIZ SCREEN ══ -->
+<div class="screen" id="scr-quiz">
+  <div class="quiz-wrap">
+    <div class="q-card" id="q-card">
+      <div class="q-meta">
+        <span class="q-num-badge" id="q-num-badge">ข้อ 1</span>
+        <span class="q-cat-badge" id="q-cat-badge">—</span>
+      </div>
+      <p class="q-text" id="q-text">—</p>
+      <div class="choices" id="q-choices"></div>
+      <div class="feedback" id="q-feedback"></div>
+      <div class="q-footer">
+        <span class="answered-info">ตอบแล้ว <strong id="ans-count">0</strong>/100</span>
+        <div class="nav-row">
+          <button class="btn-submit" onclick="confirmSubmit()">ส่งข้อสอบ ✓</button>
+          <button class="btn-next" id="btn-next" onclick="nextQ()">ถัดไป →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ RESULT SCREEN ══ -->
+<div class="screen" id="scr-result">
+  <div class="result-wrap">
+    <div class="result-card">
+      <div class="res-icon" id="res-icon">🏆</div>
+      <h2 class="res-title">ผลการทดสอบ</h2>
+      <div class="ring-wrap">
+        <svg viewBox="0 0 130 130" width="180" height="180">
+          <circle cx="65" cy="65" r="54" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="11"/>
+          <circle cx="65" cy="65" r="54" fill="none" stroke-width="11"
+            stroke-linecap="round" stroke-dasharray="339" stroke-dashoffset="339"
+            id="res-ring" style="transform:rotate(-90deg);transform-origin:50% 50%;transition:stroke-dashoffset 1.3s ease;"/>
+        </svg>
+        <div class="ring-text">
+          <div class="ring-score" id="res-score">—</div>
+          <div class="ring-max">/ 100</div>
+        </div>
+      </div>
+      <div class="res-grade" id="res-grade">—</div>
+      <div class="meta-row">
+        <div class="meta-box"><div class="mv" id="m-correct" style="color:#86efac">—</div><div class="ml">ถูก</div></div>
+        <div class="meta-box"><div class="mv" id="m-wrong" style="color:#fca5a5">—</div><div class="ml">ผิด</div></div>
+        <div class="meta-box"><div class="mv" id="m-time" style="color:var(--gold)">—</div><div class="ml">เวลา</div></div>
+      </div>
+      <div class="breakdown">
+        <h4>คะแนนรายหมวด</h4>
+        <div id="bd-rows"></div>
+      </div>
+      <div class="res-actions">
+        <button class="btn-review" onclick="showReview()">📋 ดูเฉลย</button>
+        <button class="btn-retry" onclick="resetExam()">🔄 ทำใหม่</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ REVIEW SCREEN ══ -->
+<div class="screen" id="scr-review">
+  <div class="review-wrap">
+    <div class="review-head">
+      <h2>📋 เฉลยและคำอธิบาย</h2>
+      <button class="btn-retry" onclick="resetExam()" style="padding:10px 20px;font-size:14px;">🔄 ทำใหม่</button>
+    </div>
+    <div class="review-stats">
+      <div class="rstat"><div class="rstat-dot" style="background:#86efac"></div><span id="rv-correct">—</span> ข้อถูก</div>
+      <div class="rstat"><div class="rstat-dot" style="background:#fca5a5"></div><span id="rv-wrong">—</span> ข้อผิด</div>
+    </div>
+    <div id="review-list"></div>
+  </div>
+</div>
+
+<script>
+// ─── QUESTION BANK 100 qs ───
+const QB = [
+  {c:'Strategic Management',q:'Strategic Management คืออะไร?',o:['การบริหารทรัพยากรบุคคล','กระบวนการกำหนดทิศทางและเป้าหมายระยะยาวขององค์กร','การควบคุมงบประมาณประจำปี','การวิเคราะห์ตลาดเพียงอย่างเดียว'],a:1,e:'Strategic Management คือกระบวนการวางแผน นำ และควบคุมองค์กรเพื่อบรรลุเป้าหมายระยะยาว'},
+  {c:'Strategic Management',q:'ขั้นตอนแรกของกระบวนการ Strategic Management คือข้อใด?',o:['การดำเนินการตามแผน','การวิเคราะห์สภาพแวดล้อม','การประเมินผล','การมอบหมายงาน'],a:1,e:'การวิเคราะห์สภาพแวดล้อม (Environmental Analysis) เป็นจุดเริ่มต้นก่อนกำหนดกลยุทธ์'},
+  {c:'Strategic Management',q:'วิสัยทัศน์ (Vision) ขององค์กรหมายถึงอะไร?',o:['แผนปฏิบัติงานรายวัน','ภาพอนาคตที่องค์กรต้องการเป็น','รายได้เป้าหมายประจำไตรมาส','โครงสร้างองค์กร'],a:1,e:'Vision คือภาพในอนาคตที่องค์กรมุ่งหวัง เป็นแรงบันดาลใจในการดำเนินงาน'},
+  {c:'Strategic Management',q:'พันธกิจ (Mission) แตกต่างจากวิสัยทัศน์ (Vision) อย่างไร?',o:['Mission คือระยะยาว Vision คือระยะสั้น','Mission บอกว่าองค์กรทำอะไรในปัจจุบัน Vision บอกว่าอยากเป็นอะไรในอนาคต','Mission ใช้เฉพาะฝ่ายการเงิน','ไม่มีความแตกต่าง'],a:1,e:'Mission ตอบ "เราทำอะไร?" ส่วน Vision ตอบ "เราอยากเป็นอะไร?"'},
+  {c:'Strategic Management',q:'กลยุทธ์ระดับองค์กร (Corporate Strategy) เกี่ยวข้องกับสิ่งใด?',o:['การตั้งราคาสินค้า','การขยาย ลด หรือกระจายธุรกิจ','การฝึกอบรมพนักงาน','การจัดตารางงาน'],a:1,e:'Corporate Strategy กำหนดทิศทางองค์กรโดยรวม เช่น การขยายธุรกิจ การควบรวม หรือการถอนตัว'},
+  {c:'Strategic Management',q:'Competitive Advantage หมายถึงอะไร?',o:['การมีพนักงานมากที่สุด','ความได้เปรียบที่ทำให้องค์กรโดดเด่นกว่าคู่แข่ง','การมีสำนักงานใหญ่ที่สวยงาม','การได้รับรางวัลจากภาครัฐ'],a:1,e:'Competitive Advantage คือสิ่งที่ทำให้องค์กรเหนือกว่าคู่แข่ง เช่น ต้นทุนต่ำหรือความแตกต่าง'},
+  {c:'Strategic Management',q:"Porter's Five Forces วิเคราะห์สิ่งใด?",o:['กำลังพลงาน','แรงกดดันในอุตสาหกรรมที่ส่งผลต่อการแข่งขัน','สภาพอากาศ','โครงสร้างภาษี'],a:1,e:'Five Forces ได้แก่ คู่แข่งในอุตสาหกรรม ผู้เข้าใหม่ สินค้าทดแทน อำนาจผู้ซื้อ และอำนาจผู้ขาย'},
+  {c:'Strategic Management',q:'Blue Ocean Strategy คืออะไร?',o:['กลยุทธ์แข่งขันในตลาดเดิมอย่างดุเดือด','กลยุทธ์สร้างตลาดใหม่ที่ไร้การแข่งขัน','กลยุทธ์ลดต้นทุนสูงสุด','กลยุทธ์ควบรวมกิจการ'],a:1,e:'Blue Ocean Strategy มุ่งสร้างพื้นที่ตลาดใหม่ที่ยังไม่มีการแข่งขัน'},
+  {c:'Strategic Management',q:'Balanced Scorecard ประกอบด้วยมุมมองใดบ้าง?',o:['การเงิน ลูกค้า กระบวนการ การเรียนรู้','การผลิต การตลาด การขาย','คน เงิน เวลา','คุณภาพ ความเร็ว ต้นทุน'],a:0,e:'BSC มี 4 มุมมอง: Financial, Customer, Internal Process, Learning & Growth'},
+  {c:'Strategic Management',q:'การวิเคราะห์ห่วงโซ่คุณค่า (Value Chain) ช่วยอะไร?',o:['วิเคราะห์คุณค่าของอสังหาริมทรัพย์','ระบุกิจกรรมที่สร้างคุณค่าและแหล่งที่มาของความได้เปรียบ','วิเคราะห์ราคาหุ้น','วางแผนการท่องเที่ยว'],a:1,e:'Value Chain Analysis ระบุกิจกรรมหลักและสนับสนุนที่สร้างมูลค่าให้ลูกค้า'},
+
+  {c:'POLC / PDCA',q:'POLC ย่อมาจากอะไร?',o:['Plan, Operate, Lead, Control','Planning, Organizing, Leading, Controlling','Process, Output, Logistics, Cost','Plan, Organize, Link, Check'],a:1,e:'POLC: Planning (วางแผน), Organizing (จัดองค์กร), Leading (นำ), Controlling (ควบคุม)'},
+  {c:'POLC / PDCA',q:'ขั้นตอน Organizing ใน POLC หมายถึงอะไร?',o:['การเขียนแผนกลยุทธ์','การจัดโครงสร้างและมอบหมายทรัพยากร','การประเมินผลงาน','การสื่อสารกับลูกค้า'],a:1,e:'Organizing คือการจัดโครงสร้างองค์กร จัดสรรทรัพยากร และมอบหมายความรับผิดชอบ'},
+  {c:'POLC / PDCA',q:'PDCA ย่อมาจากอะไร?',o:['Plan, Do, Check, Act','Process, Deliver, Control, Assess','Plan, Deploy, Check, Adjust','Prepare, Design, Create, Analyze'],a:0,e:'PDCA: Plan (วางแผน), Do (ทำ), Check (ตรวจสอบ), Act (ปรับปรุง) วัฏจักรพัฒนาคุณภาพต่อเนื่อง'},
+  {c:'POLC / PDCA',q:'ขั้น Check ใน PDCA ทำอะไร?',o:['เริ่มดำเนินการ','วางแผนใหม่','ตรวจสอบผลลัพธ์กับเป้าหมาย','มอบหมายงาน'],a:2,e:'Check คือการเปรียบเทียบผลที่ได้กับเป้าหมายที่ตั้งไว้ เพื่อหาความแตกต่าง'},
+  {c:'POLC / PDCA',q:'POLC เหมาะกับงานประเภทใดมากที่สุด?',o:['การบริหารจัดการองค์กรในระดับผู้บริหาร','การผลิตสินค้า','การออกแบบผลิตภัณฑ์','การบัญชีการเงิน'],a:0,e:'POLC เป็นกรอบสำหรับผู้บริหารในการจัดการองค์กรโดยรวม'},
+  {c:'POLC / PDCA',q:'ขั้น Act ใน PDCA หมายถึงอะไร?',o:['เริ่มทำซ้ำ','ปรับปรุงกระบวนการและทำให้เป็นมาตรฐาน','ยกเลิกโครงการ','รายงานผู้บริหาร'],a:1,e:'Act คือการปรับปรุงและกำหนดมาตรฐานใหม่จากผลการตรวจสอบ เพื่อเริ่มรอบ PDCA ใหม่'},
+  {c:'POLC / PDCA',q:'ความแตกต่างหลักระหว่าง POLC และ PDCA คืออะไร?',o:['POLC ใช้กับการผลิต PDCA ใช้กับการตลาด','POLC เป็นกรอบบริหารองค์กร PDCA เป็นวัฏจักรพัฒนาคุณภาพ','ไม่มีความแตกต่าง','PDCA ใช้กับผู้บริหารระดับสูงเท่านั้น'],a:1,e:'POLC ใช้จัดการองค์กร ส่วน PDCA ใช้ปรับปรุงกระบวนการทำงานอย่างต่อเนื่อง'},
+  {c:'POLC / PDCA',q:'ขั้น Leading ใน POLC รวมถึงสิ่งใด?',o:['การวางงบประมาณ','การสั่งการ สร้างแรงจูงใจ และสื่อสาร','การตรวจสอบบัญชี','การจัดซื้อวัสดุ'],a:1,e:'Leading ครอบคลุมการสั่งการ สร้างแรงจูงใจ สื่อสาร และพัฒนาทีมงาน'},
+  {c:'POLC / PDCA',q:'PDCA ถูกเผยแพร่โดยใคร?',o:['Peter Drucker','W. Edwards Deming','Michael Porter','Henry Mintzberg'],a:1,e:'W. Edwards Deming เป็นผู้เผยแพร่ PDCA จนเป็นที่รู้จักในงานบริหารคุณภาพ'},
+  {c:'POLC / PDCA',q:'ขั้น Controlling ใน POLC ช่วยอะไร?',o:['กำหนดเป้าหมาย','ติดตามผลและแก้ไขเบี่ยงเบนจากแผน','สรรหาบุคลากร','ออกแบบผลิตภัณฑ์'],a:1,e:'Controlling ช่วยให้มั่นใจว่าผลการดำเนินงานเป็นไปตามแผน และแก้ไขส่วนที่เบี่ยงเบน'},
+
+  {c:'SWOT / 5W1H',q:'SWOT ย่อมาจากอะไร?',o:['Strength, Weakness, Opportunity, Threat','Strategy, Work, Output, Timeline','System, Work, Optimize, Track','Speed, Width, Outcome, Target'],a:0,e:'SWOT: Strengths (จุดแข็ง), Weaknesses (จุดอ่อน), Opportunities (โอกาส), Threats (ภัยคุกคาม)'},
+  {c:'SWOT / 5W1H',q:'ปัจจัยใดใน SWOT เป็นปัจจัยภายในองค์กร?',o:['Opportunity และ Threat','Strength และ Weakness','Opportunity และ Strength','Weakness และ Threat'],a:1,e:'Strength และ Weakness เป็นปัจจัยภายใน ส่วน Opportunity และ Threat เป็นปัจจัยภายนอก'},
+  {c:'SWOT / 5W1H',q:'5W1H ประกอบด้วยคำถามใดบ้าง?',o:['Why, What, Who, Where, When, How','Work, Win, Worth, Wish, Want, Hope','Who, Which, When, Why, Whether, How much','ไม่มีข้อถูก'],a:0,e:'5W1H: Who (ใคร), What (อะไร), Where (ที่ไหน), When (เมื่อไร), Why (ทำไม), How (อย่างไร)'},
+  {c:'SWOT / 5W1H',q:'การวิเคราะห์ SWOT ควรทำเมื่อใด?',o:['ทุกวัน','ก่อนกำหนดกลยุทธ์หรือวางแผนธุรกิจ','หลังจากเกิดวิกฤต','เฉพาะเมื่อบริษัทขาดทุน'],a:1,e:'SWOT ควรทำในระยะวางแผนเพื่อเข้าใจสถานะและกำหนดกลยุทธ์ที่เหมาะสม'},
+  {c:'SWOT / 5W1H',q:'Threat ใน SWOT หมายถึงสิ่งใด?',o:['จุดอ่อนภายในองค์กร','ปัจจัยภายนอกที่อาจส่งผลเสีย','โอกาสทางธุรกิจ','จุดแข็งของคู่แข่ง'],a:1,e:'Threat คือปัจจัยภายนอกที่คุกคามธุรกิจ เช่น คู่แข่งใหม่ นโยบายภาครัฐ หรือเศรษฐกิจถดถอย'},
+  {c:'SWOT / 5W1H',q:'กลยุทธ์ SO ใน SWOT Matrix คืออะไร?',o:['ใช้จุดแข็งแก้จุดอ่อน','ใช้จุดแข็งคว้าโอกาส','หลีกเลี่ยงภัยคุกคาม','ลดจุดอ่อนเพื่อลดภัย'],a:1,e:'กลยุทธ์ SO (Strength-Opportunity) คือการใช้จุดแข็งขององค์กรเพื่อคว้าโอกาสภายนอก'},
+  {c:'SWOT / 5W1H',q:'5W1H ช่วยในด้านใดมากที่สุด?',o:['การวิเคราะห์ตลาดหุ้น','การตั้งคำถามเพื่อทำความเข้าใจปัญหาอย่างครอบคลุม','การคำนวณงบประมาณ','การออกแบบโลโก้'],a:1,e:'5W1H ช่วยให้ตั้งคำถามครอบคลุมทุกมิติของปัญหาหรือสถานการณ์ก่อนตัดสินใจ'},
+  {c:'SWOT / 5W1H',q:'ข้อใดคือ Opportunity ในตัวอย่างบริษัทขนส่ง?',o:['พนักงานขาดทักษะ','ต้นทุนน้ำมันสูง','ตลาด E-commerce เติบโตเร็ว','คู่แข่งเพิ่มขึ้น'],a:2,e:'การเติบโตของ E-commerce เป็นโอกาสภายนอกที่บริษัทขนส่งสามารถใช้ประโยชน์ได้'},
+  {c:'SWOT / 5W1H',q:'คำถาม How ใน 5W1H ถามถึงสิ่งใด?',o:['เวลาดำเนินการ','วิธีการหรือกระบวนการ','ผู้รับผิดชอบ','สาเหตุของปัญหา'],a:1,e:'"How" ถามเกี่ยวกับวิธีการ กระบวนการ หรือแนวทางดำเนินการ'},
+  {c:'SWOT / 5W1H',q:'กลยุทธ์ WT ใน SWOT Matrix มุ่งทำอะไร?',o:['คว้าโอกาสด้วยจุดแข็ง','ลดจุดอ่อนและหลีกเลี่ยงภัยคุกคาม','เพิ่มจุดแข็ง','ขยายตลาด'],a:1,e:'กลยุทธ์ WT (Weakness-Threat) มุ่งลดจุดอ่อนและหลีกเลี่ยงภัยคุกคามเพื่อความอยู่รอด'},
+
+  {c:'SMART / OKR / KPI',q:'SMART Goal ย่อมาจากอะไร?',o:['Specific, Measurable, Achievable, Relevant, Time-bound','Strategic, Meaningful, Actionable, Realistic, Trackable','Simple, Manageable, Agile, Reasonable, Timely','ไม่มีข้อถูก'],a:0,e:'SMART: Specific, Measurable, Achievable, Relevant, Time-bound'},
+  {c:'SMART / OKR / KPI',q:'เป้าหมาย "ปรับปรุงยอดขาย" ขาดความ SMART ด้านใด?',o:['Achievable','Relevant','Specific และ Measurable','Time-bound'],a:2,e:'เป้าหมายที่ดีต้องระบุตัวเลข เช่น "เพิ่มยอดขาย 20% ภายใน Q3" จึงจะ Specific และ Measurable'},
+  {c:'SMART / OKR / KPI',q:'OKR ย่อมาจากอะไร?',o:['Objective and Key Results','Output and Key Risks','Organize and Key Resources','Objective and Key Reports'],a:0,e:'OKR: Objectives (เป้าหมาย) และ Key Results (ผลลัพธ์หลักที่วัดได้)'},
+  {c:'SMART / OKR / KPI',q:'KPI แตกต่างจาก OKR อย่างไร?',o:['KPI ใช้เฉพาะฝ่ายขาย','KPI วัดผลมาตรฐาน OKR ขับเคลื่อนการเปลี่ยนแปลงเชิงกลยุทธ์','OKR ใช้กับพนักงานระดับล่างเท่านั้น','ไม่มีความแตกต่าง'],a:1,e:'KPI ควบคุมมาตรฐานปัจจุบัน ส่วน OKR ใช้ขับเคลื่อนการเติบโตและการเปลี่ยนแปลง'},
+  {c:'SMART / OKR / KPI',q:'Key Result ใน OKR ควรมีลักษณะอย่างไร?',o:['เป็นเชิงคุณภาพ เข้าใจง่าย','วัดได้เป็นตัวเลข มีกรอบเวลา','เป็นภารกิจระยะยาว 5 ปี','กำหนดโดยผู้บริหารสูงสุดเพียงคนเดียว'],a:1,e:'Key Results ต้องวัดได้ชัดเจนเป็นตัวเลขและมีกำหนดเวลา เพื่อติดตามความคืบหน้า'},
+  {c:'SMART / OKR / KPI',q:'ข้อใดคือตัวอย่าง KPI ที่ดี?',o:['ทีมต้องทำงานหนักขึ้น','อัตราพึงพอใจลูกค้า ≥ 90% ในไตรมาส 2','ปรับปรุงบริการ','เพิ่มยอดขาย'],a:1,e:'KPI ที่ดีต้องมีตัวชี้วัดที่ชัดเจน วัดได้ และมีกรอบเวลา'},
+  {c:'SMART / OKR / KPI',q:'โดยทั่วไป OKR ควรกำหนดทุกกี่เดือน?',o:['12 เดือน','6 เดือน','3 เดือน (รายไตรมาส)','1 เดือน'],a:2,e:'OKR มักกำหนดรายไตรมาส (3 เดือน) เพื่อให้มีความยืดหยุ่นและทบทวนได้บ่อย'},
+  {c:'SMART / OKR / KPI',q:'Lagging Indicator ในบริบท KPI หมายถึงอะไร?',o:['ตัวชี้วัดที่บอกผลลัพธ์ที่เกิดขึ้นแล้ว','ตัวชี้วัดที่พยากรณ์อนาคต','ตัวชี้วัดด้านการตลาด','ตัวชี้วัดของพนักงานใหม่'],a:0,e:'Lagging Indicator วัดผลที่เกิดขึ้นแล้ว เช่น รายได้ กำไร ต่างจาก Leading Indicator ที่พยากรณ์'},
+  {c:'SMART / OKR / KPI',q:'ข้อใดคือ Objective ที่ดีใน OKR?',o:['เพิ่มรายได้ 15%','กลายเป็นแบรนด์ที่ลูกค้าไว้วางใจที่สุดในตลาด','ลดต้นทุน','อบรมพนักงาน 50 คน'],a:1,e:'Objective ใน OKR ควรสร้างแรงบันดาลใจ ท้าทาย และแสดงทิศทาง ไม่ใช่ตัวเลขโดยตรง'},
+  {c:'SMART / OKR / KPI',q:'T ใน SMART Goal หมายถึงอะไร?',o:['Transparent','Teamwork','Time-bound','Trackable'],a:2,e:'"T" คือ Time-bound หมายถึงเป้าหมายต้องมีกรอบเวลาที่ชัดเจน'},
+
+  {c:'People & Budget',q:'People Management มีเป้าหมายหลักคืออะไร?',o:['ลดจำนวนพนักงาน','ดึงศักยภาพพนักงานมาใช้ให้เกิดประโยชน์สูงสุด','เพิ่มชั่วโมงทำงาน','ลดต้นทุนค่าแรง'],a:1,e:'People Management มุ่งพัฒนา จูงใจ และดึงศักยภาพพนักงานเพื่อบรรลุเป้าหมายองค์กร'},
+  {c:'People & Budget',q:'Coaching ในการบริหารคนคืออะไร?',o:['การสั่งงานโดยตรง','การแนะนำและพัฒนาศักยภาพพนักงานรายบุคคล','การลงโทษพนักงาน','การประชุมทั่วไป'],a:1,e:'Coaching คือการให้คำปรึกษา ตั้งคำถาม และพัฒนาให้พนักงานค้นพบแนวทางด้วยตนเอง'},
+  {c:'People & Budget',q:'Budget Management เกี่ยวข้องกับกระบวนการใด?',o:['เฉพาะการใช้จ่ายเงิน','การวางแผน จัดสรร ควบคุม และประเมินผลการใช้จ่ายงบประมาณ','การลงทุนในตลาดหุ้น','การกู้เงินธนาคาร'],a:1,e:'Budget Management ครอบคลุมทุกขั้นตอนตั้งแต่วางแผน จัดสรร ควบคุม ไปจนถึงประเมินผล'},
+  {c:'People & Budget',q:'การสร้างแรงจูงใจแบบใดมีผลยั่งยืนกว่า?',o:['เงินเดือนสูง','การยกย่องและโอกาสเติบโต (Intrinsic Motivation)','การควบคุมเข้มงวด','การลงโทษ'],a:1,e:'แรงจูงใจภายใน (Intrinsic) เช่น ความสำเร็จ การยอมรับ โอกาสเติบโต มีผลยั่งยืนกว่ารางวัลภายนอก'},
+  {c:'People & Budget',q:'Zero-Based Budgeting คืออะไร?',o:['งบประมาณปีใหม่อิงจากปีที่แล้ว','เริ่มต้นวางแผนงบประมาณจากศูนย์ทุกรอบ','งบฉุกเฉินเฉพาะกาล','งบที่ไม่ต้องขออนุมัติ'],a:1,e:'Zero-Based Budgeting เริ่มนับจาก 0 ทุกงวด ทุกรายการต้องผ่านการพิจารณาความจำเป็นใหม่'},
+  {c:'People & Budget',q:'Succession Planning คืออะไร?',o:['แผนการปิดบริษัท','การวางแผนผู้สืบทอดตำแหน่งสำคัญในองค์กร','แผนการควบรวมกิจการ','การวางแผนการตลาด'],a:1,e:'Succession Planning เตรียมบุคลากรรุ่นถัดไปเพื่อรับตำแหน่งสำคัญในอนาคต'},
+  {c:'People & Budget',q:'Variance Analysis ในบริบทงบประมาณคืออะไร?',o:['การวิเคราะห์ตลาด','การเปรียบเทียบงบจริงกับงบที่ตั้งไว้','การประเมินพนักงาน','การวิเคราะห์คู่แข่ง'],a:1,e:'Variance Analysis วิเคราะห์ความแตกต่างระหว่างงบประมาณที่ตั้งไว้กับค่าใช้จ่ายจริง'},
+  {c:'People & Budget',q:'Employee Engagement สูงส่งผลอย่างไร?',o:['ค่าใช้จ่ายเพิ่มขึ้น','ผลผลิตและความพึงพอใจในงานสูงขึ้น อัตราลาออกลดลง','พนักงานทำงานน้อยลง','ไม่มีผลใดๆ'],a:1,e:'พนักงานที่มี Engagement สูงจะมีผลผลิตดีขึ้น มุ่งมั่นกับองค์กร และอัตราลาออกต่ำลง'},
+  {c:'People & Budget',q:'Performance Management System มีจุดประสงค์ใด?',o:['ตัดสินโบนัสเพียงอย่างเดียว','ติดตาม พัฒนา และประเมินผลงานพนักงานอย่างต่อเนื่อง','ลดจำนวนพนักงาน','จัดทำตารางงาน'],a:1,e:'Performance Management ช่วยพัฒนาพนักงานอย่างต่อเนื่องและสอดคล้องกับเป้าหมายองค์กร'},
+  {c:'People & Budget',q:'CapEx แตกต่างจาก OpEx อย่างไร?',o:['CapEx คือค่าใช้จ่ายดำเนินงาน OpEx คือการลงทุน','CapEx คือรายจ่ายลงทุนในสินทรัพย์ระยะยาว OpEx คือค่าใช้จ่ายดำเนินงานประจำ','ทั้งคู่หมายถึงสิ่งเดียวกัน','OpEx ใช้เฉพาะฝ่ายไอที'],a:1,e:'CapEx คือการลงทุนในสินทรัพย์ถาวร ส่วน OpEx คือค่าใช้จ่ายดำเนินงานทั่วไป'},
+
+  {c:'4M & Transformation',q:'4M ในการบริหารจัดการคืออะไร?',o:['Man, Machine, Material, Method','Market, Money, Management, Mindset','Mission, Model, Method, Measure','Make, Move, Manage, Monitor'],a:0,e:'4M: Man (คน), Machine (เครื่องจักร), Material (วัตถุดิบ), Method (วิธีการ)'},
+  {c:'4M & Transformation',q:'Method ใน 4M หมายถึงอะไร?',o:['เครื่องมือ','กระบวนการและวิธีการทำงาน','บุคลากร','วัตถุดิบ'],a:1,e:'Method คือกระบวนการ ขั้นตอน และวิธีการที่ใช้ในการดำเนินงาน'},
+  {c:'4M & Transformation',q:'Organization Transformation คืออะไร?',o:['การปรับโครงสร้างเงินเดือน','กระบวนการเปลี่ยนแปลงองค์กรอย่างรอบด้านเพื่อรับมือความท้าทาย','การย้ายสำนักงาน','การเปลี่ยนโลโก้บริษัท'],a:1,e:'Organization Transformation คือการเปลี่ยนแปลงอย่างรอบด้านในด้านกลยุทธ์ โครงสร้าง กระบวนการ และวัฒนธรรม'},
+  {c:'4M & Transformation',q:'Change Management ที่ดีต้องเริ่มจากอะไร?',o:['การเปลี่ยนระบบไอที','การสร้าง Sense of Urgency ให้ทีมเห็นความจำเป็น','การลดเงินเดือน','การควบรวมกิจการ'],a:1,e:'Kotter ระบุว่า Creating Urgency เป็นขั้นแรกของ 8-Step Change Model'},
+  {c:'4M & Transformation',q:'Digital Transformation หมายถึงอะไร?',o:['การซื้อคอมพิวเตอร์ใหม่','การนำเทคโนโลยีดิจิทัลมาเปลี่ยนแปลงกระบวนการและโมเดลธุรกิจ','การสร้างเว็บไซต์','การใช้อีเมลแทนจดหมาย'],a:1,e:'Digital Transformation คือการนำเทคโนโลยีดิจิทัลมา transform กระบวนการ วัฒนธรรม และประสบการณ์ทั้งหมด'},
+  {c:'4M & Transformation',q:'ใน 4M หาก Man มีปัญหา ผลกระทบหลักคืออะไร?',o:['เครื่องจักรเสีย','คุณภาพงานและผลผลิตลดลง','วัตถุดิบขาด','ไม่มีผลกระทบ'],a:1,e:'Man (คน) เป็นทรัพยากรสำคัญ หากขาดทักษะหรือแรงจูงใจจะกระทบคุณภาพและผลผลิตโดยตรง'},
+  {c:'4M & Transformation',q:'Agile Organization คืออะไร?',o:['องค์กรที่มีพนักงานน้อย','องค์กรที่ยืดหยุ่น ปรับตัวได้รวดเร็ว','องค์กรที่มีกำไรสูง','องค์กรข้ามชาติ'],a:1,e:'Agile Organization มีความยืดหยุ่นสูง ตัดสินใจได้รวดเร็ว และปรับตัวต่อการเปลี่ยนแปลงได้ดี'},
+  {c:'4M & Transformation',q:'การบริหาร Material ในการผลิตมีเป้าหมายใด?',o:['เพิ่มจำนวนพนักงาน','จัดหาและบริหารวัตถุดิบให้พอดีกับความต้องการ ไม่ขาด ไม่เกิน','ลดเครื่องจักร','เพิ่มกำลังการผลิต'],a:1,e:'การบริหาร Material มุ่งให้มีวัตถุดิบเพียงพอ ลดของเสีย และควบคุมต้นทุน'},
+  {c:'4M & Transformation',q:'Resistance to Change เกิดจากอะไรมากที่สุด?',o:['เทคโนโลยีล้มเหลว','ความกลัว ความไม่แน่ใจ และการขาดข้อมูลของพนักงาน','งบประมาณไม่พอ','ผู้บริหารไม่ให้ความสำคัญ'],a:1,e:'การต่อต้านการเปลี่ยนแปลงมักเกิดจาก FUD: Fear, Uncertainty, Doubt'},
+  {c:'4M & Transformation',q:'Lean Organization เน้นสิ่งใด?',o:['การเพิ่มพนักงาน','การลดความสูญเปล่าในกระบวนการทุกด้าน','การเพิ่มสาขา','การลงทุนสูง'],a:1,e:'Lean มุ่งกำจัด Waste (ความสูญเปล่า) ในกระบวนการเพื่อเพิ่มคุณค่าให้ลูกค้า'},
+
+  {c:'Katz Skills & Competency',q:'ทฤษฎีทักษะของ Katz ประกอบด้วยอะไร?',o:['Technical, Human, Conceptual','Planning, Organizing, Leading','Financial, Marketing, Operations','Hard, Soft, Digital'],a:0,e:'Robert Katz แบ่งทักษะผู้บริหารเป็น 3 ด้าน: Technical Skills, Human Skills, Conceptual Skills'},
+  {c:'Katz Skills & Competency',q:'Conceptual Skills สำคัญกับผู้บริหารระดับใดมากที่สุด?',o:['ระดับปฏิบัติการ','ระดับกลาง','ระดับสูง','ทุกระดับเท่ากัน'],a:2,e:'ผู้บริหารระดับสูงต้องการ Conceptual Skills สูงมาก เพื่อมองภาพรวมและกำหนดทิศทางองค์กร'},
+  {c:'Katz Skills & Competency',q:'Human Skills ในแนวคิด Katz คืออะไร?',o:['ทักษะใช้เครื่องจักร','ทักษะสร้างความสัมพันธ์และทำงานกับผู้อื่น','ทักษะวิเคราะห์ข้อมูล','ทักษะการเงิน'],a:1,e:'Human Skills คือความสามารถในการสื่อสาร จูงใจ ทำงานร่วมกัน และสร้างความสัมพันธ์กับคน'},
+  {c:'Katz Skills & Competency',q:'Core Competency "ร่วมพลังร่วมใจ" หมายถึงอะไร?',o:['การทำงานคนเดียวได้ดี','การทำงานเป็นทีมและร่วมมือกัน','การแข่งขันกันเอง','การประชุมบ่อยๆ'],a:1,e:'"ร่วมพลังร่วมใจ" สะท้อน Teamwork และ Collaboration ซึ่งเป็น Core Competency'},
+  {c:'Katz Skills & Competency',q:'Management Competency "ผู้นำการเปลี่ยนแปลง" ต้องการทักษะใด?',o:['ทักษะบัญชี','ความสามารถนำพาองค์กรผ่านการเปลี่ยนแปลงอย่างมีประสิทธิภาพ','ทักษะภาษาต่างประเทศ','ทักษะการออกแบบ'],a:1,e:'Change Leadership ต้องการความสามารถด้านวิสัยทัศน์ การสื่อสาร และสร้างแรงบันดาลใจ'},
+  {c:'Katz Skills & Competency',q:'Technical Skills สำคัญกับพนักงานระดับใดมากที่สุด?',o:['ผู้บริหารสูงสุด','ระดับกลาง','ระดับปฏิบัติการ','ที่ปรึกษา'],a:2,e:'พนักงานระดับปฏิบัติการต้องการ Technical Skills สูง เพราะต้องทำงานเฉพาะทางโดยตรง'},
+  {c:'Katz Skills & Competency',q:'Core Competency "มีความเป็นมืออาชีพ" รวมถึงสิ่งใด?',o:['การแต่งตัวดี','ความรับผิดชอบ ทักษะสูง และพฤติกรรมที่เหมาะสมในอาชีพ','การมีประสบการณ์มาก','การมีวุฒิการศึกษาสูง'],a:1,e:'ความเป็นมืออาชีพครอบคลุมทัศนคติ ทักษะ ความรับผิดชอบ และมาตรฐานจริยธรรม'},
+  {c:'Katz Skills & Competency',q:'EQ เกี่ยวข้องกับทักษะใดของ Katz?',o:['Technical Skills','Conceptual Skills','Human Skills','ไม่เกี่ยวข้อง'],a:2,e:'EQ เป็นส่วนหนึ่งของ Human Skills เนื่องจากเกี่ยวข้องกับการเข้าใจและจัดการอารมณ์'},
+  {c:'Katz Skills & Competency',q:'Management Competency "การพัฒนาคน" หมายถึงอะไร?',o:['การจ้างพนักงานใหม่','การพัฒนาทักษะ ศักยภาพ และเส้นทางอาชีพของพนักงาน','การให้โบนัส','การลดจำนวนพนักงาน'],a:1,e:'People Development รวมถึงการโค้ช เมนเทอร์ ฝึกอบรม และวางแผนอาชีพ'},
+  {c:'Katz Skills & Competency',q:'Core Competency "ยึดมั่นหลักจริยธรรมและความโปร่งใส" มีความสำคัญอย่างไร?',o:['ลดภาษี','สร้างความไว้วางใจและความน่าเชื่อถือให้องค์กร','เพิ่มยอดขาย','ลดต้นทุน'],a:1,e:'จริยธรรมและความโปร่งใสเป็นรากฐานที่สร้างความไว้วางใจจากผู้มีส่วนได้ส่วนเสียทุกฝ่าย'},
+
+  {c:'Future Skills',q:'Future Skills 4 กลุ่มในหลักสูตรประกอบด้วยอะไร?',o:['การเงิน กฎหมาย วิศวกรรม การแพทย์','Strategic Decision-Making, Opportunity Seeking, Data Optimization, Digital Utilization','การตลาด การขาย การผลิต การบริการ','ไม่มีข้อถูก'],a:1,e:'Future Skills 4 กลุ่ม: ตัดสินใจรอบคอบ มองหาโอกาส บริหารด้วยข้อมูล และบูรณาการเทคโนโลยีดิจิทัล'},
+  {c:'Future Skills',q:'Data-Driven Decision Making คืออะไร?',o:['การตัดสินใจตามความรู้สึก','การใช้ข้อมูลและการวิเคราะห์เป็นฐานในการตัดสินใจ','การตัดสินใจตามประสบการณ์เพียงอย่างเดียว','การประชุมนานขึ้น'],a:1,e:'Data-Driven คือการใช้ Data และ Analytics เป็นหลักในการตัดสินใจแทนสัญชาตญาณ'},
+  {c:'Future Skills',q:'AI มีบทบาทต่อการทำงานอย่างไร?',o:['แทนที่มนุษย์ทั้งหมด','เพิ่มประสิทธิภาพ ลดงานซ้ำซาก ช่วยวิเคราะห์ข้อมูล','ทำให้คนตกงานทุกคน','ไม่มีประโยชน์ในองค์กร'],a:1,e:'AI ช่วยทำงานซ้ำซากอัตโนมัติ วิเคราะห์ข้อมูลขนาดใหญ่ และช่วยผู้บริหารตัดสินใจดีขึ้น'},
+  {c:'Future Skills',q:'Opportunity Seeking หมายถึงอะไร?',o:['การรอโอกาสเข้ามาเอง','การมองหาและสร้างโอกาสทางธุรกิจใหม่อย่างเชิงรุก','การลอกเลียนคู่แข่ง','การลดต้นทุนเพียงอย่างเดียว'],a:1,e:'Opportunity Seeking คือทักษะการมองหาช่องว่างตลาด โอกาสใหม่ และสร้างความแตกต่างเชิงรุก'},
+  {c:'Future Skills',q:'Critical Thinking มีความสำคัญต่อ Future Skills อย่างไร?',o:['ช่วยให้คิดช้าลง','ช่วยวิเคราะห์ปัญหาอย่างรอบด้านก่อนตัดสินใจ','ใช้ได้เฉพาะในการเรียน','ไม่สำคัญในยุคดิจิทัล'],a:1,e:'Critical Thinking ช่วยให้ประเมินข้อมูล ตั้งคำถาม และตัดสินใจอย่างมีเหตุผล'},
+  {c:'Future Skills',q:'Digital Literacy คืออะไร?',o:['การอ่านออกเขียนได้','ความสามารถในการใช้เทคโนโลยีดิจิทัลอย่างมีประสิทธิภาพ','การเขียนโปรแกรม','การใช้โซเชียลมีเดีย'],a:1,e:'Digital Literacy คือทักษะการใช้เครื่องมือดิจิทัล ข้อมูล และเทคโนโลยีในการทำงานอย่างเหมาะสม'},
+  {c:'Future Skills',q:'การตัดสินใจเชิงกลยุทธ์ต้องพิจารณาอะไร?',o:['ความรู้สึกส่วนตัว','ผลกระทบระยะยาว ข้อมูล และบริบทองค์กร','ความเห็นเพื่อนร่วมงาน','กระแสสังคมออนไลน์'],a:1,e:'การตัดสินใจเชิงกลยุทธ์ต้องพิจารณาข้อมูล ผลกระทบระยะยาว ความเสี่ยง และความสอดคล้องกับเป้าหมาย'},
+  {c:'Future Skills',q:'Big Data มีประโยชน์ต่อองค์กรอย่างไร?',o:['เพิ่มค่าใช้จ่ายด้านไอที','ช่วยค้นพบ Pattern และ Insight เพื่อตัดสินใจดีขึ้น','ลดจำนวนพนักงาน','ไม่มีประโยชน์ในธุรกิจขนาดกลาง'],a:1,e:'Big Data ช่วยองค์กรค้นพบรูปแบบพฤติกรรมลูกค้า แนวโน้มตลาด และโอกาสทางธุรกิจ'},
+  {c:'Future Skills',q:'Upskilling และ Reskilling แตกต่างกันอย่างไร?',o:['เหมือนกันทุกประการ','Upskilling พัฒนาทักษะเดิม Reskilling เรียนทักษะใหม่','Reskilling ใช้กับผู้บริหารเท่านั้น','Upskilling ใช้กับพนักงานใหม่เท่านั้น'],a:1,e:'Upskilling พัฒนาทักษะที่มีอยู่แล้วให้ลึกขึ้น ส่วน Reskilling คือการเรียนรู้ทักษะใหม่ทั้งหมด'},
+  {c:'Future Skills',q:'Automation ในองค์กรมุ่งเน้นอะไร?',o:['แทนที่มนุษย์ทุกอย่าง','ทำงานซ้ำซากอัตโนมัติเพื่อให้มนุษย์โฟกัสงานสร้างคุณค่า','ลดคุณภาพสินค้า','เพิ่มชั่วโมงทำงาน'],a:1,e:'Automation ทำงานซ้ำซากแทนมนุษย์ เพื่อให้มนุษย์มีเวลาทำงานเชิงสร้างสรรค์มากขึ้น'},
+
+  {c:'Strategic Plan & Action Plan',q:'Strategic Plan ครอบคลุมระยะเวลาเท่าใด?',o:['1 สัปดาห์','1 ปี','3-5 ปีขึ้นไป','10-20 ปี'],a:2,e:'Strategic Plan เป็นแผนระยะยาว 3-5 ปี ที่กำหนดทิศทาง วิสัยทัศน์ และเป้าหมายหลัก'},
+  {c:'Strategic Plan & Action Plan',q:'Action Plan แตกต่างจาก Strategic Plan อย่างไร?',o:['Action Plan ระยะยาวกว่า','Action Plan เป็นรายละเอียดการดำเนินงานที่แปลงกลยุทธ์เป็นการลงมือทำ','ทั้งคู่เหมือนกัน','Strategic Plan ใช้เฉพาะผู้บริหาร'],a:1,e:'Action Plan ระบุ What, Who, When, How เพื่อแปลงกลยุทธ์ระยะยาวเป็นการปฏิบัติงานจริง'},
+  {c:'Strategic Plan & Action Plan',q:'องค์ประกอบสำคัญของ Action Plan ได้แก่อะไร?',o:['วิสัยทัศน์และพันธกิจ','กิจกรรม ผู้รับผิดชอบ กรอบเวลา และตัวชี้วัด','งบประมาณรายปี','โครงสร้างองค์กร'],a:1,e:'Action Plan ที่ดีต้องมี: กิจกรรมที่ชัดเจน ผู้รับผิดชอบ กำหนดเวลา และ KPI วัดผล'},
+  {c:'Strategic Plan & Action Plan',q:'Gantt Chart ใช้ทำอะไรใน Action Plan?',o:['วิเคราะห์กำไรขาดทุน','แสดงตารางเวลาและความคืบหน้าของกิจกรรม','ออกแบบผลิตภัณฑ์','วิเคราะห์ SWOT'],a:1,e:'Gantt Chart แสดงลำดับและกรอบเวลาของแต่ละกิจกรรม ช่วยติดตามความคืบหน้าได้ชัดเจน'},
+  {c:'Strategic Plan & Action Plan',q:'Milestone ใน Action Plan คืออะไร?',o:['งบประมาณรายเดือน','จุดสำคัญที่แสดงความสำเร็จของแต่ละขั้นตอน','เป้าหมายระยะยาว 5 ปี','จำนวนพนักงาน'],a:1,e:'Milestone คือจุดตรวจสอบสำคัญที่ใช้วัดว่าโครงการคืบหน้าไปตามแผนหรือไม่'},
+  {c:'Strategic Plan & Action Plan',q:'หากผลประเมิน Strategic Plan ไม่บรรลุเป้า ควรทำอะไรก่อน?',o:['ยกเลิกแผนทันที','วิเคราะห์สาเหตุและปรับแผนหรือกลยุทธ์ให้เหมาะสม','ลงโทษผู้รับผิดชอบ','รอดูผลต่อไป'],a:1,e:'ควรวิเคราะห์ Gap ระหว่างผลจริงกับเป้าหมาย หาสาเหตุ แล้วปรับกลยุทธ์หรือ Action Plan'},
+  {c:'Strategic Plan & Action Plan',q:'Top-Down Planning คืออะไร?',o:['การวางแผนจากล่างขึ้นบน','การวางแผนจากผู้บริหารสูงสุดลงไปยังระดับปฏิบัติการ','การวางแผนโดยที่ปรึกษาภายนอก','การวางแผนตามกระแสตลาด'],a:1,e:'Top-Down คือผู้บริหารระดับสูงกำหนดทิศทาง แล้วส่งลงมาให้ระดับล่างดำเนินการ'},
+  {c:'Strategic Plan & Action Plan',q:'Scenario Planning ช่วยอะไร?',o:['ลดต้นทุน','เตรียมรับมือกับอนาคตหลายแบบที่อาจเกิดขึ้น','เพิ่มยอดขาย','ปรับโครงสร้างองค์กร'],a:1,e:'Scenario Planning ช่วยองค์กรวางแผนสำรองสำหรับสถานการณ์ต่างๆ ที่อาจเกิดในอนาคต'},
+  {c:'Strategic Plan & Action Plan',q:'การติดตาม (Monitoring) Action Plan ควรทำบ่อยแค่ไหน?',o:['ปีละครั้ง','เมื่อเกิดปัญหาเท่านั้น','สม่ำเสมอตามรอบที่กำหนด เช่น รายสัปดาห์ รายเดือน','ไม่จำเป็นต้องติดตาม'],a:2,e:'การติดตามสม่ำเสมอช่วยให้พบปัญหาเร็ว ปรับแผนทันเวลา และบรรลุเป้าหมายได้'},
+  {c:'Strategic Plan & Action Plan',q:'หลักการสำคัญของแผนกลยุทธ์ที่ดีคืออะไร?',o:['ยาวที่สุดเท่าที่จะเป็นไปได้','สอดคล้องกับวิสัยทัศน์ วัดผลได้ และยืดหยุ่นปรับได้','ไม่ต้องมี KPI','จัดทำโดยฝ่ายการเงินเท่านั้น'],a:1,e:'แผนกลยุทธ์ที่ดีต้องชัดเจน สอดคล้องกับเป้าหมาย วัดผลได้ และปรับตัวได้เมื่อสถานการณ์เปลี่ยน'},
+
+  {c:'Quality Management',q:'TQM (Total Quality Management) คืออะไร?',o:['การควบคุมคุณภาพในสายการผลิตเพียงอย่างเดียว','แนวทางบริหารคุณภาพทั่วทั้งองค์กรโดยทุกคนมีส่วนร่วม','การตรวจสอบสินค้าเสียหลังผลิต','ระบบบัญชีคุณภาพ'],a:1,e:'TQM เป็นปรัชญาการบริหารที่ให้ทุกคนในองค์กรมีส่วนร่วมปรับปรุงคุณภาพอย่างต่อเนื่อง'},
+  {c:'Quality Management',q:'ISO 9001 เกี่ยวข้องกับอะไร?',o:['มาตรฐานความปลอดภัยอาหาร','ระบบบริหารจัดการคุณภาพ (QMS)','มาตรฐานสิ่งแวดล้อม','มาตรฐานความปลอดภัยไอที'],a:1,e:'ISO 9001 เป็นมาตรฐานสากลสำหรับระบบบริหารคุณภาพ มุ่งความพึงพอใจลูกค้าและปรับปรุงต่อเนื่อง'},
+  {c:'Quality Management',q:'Kaizen หมายถึงอะไร?',o:['การปฏิวัติองค์กรครั้งใหญ่','การปรับปรุงอย่างต่อเนื่องและค่อยเป็นค่อยไป','การลดต้นทุนเร่งด่วน','การควบรวมกิจการ'],a:1,e:'Kaizen เป็นแนวคิดญี่ปุ่นที่เน้นการปรับปรุงเล็กๆ น้อยๆ อย่างต่อเนื่องในทุกกระบวนการ'},
+  {c:'Quality Management',q:'Six Sigma มุ่งลดอะไร?',o:['จำนวนพนักงาน','ของเสียและความผิดพลาดในกระบวนการให้เหลือน้อยที่สุด','ต้นทุนวัตถุดิบ','เวลาประชุม'],a:1,e:'Six Sigma ใช้สถิติและข้อมูลเพื่อลดความผันแปรและของเสียในกระบวนการ'},
+  {c:'Quality Management',q:'Customer Focus ใน Quality Management หมายถึงอะไร?',o:['ให้ส่วนลดลูกค้าทุกคน','ทำทุกกระบวนการโดยคำนึงถึงความต้องการและพึงพอใจของลูกค้า','ลดราคาสินค้า','เพิ่มช่องทางการขาย'],a:1,e:'Customer Focus เป็นหลักการสำคัญของ QM ที่ให้ทุกกิจกรรมมุ่งสร้างคุณค่าและพึงพอใจให้ลูกค้า'},
+  {c:'Quality Management',q:'Continuous Improvement แตกต่างจาก Innovation อย่างไร?',o:['เหมือนกัน','Continuous Improvement ปรับปรุงสิ่งที่มีอยู่ทีละน้อย Innovation สร้างสิ่งใหม่พลิกโฉม','Innovation ใช้งบน้อยกว่า','Continuous Improvement เร็วกว่า'],a:1,e:'Continuous Improvement ปรับปรุงทีละน้อยสะสม ส่วน Innovation คือการสร้างสิ่งใหม่ที่เปลี่ยนเกม'},
+  {c:'Quality Management',q:'Root Cause Analysis ใช้ทำอะไร?',o:['ค้นหาแหล่งทุน','หาสาเหตุที่แท้จริงของปัญหา ไม่ใช่แค่อาการ','ประเมินพนักงาน','จัดทำงบประมาณ'],a:1,e:'Root Cause Analysis เช่น 5-Why หรือ Fishbone Diagram ช่วยหาต้นตอที่แท้จริงของปัญหา'},
+  {c:'Quality Management',q:'Stakeholder ในบริบทองค์กรหมายถึงใคร?',o:['เฉพาะผู้ถือหุ้น','ทุกคนที่มีส่วนได้ส่วนเสียกับองค์กร เช่น พนักงาน ลูกค้า ชุมชน','เฉพาะลูกค้า','เฉพาะผู้บริหาร'],a:1,e:'Stakeholder รวมทุกกลุ่มที่ได้รับผลกระทบจากองค์กร ทั้งภายในและภายนอก'},
+  {c:'Quality Management',q:'Benchmarking คืออะไร?',o:['การตั้งราคาตลาด','การเปรียบเทียบกระบวนการกับองค์กรชั้นนำเพื่อหาแนวทางปรับปรุง','การตรวจสอบบัญชี','การวัดพื้นที่สำนักงาน'],a:1,e:'Benchmarking คือการเปรียบเทียบตนเองกับ Best Practice เพื่อหาโอกาสปรับปรุงและยกระดับ'},
+  {c:'Quality Management',q:'Core Competency "สร้างสรรค์สิ่งใหม่" สอดคล้องกับแนวคิดใด?',o:['ลดต้นทุนสูงสุด','Innovation และการคิดนอกกรอบเพื่อสร้างคุณค่าใหม่','การทำตามขั้นตอนเดิม','การลอกเลียนคู่แข่ง'],a:1,e:'"สร้างสรรค์สิ่งใหม่" สะท้อน Innovation Mindset ซึ่งเป็นพื้นฐานของการพัฒนาองค์กรอย่างยั่งยืน'},
+];
+
+// ─── STATE ───
+let sq=[],cur=0,ans=[],t0=null,ti=null;
+const A=['A','B','C','D'];
+
+function rnd(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('scr-'+id).classList.add('active');
+  const isQuiz=id==='quiz';
+  document.getElementById('top-bar').style.display=isQuiz?'flex':'none';
+  document.getElementById('progress-track').style.display=isQuiz?'block':'none';
+}
+
+function startExam(){
+  sq=rnd(QB); cur=0; ans=new Array(100).fill(null);
+  t0=Date.now();
+  ti=setInterval(()=>{
+    const e=Math.floor((Date.now()-t0)/1000);
+    document.getElementById('tb-timer').textContent=`⏱ ${String(Math.floor(e/60)).padStart(2,'0')}:${String(e%60).padStart(2,'0')}`;
+  },1000);
+  show('quiz'); renderQ();
+}
+
+function renderQ(){
+  const q=sq[cur];
+  document.getElementById('tb-current').textContent=cur+1;
+  document.getElementById('prog-fill').style.width=`${((cur+1)/100)*100}%`;
+  document.getElementById('q-num-badge').textContent=`ข้อ ${cur+1} / 100`;
+  document.getElementById('q-cat-badge').textContent=q.c;
+  document.getElementById('q-text').textContent=q.q;
+  document.getElementById('ans-count').textContent=ans.filter(x=>x!==null).length;
+
+  const order=rnd([0,1,2,3]);
+  q._ord=order;
+  const box=document.getElementById('q-choices');
+  box.innerHTML='';
+  order.forEach((oi,di)=>{
+    const b=document.createElement('button');
+    b.className='choice';
+    b.innerHTML=`<span class="alpha">${A[di]}</span>${q.o[oi]}`;
+    b.onclick=()=>pick(oi,b,order);
+    box.appendChild(b);
+  });
+
+  const fb=document.getElementById('q-feedback');
+  fb.style.display='none'; fb.className='feedback';
+  document.getElementById('btn-next').style.display='none';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function pick(oi,btn,order){
+  const q=sq[cur];
+  document.querySelectorAll('.choice').forEach(b=>{b.disabled=true;b.style.cursor='default';});
+  ans[cur]=oi;
+  const ok=oi===q.a;
+  document.querySelectorAll('.choice').forEach((b,di)=>{
+    const orig=order[di];
+    if(orig===q.a) b.classList.add('correct');
+    else if(b===btn&&!ok) b.classList.add('wrong');
+  });
+  const fb=document.getElementById('q-feedback');
+  fb.style.display='block';
+  if(ok){
+    fb.className='feedback ok';
+    fb.innerHTML=`✅ <strong>ถูกต้อง!</strong> ${q.e}`;
+  } else {
+    fb.className='feedback err';
+    fb.innerHTML=`❌ <strong>ไม่ถูกต้อง</strong> — เฉลย: <strong>${q.o[q.a]}</strong><br>${q.e}`;
+  }
+  const nb=document.getElementById('btn-next');
+  nb.style.display='inline-flex';
+  nb.textContent=cur<99?'ข้อถัดไป →':'ส่งข้อสอบ ✓';
+  document.getElementById('ans-count').textContent=ans.filter(x=>x!==null).length;
+}
+
+function nextQ(){cur<99?(cur++,renderQ()):finish();}
+
+function confirmSubmit(){
+  const done=ans.filter(x=>x!==null).length;
+  if(done<100&&!confirm(`ตอบแล้ว ${done}/100 ข้อ ยืนยันส่งข้อสอบ?`)) return;
+  finish();
+}
+
+function finish(){
+  clearInterval(ti);
+  const el=Math.floor((Date.now()-t0)/1000);
+  const mm=String(Math.floor(el/60)).padStart(2,'0'), ss=String(el%60).padStart(2,'0');
+  let correct=0;
+  sq.forEach((q,i)=>{if(ans[i]===q.a)correct++;});
+  const pct=correct;
+
+  document.getElementById('res-score').textContent=correct;
+  document.getElementById('m-correct').textContent=correct;
+  document.getElementById('m-wrong').textContent=100-correct;
+  document.getElementById('m-time').textContent=`${mm}:${ss}`;
+
+  let icon,grade,col;
+  if(pct>=90){icon='🏆';grade='ยอดเยี่ยม — A';col='#F0D080';}
+  else if(pct>=80){icon='⭐';grade='ดีมาก — B+';col='#4DD9CC';}
+  else if(pct>=70){icon='👍';grade='ดี — B';col='#86efac';}
+  else if(pct>=60){icon='✅';grade='ผ่าน — C';col='#6ee7b7';}
+  else{icon='📚';grade='ไม่ผ่าน — ต้องทบทวนเนื้อหา';col='#fca5a5';}
+
+  document.getElementById('res-icon').textContent=icon;
+  document.getElementById('res-grade').textContent=grade;
+  document.getElementById('res-grade').style.color=col;
+  const ring=document.getElementById('res-ring');
+  ring.style.stroke=col;
+  setTimeout(()=>{ring.style.strokeDashoffset=339-(339*pct/100);},400);
+
+  // breakdown by category
+  const cats={};
+  sq.forEach((q,i)=>{
+    if(!cats[q.c])cats[q.c]={t:0,c:0};
+    cats[q.c].t++;
+    if(ans[i]===q.a)cats[q.c].c++;
+  });
+  let bdHtml='';
+  Object.entries(cats).forEach(([cat,d])=>{
+    const p=Math.round((d.c/d.t)*100);
+    bdHtml+=`<div class="bd-row">
+      <span class="bd-label">${cat}</span>
+      <div class="bd-bar-bg"><div class="bd-bar-fill" style="width:${p}%"></div></div>
+      <span class="bd-score">${d.c}/${d.t}</span>
+    </div>`;
+  });
+  document.getElementById('bd-rows').innerHTML=bdHtml;
+  show('result');
+}
+
+function showReview(){
+  const cCount=ans.filter((a,i)=>a===sq[i].a).length;
+  document.getElementById('rv-correct').textContent=cCount;
+  document.getElementById('rv-wrong').textContent=100-cCount;
+  let html='';
+  sq.forEach((q,i)=>{
+    const ok=ans[i]===q.a;
+    const ua=ans[i];
+    html+=`<div class="ri ${ok?'ok':'err'}">
+      <div class="ri-head">
+        <span class="ri-num">ข้อ ${i+1} · ${q.c}</span>
+        <span class="badge ${ok?'ok':'err'}">${ok?'✅ ถูก':'❌ ผิด'}</span>
+      </div>
+      <p class="ri-q">${q.q}</p>
+      <div class="ri-ans">คำตอบของคุณ: <span class="${ok?'ok-text':'err-text'}">${ua!==null?q.o[ua]:'ไม่ได้ตอบ'}</span></div>
+      ${!ok?`<div class="ri-ans">เฉลย: <span class="ok-text">${q.o[q.a]}</span></div>`:''}
+      <div class="ri-exp">💡 ${q.e}</div>
+    </div>`;
+  });
+  document.getElementById('review-list').innerHTML=html;
+  show('review');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function resetExam(){
+  clearInterval(ti);
+  document.getElementById('res-ring').style.strokeDashoffset='339';
+  document.getElementById('prog-fill').style.width='0%';
+  document.getElementById('tb-timer').textContent='⏱ 00:00';
+  show('start');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
