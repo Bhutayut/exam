@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>แบบทดสอบ IT & Software | คอมพิวเตอร์และเทคโนโลยี</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&family=Kanit:wght@400;600;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#1565C0; --blue-light:#42A5F5; --blue-pale:rgba(21,101,192,0.08);
+  --navy:#0A1628; --navy-mid:#112240; --navy-light:#1D3461;
+  --teal:#00BCD4; --teal-light:#80DEEA;
+  --gold:#F9A825; --gold-light:#FFD54F;
+  --white:#F8FAFC; --text-muted:#7B93B0;
+  --card-bg:rgba(255,255,255,0.04); --border:rgba(66,165,245,0.2);
+  --green:#22c55e; --red:#ef4444;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Sarabun',sans-serif; background:var(--navy);
+  color:var(--white); min-height:100vh; overflow-x:hidden;
+}
+body::before{
+  content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
+  background-image:
+    linear-gradient(rgba(66,165,245,0.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(66,165,245,0.04) 1px,transparent 1px);
+  background-size:52px 52px;
+}
+.orb1{position:fixed;width:500px;height:500px;border-radius:50%;
+  background:radial-gradient(circle,rgba(0,188,212,0.07),transparent 70%);
+  top:-150px;right:-150px;pointer-events:none;z-index:0;}
+.orb2{position:fixed;width:400px;height:400px;border-radius:50%;
+  background:radial-gradient(circle,rgba(21,101,192,0.07),transparent 70%);
+  bottom:-100px;left:-100px;pointer-events:none;z-index:0;}
+
+/* ── TOP BAR ── */
+.top-bar{
+  position:sticky;top:0;z-index:100;
+  background:rgba(10,22,40,0.97);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);
+  padding:11px 20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+}
+.top-bar-title{font-family:'Kanit',sans-serif;font-size:14px;font-weight:600;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.top-bar-num{font-family:'Space Mono',monospace;font-size:12px;color:var(--text-muted);white-space:nowrap;}
+.top-bar-timer{font-family:'Space Mono',monospace;font-size:13px;color:var(--gold);font-weight:700;white-space:nowrap;}
+.prog-track{height:3px;background:rgba(255,255,255,0.06);}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--teal),var(--blue-light));transition:width .4s ease;width:0%;}
+
+/* ── SCREENS ── */
+.scr{display:none;position:relative;z-index:5;}
+.scr.on{display:block;}
+
+/* ── START ── */
+.start-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px 16px;}
+.start-card{
+  background:linear-gradient(135deg,rgba(0,188,212,0.07),rgba(21,101,192,0.06));
+  border:1px solid rgba(0,188,212,0.3);border-radius:24px;
+  padding:clamp(28px,5vw,52px);text-align:center;max-width:600px;width:100%;
+}
+.start-icon{font-size:58px;margin-bottom:18px;}
+.start-title{font-family:'Kanit',sans-serif;font-size:clamp(20px,4vw,30px);font-weight:700;margin-bottom:10px;line-height:1.3;}
+.start-sub{font-family:'Space Mono',monospace;font-size:11px;color:var(--teal);letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;}
+.start-desc{font-size:14px;line-height:1.85;color:var(--text-muted);margin-bottom:28px;}
+.info-row{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:24px;}
+.info-box{background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:12px;padding:14px 18px;min-width:78px;display:flex;flex-direction:column;align-items:center;gap:4px;}
+.info-num{font-family:'Kanit',sans-serif;font-size:26px;font-weight:700;color:var(--teal);}
+.info-lbl{font-size:11px;color:var(--text-muted);}
+.cat-wrap{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-bottom:30px;}
+.cat-tag{background:rgba(66,165,245,0.09);border:1px solid rgba(66,165,245,0.25);border-radius:20px;padding:5px 13px;font-size:11.5px;color:var(--blue-light);}
+.btn-start{background:linear-gradient(135deg,var(--teal),#0097A7);color:#fff;border:none;border-radius:13px;padding:15px 44px;font-family:'Kanit',sans-serif;font-size:18px;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 4px 22px rgba(0,188,212,0.3);width:100%;max-width:320px;}
+.btn-start:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,188,212,0.4);}
+
+/* ── QUIZ ── */
+.quiz-wrap{max-width:780px;margin:0 auto;padding:24px 16px 60px;}
+.sticky-bar{background:rgba(10,22,40,0.96);border:1px solid var(--border);border-radius:14px;padding:11px 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px;}
+.sb-num{font-family:'Space Mono',monospace;font-size:12px;color:var(--text-muted);white-space:nowrap;}
+.sb-bar-bg{flex:1;height:5px;background:rgba(255,255,255,0.06);border-radius:99px;overflow:hidden;min-width:50px;}
+.sb-bar-fill{height:100%;background:linear-gradient(90deg,var(--teal),var(--blue-light));border-radius:99px;transition:width .4s;}
+.sb-timer{font-family:'Space Mono',monospace;font-size:13px;color:var(--gold);font-weight:700;white-space:nowrap;}
+.sb-ans{font-size:12px;color:var(--text-muted);white-space:nowrap;}
+.btn-sub-sm{background:rgba(249,168,37,0.12);border:1px solid rgba(249,168,37,0.35);color:var(--gold);border-radius:8px;padding:7px 15px;font-family:'Kanit',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap;}
+.btn-sub-sm:hover{background:rgba(249,168,37,0.22);}
+
+.q-card{background:var(--card-bg);border:1px solid var(--border);border-radius:18px;padding:clamp(18px,4vw,32px);margin-bottom:4px;}
+.q-meta{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
+.q-nbadge{font-family:'Space Mono',monospace;font-size:11px;color:var(--teal);background:rgba(0,188,212,0.1);border:1px solid rgba(0,188,212,0.25);border-radius:6px;padding:3px 10px;}
+.q-cbadge{font-size:11px;color:var(--text-muted);background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:3px 10px;}
+.q-text{font-size:clamp(14.5px,2.2vw,17px);font-weight:600;line-height:1.7;margin-bottom:20px;}
+.choices{display:flex;flex-direction:column;gap:10px;}
+.choice{background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:12px 15px;cursor:pointer;font-size:13.5px;color:var(--white);text-align:left;transition:all .18s;display:flex;align-items:flex-start;gap:11px;font-family:'Sarabun',sans-serif;line-height:1.55;width:100%;}
+.choice:hover:not(:disabled){border-color:rgba(0,188,212,0.5);background:rgba(0,188,212,0.07);}
+.choice.ok {border-color:rgba(34,197,94,.7); background:rgba(34,197,94,.1); color:#86efac;}
+.choice.err{border-color:rgba(239,68,68,.6); background:rgba(239,68,68,.08);color:#fca5a5;}
+.alpha{width:26px;height:26px;border-radius:6px;background:rgba(255,255,255,0.07);display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;flex-shrink:0;margin-top:1px;}
+.feedback{margin-top:16px;padding:13px 16px;border-radius:12px;font-size:13.5px;line-height:1.75;display:none;}
+.feedback.ok {background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.25);color:#86efac;}
+.feedback.err{background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.22);color:#fca5a5;}
+.q-footer{display:flex;align-items:center;justify-content:space-between;margin-top:18px;flex-wrap:wrap;gap:10px;}
+.ans-info{font-size:12px;color:var(--text-muted);font-family:'Space Mono',monospace;}
+.btn-next{background:linear-gradient(135deg,var(--gold),#F57F17);color:var(--navy);border:none;border-radius:10px;padding:11px 28px;font-family:'Kanit',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;display:none;}
+.btn-next:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(249,168,37,.35);}
+
+/* ── RESULT ── */
+.result-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px 16px;}
+.result-card{background:var(--card-bg);border:1px solid var(--border);border-radius:22px;padding:clamp(24px,5vw,50px);text-align:center;max-width:680px;width:100%;}
+.res-icon{font-size:52px;margin-bottom:14px;}
+.res-title{font-family:'Kanit',sans-serif;font-size:clamp(20px,4vw,28px);font-weight:700;margin-bottom:22px;}
+.ring-wrap{position:relative;display:inline-flex;align-items:center;justify-content:center;margin-bottom:16px;}
+.ring-text{position:absolute;display:flex;flex-direction:column;align-items:center;line-height:1;}
+.ring-score{font-family:'Kanit',sans-serif;font-size:40px;font-weight:900;color:var(--teal);}
+.ring-max{font-size:13px;color:var(--text-muted);margin-top:2px;}
+.res-grade{font-family:'Kanit',sans-serif;font-size:22px;font-weight:700;margin-bottom:22px;}
+.meta-row{display:flex;justify-content:center;gap:12px;margin-bottom:22px;flex-wrap:wrap;}
+.meta-box{background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:12px;padding:14px 18px;min-width:80px;}
+.mv{font-family:'Kanit',sans-serif;font-size:26px;font-weight:700;}
+.ml{font-size:12px;color:var(--text-muted);margin-top:3px;}
+.breakdown{text-align:left;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:22px;}
+.bd-title{font-family:'Kanit',sans-serif;font-size:12px;color:var(--text-muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:14px;}
+.bd-row{display:flex;align-items:center;gap:10px;margin-bottom:9px;font-size:12.5px;}
+.bd-label{flex:1;color:var(--white);}
+.bd-bar-bg{width:90px;height:5px;background:rgba(255,255,255,0.06);border-radius:99px;overflow:hidden;flex-shrink:0;}
+.bd-bar-fill{height:100%;background:linear-gradient(90deg,var(--teal),var(--blue-light));border-radius:99px;}
+.bd-score{font-family:'Space Mono',monospace;font-size:11px;color:var(--teal);min-width:36px;text-align:right;}
+.res-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.btn-review{background:linear-gradient(135deg,var(--teal),#0097A7);color:#fff;border:none;border-radius:12px;padding:13px 30px;font-family:'Kanit',sans-serif;font-size:16px;font-weight:700;cursor:pointer;transition:all .2s;}
+.btn-review:hover{transform:translateY(-2px);box-shadow:0 8px 26px rgba(0,188,212,.35);}
+.btn-retry{background:transparent;border:1px solid var(--border);color:var(--gold);border-radius:12px;padding:13px 26px;font-family:'Kanit',sans-serif;font-size:16px;font-weight:600;cursor:pointer;transition:all .2s;}
+.btn-retry:hover{background:rgba(249,168,37,.08);border-color:rgba(249,168,37,.5);}
+
+/* ── REVIEW ── */
+.review-wrap{max-width:800px;margin:0 auto;padding:24px 16px 80px;}
+.review-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;}
+.review-head h2{font-family:'Kanit',sans-serif;font-size:20px;font-weight:700;}
+.rv-stats{display:flex;gap:16px;margin-bottom:20px;flex-wrap:wrap;}
+.rv-stat{display:flex;align-items:center;gap:7px;font-size:13px;}
+.rv-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.ri{background:var(--card-bg);border:1px solid var(--border);border-radius:14px;padding:18px 20px;margin-bottom:10px;border-left:4px solid transparent;}
+.ri.ok {border-left-color:rgba(34,197,94,.6);}
+.ri.err{border-left-color:rgba(239,68,68,.5);}
+.ri-head{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap;}
+.ri-num{font-family:'Space Mono',monospace;font-size:11px;color:var(--text-muted);}
+.badge{font-size:11px;padding:3px 10px;border-radius:20px;font-weight:700;}
+.badge.ok {background:rgba(34,197,94,.15);color:#86efac;}
+.badge.err{background:rgba(239,68,68,.12);color:#fca5a5;}
+.ri-q{font-size:14px;font-weight:600;margin-bottom:8px;line-height:1.55;}
+.ri-ans{font-size:13px;color:var(--text-muted);margin-bottom:3px;}
+.ri-ans .ok-t{color:#86efac;font-weight:600;}
+.ri-ans .er-t{color:#fca5a5;font-weight:600;}
+.ri-exp{font-size:12.5px;color:var(--text-muted);margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,0.05);line-height:1.7;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:580px){
+  .start-card{padding:24px 14px;}
+  .q-card{padding:16px 13px;}
+  .choice{padding:10px 12px;font-size:13px;}
+  .result-card{padding:22px 14px;}
+  .bd-bar-bg{width:60px;}
+  .ri{padding:14px 13px;}
+  .sticky-bar{gap:7px;}
+  .top-bar{padding:9px 14px;}
+}
+@media(max-width:380px){
+  .info-row{gap:8px;}
+  .info-box{padding:11px 13px;min-width:66px;}
+  .info-num{font-size:20px;}
+}
+</style>
+</head>
+<body>
+<div class="orb1"></div>
+<div class="orb2"></div>
+
+<!-- TOP BAR -->
+<div class="top-bar" id="top-bar" style="display:none;">
+  <div class="top-bar-title">💻 แบบทดสอบ IT & Software</div>
+  <div class="top-bar-num">ข้อ <span id="tb-cur">1</span>/60</div>
+  <div class="top-bar-timer" id="tb-timer">⏱ 00:00</div>
+</div>
+<div class="prog-track" id="prog-track" style="display:none;">
+  <div class="prog-fill" id="prog-fill"></div>
+</div>
+
+<!-- ══ START ══ -->
+<div class="scr on" id="scr-start">
+  <div class="start-wrap">
+    <div class="start-card">
+      <div class="start-icon">💻</div>
+      <div class="start-sub">Computer & IT Exam</div>
+      <h1 class="start-title">แบบทดสอบ IT & Software<br>ระบบคอมพิวเตอร์และเทคโนโลยี</h1>
+      <p class="start-desc">ครอบคลุมเนื้อหา OS · Database · SDLC · CMMI · Big Data · Cloud · Blockchain · IoT · นโยบาย ธ.ก.ส.</p>
+      <div class="info-row">
+        <div class="info-box"><span class="info-num">60</span><span class="info-lbl">ข้อ</span></div>
+        <div class="info-box"><span class="info-num">1</span><span class="info-lbl">คะแนน/ข้อ</span></div>
+        <div class="info-box"><span class="info-num">60%</span><span class="info-lbl">เกณฑ์ผ่าน</span></div>
+        <div class="info-box"><span class="info-num">∞</span><span class="info-lbl">เวลา</span></div>
+      </div>
+      <div class="cat-wrap">
+        <span class="cat-tag">Operating System</span>
+        <span class="cat-tag">Database</span>
+        <span class="cat-tag">Data Structure</span>
+        <span class="cat-tag">SDLC / CMMI</span>
+        <span class="cat-tag">Project Management</span>
+        <span class="cat-tag">Big Data / Cloud</span>
+        <span class="cat-tag">Blockchain / IoT</span>
+        <span class="cat-tag">Security / PDPA</span>
+        <span class="cat-tag">FinTech</span>
+        <span class="cat-tag">นโยบาย ธ.ก.ส.</span>
+      </div>
+      <button class="btn-start" onclick="gStart()">🚀 เริ่มทำข้อสอบ</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ QUIZ ══ -->
+<div class="scr" id="scr-quiz">
+  <div class="quiz-wrap">
+    <div class="sticky-bar">
+      <span class="sb-num"><span id="sb-cur">1</span>/60</span>
+      <div class="sb-bar-bg"><div class="sb-bar-fill" id="sb-fill"></div></div>
+      <span class="sb-timer" id="sb-timer">⏱ 00:00</span>
+      <span class="sb-ans">ตอบ <strong id="sb-ans-ct">0</strong>/60</span>
+      <button class="btn-sub-sm" onclick="gConfirm()">ส่ง ✓</button>
+    </div>
+    <div class="q-card">
+      <div class="q-meta">
+        <span class="q-nbadge" id="q-nbadge">ข้อ 1</span>
+        <span class="q-cbadge" id="q-cbadge">—</span>
+      </div>
+      <p class="q-text" id="q-text">—</p>
+      <div class="choices" id="q-choices"></div>
+      <div class="feedback" id="q-feedback"></div>
+      <div class="q-footer">
+        <span class="ans-info">ตอบแล้ว <strong id="ans-ct2">0</strong>/60</span>
+        <button class="btn-next" id="btn-next" onclick="gNext()">ถัดไป →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ RESULT ══ -->
+<div class="scr" id="scr-result">
+  <div class="result-wrap">
+    <div class="result-card">
+      <div class="res-icon" id="res-icon">🏆</div>
+      <h2 class="res-title">ผลการทดสอบ IT & Software</h2>
+      <div class="ring-wrap">
+        <svg viewBox="0 0 130 130" width="172" height="172">
+          <circle cx="65" cy="65" r="54" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="11"/>
+          <circle cx="65" cy="65" r="54" fill="none" stroke-width="11" stroke-linecap="round"
+            stroke-dasharray="339" stroke-dashoffset="339" id="res-ring"
+            style="transform:rotate(-90deg);transform-origin:50% 50%;transition:stroke-dashoffset 1.3s ease;"/>
+        </svg>
+        <div class="ring-text">
+          <div class="ring-score" id="res-score">—</div>
+          <div class="ring-max">/ 60</div>
+        </div>
+      </div>
+      <div class="res-grade" id="res-grade">—</div>
+      <div class="meta-row">
+        <div class="meta-box"><div class="mv" id="m-ok" style="color:#86efac">—</div><div class="ml">ถูก</div></div>
+        <div class="meta-box"><div class="mv" id="m-wr" style="color:#fca5a5">—</div><div class="ml">ผิด</div></div>
+        <div class="meta-box"><div class="mv" id="m-tm" style="color:var(--gold)">—</div><div class="ml">เวลา</div></div>
+      </div>
+      <div class="breakdown">
+        <div class="bd-title">คะแนนรายหมวด</div>
+        <div id="bd-rows"></div>
+      </div>
+      <div class="res-actions">
+        <button class="btn-review" onclick="gReview()">📋 ดูเฉลย</button>
+        <button class="btn-retry"  onclick="gReset()">🔄 ทำใหม่</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ REVIEW ══ -->
+<div class="scr" id="scr-review">
+  <div class="review-wrap">
+    <div class="review-head">
+      <h2>📋 เฉลยและคำอธิบาย</h2>
+      <button class="btn-retry" onclick="gReset()" style="padding:10px 20px;font-size:14px;">🔄 ทำใหม่</button>
+    </div>
+    <div class="rv-stats">
+      <div class="rv-stat"><div class="rv-dot" style="background:#86efac"></div><strong id="rv-ok">—</strong> ข้อถูก</div>
+      <div class="rv-stat"><div class="rv-dot" style="background:#fca5a5"></div><strong id="rv-wr">—</strong> ข้อผิด</div>
+    </div>
+    <div id="review-list"></div>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════
+   QUESTION BANK — 60 ข้อ (IT & Software)
+══════════════════════════════════════════ */
+const QB = [
+  /* ── Operating System (10 ข้อ) ── */
+  {c:'Operating System',
+   q:'เทคโนโลยีที่นำหน่วยความจำประเภท Flash Memory (เก็บข้อมูลใน ChipSet) มาใช้เป็น Storage เรียกว่าอะไร?',
+   o:['SCSI','SSD','HDD','FKSI'], a:1,
+   e:'SSD (Solid State Drive) ใช้ Flash Memory ซึ่งไม่มีชิ้นส่วนเคลื่อนที่ อ่าน/เขียนข้อมูลได้เร็วกว่า HDD มาก'},
+
+  {c:'Operating System',
+   q:'เทคโนโลยีนำฮาร์ดดิสก์หลายอันมาต่อกันเพื่อเพิ่มความน่าเชื่อถือ หรือประสิทธิภาพ ด้วย mirroring / striping / error correction เรียกว่าอะไร?',
+   o:['Ghost','RAID','Clone','Merge'], a:1,
+   e:'RAID (Redundant Array of Independent Disks) รวมดิสก์หลายตัวเพื่อเพิ่มความเร็วหรือความปลอดภัยของข้อมูล'},
+
+  {c:'Operating System',
+   q:'หน้าที่ของ OS คือข้อใดต่อไปนี้?',
+   o:['Utility','Monitor','แปล Source Code','User Interface'], a:3,
+   e:'OS ทำหน้าที่เป็น User Interface ให้ผู้ใช้โต้ตอบกับระบบ รวมถึงบริหารทรัพยากรฮาร์ดแวร์'},
+
+  {c:'Operating System',
+   q:'ระบบไฟแดงอัตโนมัติที่เปิดไฟเขียวแต่ละด้านเท่ากัน โดยไม่คำนึงว่าด้านไหนรถติดกว่า เป็นระบบแบบใด?',
+   o:['ระบบเปิด (Open System)','ระบบปิด (Closed System)','ระบบกึ่งเปิด','ระบบอัตโนมัติ'], a:1,
+   e:'ระบบปิด (Closed System) ไม่รับ Feedback จากสภาพแวดล้อม ทำงานตามโปรแกรมที่กำหนดตายตัว'},
+
+  {c:'Operating System',
+   q:'ธนาคารมีพื้นที่จำกัด ต้องการลดพื้นที่วาง Server หลายเครื่อง ควรใช้เซิร์ฟเวอร์แบบใด?',
+   o:['Blade Server','Rack Server','Tower Server','Mini Server'], a:0,
+   e:'Blade Server บรรจุ Server หลายใบในตู้เดียวกัน ประหยัดพื้นที่และสายไฟมากที่สุด'},
+
+  {c:'Operating System',
+   q:'Virtual Machine ช่วยแก้ปัญหาด้านใด?',
+   o:['ลดความเร็วเครือข่าย','ใช้ทรัพยากรฮาร์ดแวร์ได้คุ้มค่าขึ้นโดยรัน OS หลายชุดบนเครื่องเดียว','เพิ่มพื้นที่ฮาร์ดดิสก์','ป้องกันไวรัส'], a:1,
+   e:'Virtualization ให้รัน OS หลายชุดบนเครื่องเดียว ลดต้นทุนฮาร์ดแวร์และประหยัดพลังงาน'},
+
+  {c:'Operating System',
+   q:'Flash Memory แตกต่างจาก RAM อย่างไร?',
+   o:['ราคาถูกกว่า','เป็น Non-Volatile คือไม่สูญเสียข้อมูลเมื่อปิดไฟ','เร็วกว่า RAM มาก','ใช้พลังงานมากกว่า'], a:1,
+   e:'Flash Memory เป็น Non-Volatile Storage เก็บข้อมูลได้แม้ไม่มีไฟ ส่วน RAM เป็น Volatile จะหายเมื่อปิดเครื่อง'},
+
+  {c:'Operating System',
+   q:'Multiprocessing หมายถึงอะไร?',
+   o:['การใช้ CPU หลายตัวพร้อมกัน','การรันโปรแกรมหลายอย่างสลับกัน','การแบ่งหน่วยความจำ','การสำรองข้อมูล'], a:0,
+   e:'Multiprocessing คือการใช้ CPU หลายตัว (หรือ Core) ทำงานพร้อมกันจริงๆ เพิ่มประสิทธิภาพการประมวลผล'},
+
+  {c:'Operating System',
+   q:'Kernel ของ OS ทำหน้าที่อะไร?',
+   o:['แสดง GUI','เป็นแกนกลางจัดการทรัพยากรระหว่าง Hardware และ Software','เปิด-ปิดเครื่อง','เข้ารหัสไฟล์'], a:1,
+   e:'Kernel เป็นส่วนแกนกลางของ OS บริหาร CPU, Memory, I/O และ Process ทั้งหมด'},
+
+  {c:'Operating System',
+   q:'BIOS ย่อมาจากอะไรและทำหน้าที่ใด?',
+   o:['Basic Input Output System ตรวจสอบและเริ่มต้นฮาร์ดแวร์ก่อนโหลด OS','Basic Internet Output System เชื่อมอินเทอร์เน็ต','Binary Input Output System เข้ารหัสข้อมูล','Backup Input Output System สำรองข้อมูล'], a:0,
+   e:'BIOS (Basic Input Output System) ทำ POST ตรวจสอบฮาร์ดแวร์และโหลด OS ขึ้นมาทำงาน'},
+
+  /* ── Database (12 ข้อ) ── */
+  {c:'Database',
+   q:'ความสัมพันธ์ระหว่างนักเรียนกับรายวิชาที่ลงทะเบียนเป็นแบบใด?',
+   o:['One-to-Many ระหว่าง Attribute','Many-to-Many ระหว่าง Attribute','One-to-Many ระหว่าง Entity','Many-to-Many ระหว่าง Entity'], a:3,
+   e:'นักเรียน 1 คนลงทะเบียนได้หลายวิชา และ 1 วิชามีนักเรียนหลายคน จึงเป็น Many-to-Many ระหว่าง Entity'},
+
+  {c:'Database',
+   q:'ความสัมพันธ์ระหว่างลูกค้ากับสินค้าเป็นแบบใด?',
+   o:['One-to-One','One-to-Many','Many-to-One','Many-to-Many'], a:1,
+   e:'ลูกค้า 1 คนสั่งซื้อสินค้าได้หลายชนิด แต่สินค้า 1 ชนิดอาจถูกสั่งโดยลูกค้าหลายคน โดยทั่วไปถือเป็น One-to-Many (ลูกค้า→สินค้าที่สั่ง)'},
+
+  {c:'Database',
+   q:'Data Warehouse ควรใช้ Database แบบใด?',
+   o:['Relational Database','Object-Oriented Database','Rational Database','Multidimensional Database'], a:3,
+   e:'Data Warehouse ใช้ Multidimensional Database เพื่อรองรับการวิเคราะห์ข้อมูล OLAP และ Data Mining'},
+
+  {c:'Database',
+   q:'คำสั่งใดที่ดำเนินการในฐานข้อมูลแล้วไม่สามารถ Rollback กู้คืนข้อมูลกลับได้?',
+   o:['DELETE','TRUNCATE','DROP','INSERT'], a:2,
+   e:'DROP ลบตารางทั้งหมดออกจาก Schema และไม่สามารถ Rollback ได้ (DDL Command) ส่วน DELETE สามารถ Rollback ได้'},
+
+  {c:'Database',
+   q:'จากตารางพนักงาน คำสั่ง Query ใดปลอดภัยที่สุด ไม่กระทบ Record อื่นที่ไม่ต้องการแก้ไข?',
+   o:['UPDATE Employee SET Surname="Koffman" WHERE ID="6666"','UPDATE Employee SET Surname="Cantona" WHERE Department_Name="Logistic"','UPDATE Employee SET Name="Bovy" WHERE Department_ID="2"','UPDATE Employee SET Department_ID="3" WHERE ID="4444"'], a:3,
+   e:'ใช้ Primary Key (ID) ใน WHERE clause เป็นวิธีที่ปลอดภัยที่สุด เพราะ ID ไม่ซ้ำกัน จึงกระทบเฉพาะ Record เดียว'},
+
+  {c:'Database',
+   q:'คำสั่งใดไม่ถูกต้อง ถ้าต้องการ SELECT ข้อมูลที่ Salary < 50,000?',
+   o:['Salary <= 49,999','Salary BETWEEN 0 AND 49,999','NOT (Salary >= 50,000)','Salary > 0 OR Salary < 50,000'], a:3,
+   e:'"Salary > 0 OR Salary < 50,000" ผิด เพราะ OR ทำให้ครอบคลุมกว้างเกินไป เช่น Salary=-100 ก็ผ่านเงื่อนไข Salary<50,000'},
+
+  {c:'Database',
+   q:'ความสัมพันธ์ Main Class กับ Sub-Class ในเชิง OOP คือข้อใด?',
+   o:['Body - Head','Car - Machine','Picture - Triangle','Animal - Dog'], a:2,
+   e:'Picture เป็น Main Class และ Triangle เป็น Sub-Class (ชนิดหนึ่งของ Picture) แสดงความสัมพันธ์แบบ Inheritance'},
+
+  {c:'Database',
+   q:'Primary Key ในฐานข้อมูลมีคุณสมบัติอย่างไร?',
+   o:['มีค่า NULL ได้','ต้องไม่ซ้ำกันและต้องไม่เป็น NULL','ซ้ำกันได้แต่ต้องไม่เป็น NULL','เป็น NULL ได้และซ้ำได้'], a:1,
+   e:'Primary Key ต้องมีค่า Unique (ไม่ซ้ำ) และ NOT NULL เพื่อระบุแต่ละ Record ได้อย่างไม่ซ้ำกัน'},
+
+  {c:'Database',
+   q:'Normalization ในฐานข้อมูลมีวัตถุประสงค์หลักคืออะไร?',
+   o:['เพิ่มความเร็วในการ Query','ลด Data Redundancy และป้องกัน Anomaly','เพิ่มขนาดฐานข้อมูล','ลดจำนวนตาราง'], a:1,
+   e:'Normalization ลดการซ้ำซ้อนของข้อมูล (Redundancy) และป้องกัน Insert/Update/Delete Anomaly'},
+
+  {c:'Database',
+   q:'Foreign Key ในฐานข้อมูลทำหน้าที่อะไร?',
+   o:['ระบุ Record ในตารางเดียวกัน','สร้างความสัมพันธ์ระหว่างสองตาราง','เข้ารหัสข้อมูล','เพิ่มความเร็ว Query'], a:1,
+   e:'Foreign Key เชื่อมโยง (Reference) ตารางหนึ่งไปยัง Primary Key ของอีกตาราง รักษา Referential Integrity'},
+
+  {c:'Database',
+   q:'SQL ย่อมาจากอะไร?',
+   o:['Structured Query Language','System Query Logic','Sequential Query Language','Standard Query Layout'], a:0,
+   e:'SQL (Structured Query Language) เป็นภาษามาตรฐานสำหรับจัดการฐานข้อมูลเชิงสัมพันธ์'},
+
+  {c:'Database',
+   q:'OLAP แตกต่างจาก OLTP อย่างไร?',
+   o:['OLAP ใช้สำหรับธุรกรรมประจำวัน OLTP ใช้วิเคราะห์','OLAP ใช้วิเคราะห์ข้อมูลขนาดใหญ่ OLTP ใช้ธุรกรรมประจำวัน','ทั้งคู่เหมือนกัน','OLAP ใช้กับ Excel เท่านั้น'], a:1,
+   e:'OLTP (Online Transaction Processing) ใช้งานประจำวัน ส่วน OLAP (Online Analytical Processing) ใช้วิเคราะห์และสร้าง Report'},
+
+  /* ── Data Structure (4 ข้อ) ── */
+  {c:'Data Structure',
+   q:'โครงสร้างข้อมูลแบบ Stack มีลักษณะอย่างไร?',
+   o:['FIFO','LIFO','FKSC','Flow'], a:1,
+   e:'Stack ใช้ LIFO (Last In First Out) ข้อมูลที่เข้าหลังสุดจะออกก่อน เช่น กองจาน'},
+
+  {c:'Data Structure',
+   q:'โครงสร้างข้อมูลแบบ Queue มีลักษณะอย่างไร?',
+   o:['Stack','Queue (FIFO)','Link List','Push'], a:1,
+   e:'Queue ใช้ FIFO (First In First Out) ข้อมูลที่เข้าก่อนจะออกก่อน เช่น คิวรอรับบริการ'},
+
+  {c:'Data Structure',
+   q:'รูปแบบไฟล์ใดเหมาะสมที่สุดสำหรับเชื่อมข้อมูลระหว่างระบบ?',
+   o:['CSV','Text File','XML','SOAP'], a:2,
+   e:'XML เป็นมาตรฐาน Self-Describing มี Schema กำกับ เหมาะสำหรับแลกเปลี่ยนข้อมูลระหว่างระบบที่ต่างกัน'},
+
+  {c:'Data Structure',
+   q:'Linked List แตกต่างจาก Array อย่างไร?',
+   o:['Linked List เร็วกว่าในการเข้าถึงแบบ Random','Linked List ยืดหยุ่นในการเพิ่ม/ลบ Node ไม่ต้องจัดสรรหน่วยความจำล่วงหน้า','Array ประหยัดหน่วยความจำกว่าเสมอ','ทั้งคู่เหมือนกัน'], a:1,
+   e:'Linked List เพิ่ม/ลบ Node ได้ง่าย ไม่ต้องกำหนดขนาดล่วงหน้า แต่เข้าถึงแบบ Random Access ช้ากว่า Array'},
+
+  /* ── Network & Integration (3 ข้อ) ── */
+  {c:'Network & Integration',
+   q:'การเชื่อมโยง Mobile Application บนระบบที่ไม่เสถียร ควรใช้แบบไหน?',
+   o:['RESTful + JSON','RESTful + XML','SOAP + JSON','SOAP + XML'], a:0,
+   e:'RESTful + JSON เบา ยืดหยุ่น ทำงานได้ดีบน Mobile เครือข่ายไม่เสถียร ส่วน SOAP หนักกว่าและซับซ้อนกว่า'},
+
+  {c:'Network & Integration',
+   q:'API ย่อมาจากอะไรและทำหน้าที่ใด?',
+   o:['Application Programming Interface เชื่อมต่อระบบต่างๆ','Automated Process Integration เชื่อมโปรแกรม','Application Protocol Interface ส่งข้อมูล','Advanced Programming Interface สร้างแอป'], a:0,
+   e:'API (Application Programming Interface) เป็นสัญญา (Contract) ระหว่างระบบในการสื่อสารและแลกเปลี่ยนข้อมูล'},
+
+  {c:'Network & Integration',
+   q:'Microservices Architecture แตกต่างจาก Monolithic อย่างไร?',
+   o:['Microservices รวมทุก Function ไว้ด้วยกัน','Microservices แบ่งระบบเป็น Service เล็กๆ ดูแลและ Deploy แยกกันได้','Monolithic ยืดหยุ่นกว่า','ทั้งคู่เหมือนกัน'], a:1,
+   e:'Microservices แยก Function เป็น Service อิสระ Scale และ Deploy แยกได้ แต่ซับซ้อนกว่า Monolithic'},
+
+  /* ── SDLC / CMMI (8 ข้อ) ── */
+  {c:'SDLC / CMMI',
+   q:'ลำดับการทดสอบระบบที่ถูกต้องที่สุดคือข้อใด?',
+   o:['Module Test → Integration Test → System & Acceptance Test','Integration Test → System & Acceptance Test → Module Test','Module Test → System & Acceptance Test → Integration Test','Integration Test → System Test → Acceptance Test → Module Test'], a:0,
+   e:'ทดสอบจาก Unit/Module ก่อน แล้วจึง Integration Test แล้วค่อย System Test และ UAT (User Acceptance Test)'},
+
+  {c:'SDLC / CMMI',
+   q:'การติดตั้งระบบแบบใดที่หยุดระบบเก่าแล้วใช้ระบบใหม่ทันที?',
+   o:['Direct Installation','Parallel Installation','Phase Installation','Pilot Project'], a:0,
+   e:'Direct (Cutover) Installation หยุดระบบเก่าและเปิดระบบใหม่ทันที เสี่ยงสูงแต่ประหยัดค่าใช้จ่าย'},
+
+  {c:'SDLC / CMMI',
+   q:'ผู้ป่วยไปพบแพทย์แล้วแพทย์จ่ายยา เปรียบกับการ Maintenance แบบใด?',
+   o:['Adaptive Maintenance (แก้ไขให้ถูกต้อง)','Perfective Maintenance (ปรับสภาพแวดล้อม)','Perfective Maintenance (เพิ่มประสิทธิภาพ)','Preventive Maintenance (ป้องกัน)'], a:0,
+   e:'Adaptive/Corrective Maintenance คือแก้ไข Bug หรือปัญหาที่เกิดขึ้น เหมือนแพทย์รักษาอาการป่วยที่เกิดขึ้นแล้ว'},
+
+  {c:'SDLC / CMMI',
+   q:'ข้อใดไม่ใช่ความต้องการด้านฟังก์ชัน (Functional Requirement)?',
+   o:['ระบบต้องประมวลผลได้รวดเร็ว','ระบบสามารถออกรายงานได้','ระบบสามารถคำนวณสูตรได้','ระบบสามารถเปลี่ยนค่า Config ได้'], a:0,
+   e:'"ประมวลผลได้รวดเร็ว" เป็น Non-Functional Requirement (Performance) ส่วนการออกรายงาน คำนวณ เปลี่ยน Config เป็น Functional'},
+
+  {c:'SDLC / CMMI',
+   q:'CMMI ของธนาคาร ธ.ก.ส. ปัจจุบันอยู่ในระดับใด?',
+   o:['ระดับ 3 — นิยาม (Defined)','ระดับ 5 — นิยาม','ระดับ 3 — กำหนด','ระดับ 5 — กำหนด (Optimizing)'], a:3,
+   e:'ธ.ก.ส. มี CMMI ระดับ 5 (Optimizing) ซึ่งเป็นระดับสูงสุด มุ่งเน้นการปรับปรุงกระบวนการอย่างต่อเนื่อง'},
+
+  {c:'SDLC / CMMI',
+   q:'Data Flow Diagram (DFD) มีประโยชน์อะไร?',
+   o:['วาดเป็นภาพง่ายกว่าเขียนตัวอักษร','สามารถแก้ไขข้อผิดพลาดได้ถูกจุด','สามารถเห็นขั้นตอนการทำงานของระบบได้ชัดเจน','เรียงลำดับความสำคัญของระบบ'], a:2,
+   e:'DFD แสดงกระแสข้อมูลในระบบ ทำให้เห็นภาพรวมขั้นตอนการทำงาน การส่งผ่านข้อมูล และที่เก็บข้อมูล'},
+
+  {c:'SDLC / CMMI',
+   q:'Agile Development แตกต่างจาก Waterfall อย่างไร?',
+   o:['Agile ทำครั้งเดียว Waterfall วนซ้ำ','Agile พัฒนาเป็น Sprint สั้นๆ รับ Feedback เร็ว Waterfall เป็นลำดับขั้นตอนยาว','Waterfall ยืดหยุ่นกว่า','ทั้งคู่เหมือนกัน'], a:1,
+   e:'Agile แบ่งงานเป็น Sprint (1-4 สัปดาห์) รับ Feedback จากลูกค้าบ่อย ส่วน Waterfall ทำตามขั้นตอนตายตัว'},
+
+  {c:'SDLC / CMMI',
+   q:'UAT (User Acceptance Test) ดำเนินการโดยใคร?',
+   o:['ทีม Developer','ทีม QA (Quality Assurance)','ผู้ใช้งานจริง (End User)','ผู้บริหาร'], a:2,
+   e:'UAT ดำเนินการโดย End User เพื่อตรวจสอบว่าระบบตรงตามความต้องการทางธุรกิจก่อน Go-Live'},
+
+  /* ── Project Management (3 ข้อ) ── */
+  {c:'Project Management',
+   q:'Critical Path ในการบริหารโครงการหมายถึงอะไร?',
+   o:['เส้นทางที่สั้นที่สุด','เส้นทางที่ยาวที่สุดซึ่งกำหนดระยะเวลาขั้นต่ำของโครงการ','เส้นทางที่มีงบประมาณสูงสุด','เส้นทางที่มีความเสี่ยงสูงสุด'], a:1,
+   e:'Critical Path คือเส้นทางที่ยาวที่สุดในโครงการ กำหนดระยะเวลาสั้นที่สุดที่โครงการเสร็จได้ หากงานใดบน Critical Path ล่าช้าจะทำให้โครงการล่าช้า'},
+
+  {c:'Project Management',
+   q:'Gantt Chart ใช้ทำอะไรในการบริหารโครงการ?',
+   o:['วิเคราะห์ความเสี่ยง','แสดงตารางเวลาและความคืบหน้าของงานแต่ละกิจกรรม','คำนวณงบประมาณ','วางโครงสร้างทีมงาน'], a:1,
+   e:'Gantt Chart แสดงงาน กรอบเวลา และความสัมพันธ์ระหว่างงาน ช่วยติดตามความคืบหน้าโครงการ'},
+
+  {c:'Project Management',
+   q:'Scope Creep ในการบริหารโครงการหมายถึงอะไร?',
+   o:['โครงการเสร็จก่อนกำหนด','ขอบเขตงานขยายออกโดยไม่ได้วางแผน ทำให้ล่าช้าและบานปลาย','การลดขอบเขตงาน','การเพิ่มทีมงาน'], a:1,
+   e:'Scope Creep คือการที่ขอบเขตโครงการขยายออกเรื่อยๆ โดยไม่มีการควบคุม ทำให้โครงการล่าช้าและงบบาน'},
+
+  /* ── Big Data / Cloud / Technology (8 ข้อ) ── */
+  {c:'Big Data / Cloud',
+   q:'Big Data มี 3V หลัก คือข้อใด?',
+   o:['Volume, Variety, Velocity','Value, Vision, Velocity','Volume, Value, Variety','Virtual, Volume, Velocity'], a:0,
+   e:'3V ของ Big Data: Volume (ปริมาณมาก), Variety (หลากหลายรูปแบบ), Velocity (เกิดขึ้นรวดเร็ว)'},
+
+  {c:'Big Data / Cloud',
+   q:'การเก็บข้อมูลเป็นภาพและเสียงมากขึ้นสอดคล้องกับ Big Data ด้านใด?',
+   o:['Volume','Velocity','Variety','Veracity'], a:2,
+   e:'ข้อมูลภาพและเสียงแสดงถึง Variety (ความหลากหลายของรูปแบบข้อมูล) ซึ่งเป็นหนึ่งใน 3V ของ Big Data'},
+
+  {c:'Big Data / Cloud',
+   q:'ประโยชน์หลักของ Cloud Computing คือข้อใด?',
+   o:['เข้าถึงข้อมูลจากที่ใดก็ได้ผ่านอินเทอร์เน็ต','เพิ่มขนาดทรัพยากรได้ง่ายและรวดเร็ว (Scalability)','ประหยัดการลงทุนด้าน IT','ถูกทุกข้อ'], a:3,
+   e:'Cloud Computing ให้ประโยชน์ทั้งการเข้าถึงได้ทุกที่ Scalability และลดต้นทุน CapEx ด้าน IT Infrastructure'},
+
+  {c:'Big Data / Cloud',
+   q:'Internet of Things (IoT) คืออะไร?',
+   o:['เทคโนโลยีเข้าถึงโครงสร้างพื้นฐาน','เทคโนโลยี RFID เพียงอย่างเดียว','การเชื่อมต่ออุปกรณ์ต่างๆ ผ่าน Sensor และอินเทอร์เน็ต','ระบบรักษาความปลอดภัย'], a:2,
+   e:'IoT คือการเชื่อมต่ออุปกรณ์กายภาพ (สิ่งของ) เข้ากับอินเทอร์เน็ตผ่าน Sensor เพื่อส่งและรับข้อมูลโดยอัตโนมัติ'},
+
+  {c:'Big Data / Cloud',
+   q:'Blockchain คืออะไร?',
+   o:['เกี่ยวกับธุรกรรมการเงินเท่านั้น','เกี่ยวกับบัญชีธุรกรรมเท่านั้น','ระบบเก็บข้อมูลส่วนตัว','ระบบโครงข่ายการเก็บบัญชีธุรกรรมออนไลน์แบบกระจาย ที่แก้ไขได้ยาก'], a:3,
+   e:'Blockchain เป็น Distributed Ledger เก็บข้อมูลธุรกรรมแบบกระจาย ทุก Node มีสำเนา แก้ไขย้อนหลังได้ยากมาก'},
+
+  {c:'Big Data / Cloud',
+   q:'Machine Learning แตกต่างจาก Traditional Programming อย่างไร?',
+   o:['ML ต้องเขียน Rule ทุกอย่าง','ML ให้คอมพิวเตอร์เรียนรู้ Pattern จากข้อมูลโดยไม่ต้องเขียน Rule ทุกอย่าง','Traditional ใช้ข้อมูลมากกว่า','ทั้งคู่เหมือนกัน'], a:1,
+   e:'ML ให้โมเดลเรียนรู้จากข้อมูล (Data) และหา Pattern เอง โดยไม่ต้องระบุกฎทุกอย่างอย่างชัดเจน'},
+
+  {c:'Big Data / Cloud',
+   q:'IaaS, PaaS, SaaS แตกต่างกันอย่างไร?',
+   o:['เหมือนกันทุกอย่าง','IaaS=Infrastructure, PaaS=Platform สำหรับ Dev, SaaS=Software พร้อมใช้','IaaS ใช้สำหรับ Email, PaaS ใช้สำหรับ Storage','SaaS แพงที่สุดเสมอ'], a:1,
+   e:'IaaS (VM/Storage), PaaS (Platform สร้าง App), SaaS (Software ใช้งานได้เลย) แบ่งตามระดับการจัดการที่ผู้ใช้รับผิดชอบ'},
+
+  {c:'Big Data / Cloud',
+   q:'Enterprise Architecture (EA) ช่วยองค์กรด้านใด?',
+   o:['ออกแบบโลโก้องค์กร','วางแผนสถาปัตยกรรมด้าน Business, Data, Application และ Technology ให้สอดคล้องกัน','จัดการทรัพยากรบุคคล','ควบคุมงบประมาณ'], a:1,
+   e:'EA (เช่น TOGAF) วางกรอบสถาปัตยกรรมองค์กรทั้ง 4 ด้าน ให้ IT สอดรับกับกลยุทธ์ธุรกิจ'},
+
+  /* ── Security / PDPA (5 ข้อ) ── */
+  {c:'Security / PDPA',
+   q:'ข้อใดกล่าวไม่ถูกต้องเกี่ยวกับการคุ้มครองข้อมูลส่วนบุคคลของ ธ.ก.ส.?',
+   o:['เก็บ Log File การใช้งาน Website และข้อมูลจราจรไม่น้อยกว่า 90 วัน','จัดอบรมความรู้ด้านความมั่นคงปลอดภัยแก่บุคลากรอย่างน้อยปีละ 1 ครั้ง','กำหนดสิทธิ์เข้าถึงข้อมูลแก่บุคลากรทุกระดับเท่ากันเพื่อบริการรวดเร็ว','มีมาตรการเข้มงวดสำหรับข้อมูลบุคคลอายุไม่เกิน 18 ปี'], a:2,
+   e:'ไม่ถูกต้อง — สิทธิ์เข้าถึงข้อมูลต้องกำหนดตาม Role และระดับงาน ไม่ใช่ให้เท่ากันทุกคน เพื่อป้องกันการเข้าถึงที่ไม่เหมาะสม'},
+
+  {c:'Security / PDPA',
+   q:'PDPA (Personal Data Protection Act) คุ้มครองอะไร?',
+   o:['ทรัพย์สินทางปัญญา','ข้อมูลส่วนบุคคลของบุคคลธรรมดา','ข้อมูลทางการเงินเท่านั้น','ข้อมูลองค์กร'], a:1,
+   e:'PDPA คุ้มครองสิทธิ์ของเจ้าของข้อมูลส่วนบุคคล กำหนดให้ผู้เก็บ/ใช้ข้อมูลต้องได้รับความยินยอมและมีมาตรการรักษาความปลอดภัย'},
+
+  {c:'Security / PDPA',
+   q:'Two-Factor Authentication (2FA) คืออะไร?',
+   o:['รหัสผ่านที่ยาวขึ้น','การยืนยันตัวตน 2 ชั้น เช่น รหัสผ่าน+OTP','การใช้ 2 รหัสผ่าน','การสำรองข้อมูล 2 ครั้ง'], a:1,
+   e:'2FA ต้องการหลักฐาน 2 ประเภท เช่น สิ่งที่รู้ (Password) + สิ่งที่มี (OTP/Token) เพิ่มความปลอดภัย'},
+
+  {c:'Security / PDPA',
+   q:'Phishing คืออะไร?',
+   o:['การเจาะระบบด้วย Code','การหลอกลวงให้เปิดเผยข้อมูลส่วนตัวผ่านอีเมลหรือเว็บปลอม','การโจมตีด้วย Virus','การ Hack Password โดยตรง'], a:1,
+   e:'Phishing คือการปลอมแปลงอีเมล/เว็บไซต์เพื่อหลอกเหยื่อให้กรอกข้อมูลส่วนตัว เป็น Social Engineering Attack'},
+
+  {c:'Security / PDPA',
+   q:'Firewall ทำหน้าที่อะไร?',
+   o:['สำรองข้อมูล','ตรวจสอบและกรอง Traffic เครือข่ายตาม Policy ที่กำหนด','เพิ่มความเร็วเครือข่าย','เข้ารหัสไฟล์'], a:1,
+   e:'Firewall กรอง Packet ตาม Rule ที่กำหนด ป้องกันการเข้าถึงที่ไม่ได้รับอนุญาตระหว่างเครือข่าย'},
+
+  /* ── FinTech & นโยบาย ธ.ก.ส. (7 ข้อ) ── */
+  {c:'FinTech / ธ.ก.ส.',
+   q:'ธนาคารควรรับมือกับ FinTech อย่างไรที่เหมาะสมที่สุด?',
+   o:['พัฒนาเทคโนโลยีให้เทียบเท่าธนาคารเอกชน','สร้างความสัมพันธ์กับเกษตรกรและให้บริการที่ปรึกษาด้านข้อมูลเกษตร','สร้างโปรแกรมใหม่มาสู้ FinTech','ลดจำนวนพนักงานลงครึ่งหนึ่ง'], a:1,
+   e:'ธ.ก.ส. มีจุดแข็งด้านฐานลูกค้าเกษตรกรและความเชี่ยวชาญด้านเกษตร ควรสร้างความสัมพันธ์และเพิ่มคุณค่าด้านนี้'},
+
+  {c:'FinTech / ธ.ก.ส.',
+   q:'Financial Literacy ตรงกับข้อใด?',
+   o:['ให้ความรู้การบริหารเงิน','สนับสนุนแหล่งเงินทุนแก่เกษตรกร','สนับสนุนด้านเงินฝาก','สนับสนุนด้านนวัตกรรมทางการเงิน'], a:0,
+   e:'Financial Literacy คือการให้ความรู้ความเข้าใจด้านการเงิน การบริหารเงิน การออม และการลงทุนแก่ประชาชน'},
+
+  {c:'FinTech / ธ.ก.ส.',
+   q:'ข้อใดไม่ใช่แนวทางแก้ปัญหาระหว่าง Gen Y กับ Baby Boomer ในองค์กร?',
+   o:['ให้ผู้บริหารเป็น Coach สอนงานแบบ Mentoring','จัดประชุมหาแนวทางทำงานร่วมกัน','บังคับให้ทุกคนทำงานแบบเดียวกันตามคนรุ่นเก่า','ให้อิสระในการแสดงความคิดเห็น'], a:2,
+   e:'การบังคับให้ Gen Y ทำตามรูปแบบ Baby Boomer ทุกอย่างไม่ช่วยแก้ปัญหา ควรสร้าง Culture ที่เปิดรับความคิดเห็นและยืดหยุ่น'},
+
+  {c:'FinTech / ธ.ก.ส.',
+   q:'Digital Banking ช่วยลูกค้าเกษตรกรอย่างไร?',
+   o:['เพิ่มอัตราดอกเบี้ย','เข้าถึงบริการทางการเงินได้สะดวกโดยไม่ต้องเดินทางไปธนาคาร','ลดวงเงินกู้','ยกเลิกการให้กู้ยืม'], a:1,
+   e:'Digital Banking ช่วยให้เกษตรกรในพื้นที่ห่างไกลเข้าถึงบริการโอนเงิน ชำระหนี้ ตรวจสอบยอดได้ผ่านสมาร์ทโฟน'},
+
+  {c:'FinTech / ธ.ก.ส.',
+   q:'พันธกิจ "เป็นธนาคารพัฒนาชนบทที่มั่นคง" ของ ธ.ก.ส. สนับสนุนด้วยสิ่งใด?',
+   o:['การขยายสาขาในเมืองใหญ่','การให้บริการสินเชื่อและพัฒนาคุณภาพชีวิตเกษตรกรในชนบท','การลงทุนในตลาดหุ้น','การควบรวมกับธนาคารเอกชน'], a:1,
+   e:'ธ.ก.ส. มีพันธกิจหลักคือสนับสนุนสินเชื่อและพัฒนาคุณภาพชีวิตเกษตรกร ชุมชน ในชนบทให้มั่นคงยั่งยืน'},
+
+  {c:'FinTech / ธ.ก.ส.',
+   q:'Cryptocurrency แตกต่างจากเงินตราปกติอย่างไร?',
+   o:['Cryptocurrency มีธนาคารกลางดูแล','Cryptocurrency เป็นสกุลเงินดิจิทัลกระจายศูนย์ ไม่มีธนาคารกลางควบคุม','ทั้งคู่เหมือนกัน','Cryptocurrency ปลอดภัยน้อยกว่า'], a:1,
+   e:'Cryptocurrency เช่น Bitcoin ใช้ Blockchain บนระบบกระจายศูนย์ ไม่มีหน่วยงานกลางควบคุม'},
+
+  {c:'FinTech / ธ.ก.ส.',
+   q:'Open Banking หมายถึงอะไร?',
+   o:['ธนาคารที่เปิด 24 ชั่วโมง','การที่ธนาคารเปิด API ให้บุคคลที่สามพัฒนาบริการต่อยอดได้','ธนาคารที่ไม่มีสาขา','การเปิดข้อมูลลูกค้าให้ทุกคนเข้าถึง'], a:1,
+   e:'Open Banking คือธนาคารเปิด API (ด้วยความยินยอมลูกค้า) ให้ FinTech และบริษัทอื่นสร้างบริการทางการเงินใหม่'},
+];
+
+/* ══════════════════════════════════════════
+   EXAM ENGINE
+══════════════════════════════════════════ */
+let sq=[],cur=0,ans=[],t0=null,ti=null;
+const AL=['ก','ข','ค','ง'];
+const TOTAL=60;
+
+function rnd(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=0|Math.random()*(i+1);[b[i],b[j]]=[b[j],b[i]];}return b;}
+
+function show(id){
+  document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));
+  document.getElementById('scr-'+id).classList.add('on');
+  const isQ=id==='quiz';
+  document.getElementById('top-bar').style.display=isQ?'flex':'none';
+  document.getElementById('prog-track').style.display=isQ?'block':'none';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function gStart(){
+  sq=rnd(QB).slice(0,TOTAL);
+  cur=0; ans=new Array(TOTAL).fill(null);
+  t0=Date.now();
+  clearInterval(ti);
+  ti=setInterval(()=>{
+    const e=Math.floor((Date.now()-t0)/1000);
+    const t=`⏱ ${String(Math.floor(e/60)).padStart(2,'0')}:${String(e%60).padStart(2,'0')}`;
+    const el1=document.getElementById('tb-timer');
+    const el2=document.getElementById('sb-timer');
+    if(el1)el1.textContent=t;
+    if(el2)el2.textContent=t;
+  },1000);
+  show('quiz'); renderQ();
+}
+
+function renderQ(){
+  const q=sq[cur];
+  const ord=rnd([0,1,2,3]); q._ord=ord;
+  const pct=((cur+1)/TOTAL)*100;
+  document.getElementById('tb-cur').textContent=cur+1;
+  document.getElementById('sb-cur').textContent=cur+1;
+  document.getElementById('prog-fill').style.width=pct+'%';
+  document.getElementById('sb-fill').style.width=pct+'%';
+  const ac=ans.filter(x=>x!==null).length;
+  document.getElementById('sb-ans-ct').textContent=ac;
+  document.getElementById('ans-ct2').textContent=ac;
+  document.getElementById('q-nbadge').textContent=`ข้อ ${cur+1} / ${TOTAL}`;
+  document.getElementById('q-cbadge').textContent=q.c;
+  document.getElementById('q-text').textContent=q.q;
+
+  const box=document.getElementById('q-choices');
+  box.innerHTML='';
+  ord.forEach((oi,di)=>{
+    const b=document.createElement('button');
+    b.className='choice';
+    b.innerHTML=`<span class="alpha">${AL[di]}</span>${q.o[oi]}`;
+    b.onclick=()=>pick(oi,b,ord);
+    box.appendChild(b);
+  });
+
+  const fb=document.getElementById('q-feedback');
+  fb.style.display='none'; fb.className='feedback';
+  document.getElementById('btn-next').style.display='none';
+}
+
+function pick(oi,btn,ord){
+  const q=sq[cur];
+  document.querySelectorAll('.choice').forEach(b=>{b.disabled=true;b.style.cursor='default';});
+  ans[cur]=oi;
+  const ok=oi===q.a;
+  document.querySelectorAll('.choice').forEach((b,di)=>{
+    if(ord[di]===q.a) b.classList.add('ok');
+    else if(b===btn&&!ok) b.classList.add('err');
+  });
+  const fb=document.getElementById('q-feedback');
+  fb.style.display='block';
+  if(ok){
+    fb.className='feedback ok';
+    fb.innerHTML=`✅ <strong>ถูกต้อง!</strong> ${q.e}`;
+  }else{
+    fb.className='feedback err';
+    fb.innerHTML=`❌ <strong>ไม่ถูกต้อง</strong> — เฉลย: <strong>${q.o[q.a]}</strong><br>${q.e}`;
+  }
+  const nb=document.getElementById('btn-next');
+  nb.style.display='inline-block';
+  nb.textContent=cur<TOTAL-1?'ถัดไป →':'ส่งข้อสอบ ✓';
+  const ac=ans.filter(x=>x!==null).length;
+  document.getElementById('sb-ans-ct').textContent=ac;
+  document.getElementById('ans-ct2').textContent=ac;
+}
+
+function gNext(){ cur<TOTAL-1?(cur++,renderQ()):finish(); }
+
+function gConfirm(){
+  const done=ans.filter(x=>x!==null).length;
+  if(done<TOTAL&&!confirm(`ตอบแล้ว ${done}/${TOTAL} ข้อ ยืนยันส่งข้อสอบ?`)) return;
+  finish();
+}
+
+function finish(){
+  clearInterval(ti);
+  const el=Math.floor((Date.now()-t0)/1000);
+  const mm=String(Math.floor(el/60)).padStart(2,'0'),ss=String(el%60).padStart(2,'0');
+  let correct=0;
+  sq.forEach((q,i)=>{if(ans[i]===q.a)correct++;});
+  const pct=Math.round((correct/TOTAL)*100);
+
+  document.getElementById('res-score').textContent=correct;
+  document.getElementById('m-ok').textContent=correct;
+  document.getElementById('m-wr').textContent=TOTAL-correct;
+  document.getElementById('m-tm').textContent=`${mm}:${ss}`;
+
+  let icon,grade,col;
+  if(pct>=90){icon='🏆';grade='ยอดเยี่ยม — เกรด A';col='#FFD54F';}
+  else if(pct>=80){icon='⭐';grade='ดีมาก — เกรด B+';col='#80DEEA';}
+  else if(pct>=70){icon='👍';grade='ดี — เกรด B';col='#86efac';}
+  else if(pct>=60){icon='✅';grade='ผ่าน — เกรด C';col='#6ee7b7';}
+  else{icon='📚';grade='ไม่ผ่าน · ต้องทบทวน (ต่ำกว่า 60%)';col='#fca5a5';}
+
+  document.getElementById('res-icon').textContent=icon;
+  document.getElementById('res-grade').textContent=grade;
+  document.getElementById('res-grade').style.color=col;
+  document.getElementById('ring-score'||'res-score').style&&
+    (document.getElementById('res-score').style.color=col);
+  const ring=document.getElementById('res-ring');
+  ring.style.stroke=col;
+  setTimeout(()=>{ring.style.strokeDashoffset=339-(339*pct/100);},400);
+
+  const cats={};
+  sq.forEach((q,i)=>{
+    if(!cats[q.c])cats[q.c]={t:0,c:0};
+    cats[q.c].t++;
+    if(ans[i]===q.a)cats[q.c].c++;
+  });
+  let bdH='';
+  Object.entries(cats).forEach(([cat,d])=>{
+    const p=Math.round((d.c/d.t)*100);
+    bdH+=`<div class="bd-row"><span class="bd-label">${cat}</span>
+      <div class="bd-bar-bg"><div class="bd-bar-fill" style="width:${p}%"></div></div>
+      <span class="bd-score">${d.c}/${d.t}</span></div>`;
+  });
+  document.getElementById('bd-rows').innerHTML=bdH;
+  show('result');
+}
+
+function gReview(){
+  const cCount=ans.filter((a,i)=>a===sq[i].a).length;
+  document.getElementById('rv-ok').textContent=cCount;
+  document.getElementById('rv-wr').textContent=TOTAL-cCount;
+  let html='';
+  sq.forEach((q,i)=>{
+    const ok=ans[i]===q.a, ua=ans[i];
+    html+=`<div class="ri ${ok?'ok':'err'}">
+      <div class="ri-head">
+        <span class="ri-num">ข้อ ${i+1} · ${q.c}</span>
+        <span class="badge ${ok?'ok':'err'}">${ok?'✅ ถูก':'❌ ผิด'}</span>
+      </div>
+      <p class="ri-q">${q.q}</p>
+      <div class="ri-ans">คำตอบของคุณ: <span class="${ok?'ok-t':'er-t'}">${ua!==null?q.o[ua]:'ไม่ได้ตอบ'}</span></div>
+      ${!ok?`<div class="ri-ans">เฉลย: <span class="ok-t">${q.o[q.a]}</span></div>`:''}
+      <div class="ri-exp">💡 ${q.e}</div>
+    </div>`;
+  });
+  document.getElementById('review-list').innerHTML=html;
+  show('review');
+}
+
+function gReset(){
+  clearInterval(ti);
+  document.getElementById('res-ring').style.strokeDashoffset='339';
+  document.getElementById('prog-fill').style.width='0%';
+  document.getElementById('sb-fill').style.width='0%';
+  ['tb-timer','sb-timer'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el)el.textContent='⏱ 00:00';
+  });
+  show('start');
+}
+</script>
+</body>
+</html>
