@@ -3,1209 +3,867 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>หลักบริหาร & Competency ปี 69 | Ep.1</title>
-<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&family=Kanit:wght@300;500;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<title>BAAC Software ระดับ 8 — ข้อสอบจำลอง</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --gold: #C9A84C;
-    --gold-light: #F0D080;
-    --gold-pale: #FFF8E7;
-    --navy: #0D1B2A;
-    --navy-mid: #1A2E42;
-    --navy-light: #243B55;
-    --teal: #1AB3A6;
-    --teal-light: #4DD9CC;
-    --red-accent: #E63946;
-    --white: #FAFAF8;
-    --text-muted: #8A9BB0;
-    --card-bg: rgba(255,255,255,0.04);
-    --border: rgba(201,168,76,0.2);
+    --bg: #0a0e1a;
+    --surface: #111827;
+    --surface2: #1c2333;
+    --border: #2a3a52;
+    --accent: #00d4aa;
+    --accent2: #3b82f6;
+    --accent3: #a855f7;
+    --accent4: #f97316;
+    --gold: #f59e0b;
+    --danger: #ef4444;
+    --success: #22c55e;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --radius: 12px;
   }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    font-family: 'Sarabun', sans-serif;
-    background: var(--navy);
-    color: var(--white);
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-
-  /* Background grid */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Sarabun', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
   body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
-    background-size: 60px 60px;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  /* Glow orbs */
-  body::after {
-    content: '';
-    position: fixed;
-    width: 600px; height: 600px;
-    background: radial-gradient(circle, rgba(26,179,166,0.08) 0%, transparent 70%);
-    top: -200px; right: -200px;
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  .glow-orb {
-    position: fixed;
-    width: 400px; height: 400px;
-    background: radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 70%);
-    bottom: -100px; left: -100px;
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  /* ── HEADER ── */
-  header {
-    position: relative;
-    z-index: 10;
-    padding: 48px 40px 40px;
-    border-bottom: 1px solid var(--border);
-    background: linear-gradient(180deg, rgba(13,27,42,0.95) 0%, transparent 100%);
-  }
-
-  .header-inner {
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-
-  .ep-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(201,168,76,0.12);
-    border: 1px solid rgba(201,168,76,0.35);
-    border-radius: 30px;
-    padding: 6px 16px;
-    font-family: 'Space Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 2px;
-    color: var(--gold);
-    text-transform: uppercase;
-    margin-bottom: 20px;
-    animation: fadeSlideDown 0.6s ease both;
-  }
-
-  .ep-badge::before {
-    content: '';
-    width: 6px; height: 6px;
-    background: var(--teal);
-    border-radius: 50%;
-    animation: pulse 2s infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.5; transform: scale(1.4); }
-  }
-
-  h1 {
-    font-family: 'Kanit', sans-serif;
-    font-size: clamp(28px, 5vw, 52px);
-    font-weight: 700;
-    line-height: 1.15;
-    color: var(--white);
-    animation: fadeSlideDown 0.7s ease 0.1s both;
-  }
-
-  h1 span {
-    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 60%, var(--teal-light) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .header-desc {
-    max-width: 680px;
-    margin-top: 16px;
-    font-size: 15px;
-    line-height: 1.8;
-    color: var(--text-muted);
-    animation: fadeSlideDown 0.7s ease 0.2s both;
-  }
-
-  /* nav tabs */
-  .nav-tabs {
-    display: flex;
-    gap: 4px;
-    margin-top: 32px;
-    flex-wrap: wrap;
-    animation: fadeSlideDown 0.7s ease 0.3s both;
-  }
-
-  .nav-tab {
-    padding: 8px 20px;
-    border-radius: 8px;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    border: 1px solid transparent;
-    transition: all 0.2s;
-    color: var(--text-muted);
-    background: transparent;
-    font-family: 'Sarabun', sans-serif;
-  }
-
-  .nav-tab:hover, .nav-tab.active {
-    color: var(--gold);
-    border-color: var(--border);
-    background: rgba(201,168,76,0.08);
-  }
-
-  /* ── MAIN LAYOUT ── */
-  main {
-    position: relative;
-    z-index: 5;
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 48px 40px 80px;
-  }
-
-  /* SECTION TITLE */
-  .section-title {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin-bottom: 28px;
-  }
-
-  .section-title h2 {
-    font-family: 'Kanit', sans-serif;
-    font-size: 20px;
-    font-weight: 500;
-    color: var(--white);
-    letter-spacing: 0.5px;
-  }
-
-  .section-line {
-    flex: 1;
-    height: 1px;
-    background: linear-gradient(90deg, var(--border), transparent);
-  }
-
-  .section-icon {
-    width: 36px; height: 36px;
-    border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 16px;
-    background: rgba(201,168,76,0.1);
-    border: 1px solid var(--border);
-    flex-shrink: 0;
-  }
-
-  /* ── SECTION BLOCK ── */
-  .section-block {
-    margin-bottom: 64px;
-    opacity: 0;
-    transform: translateY(24px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-  }
-
-  .section-block.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* ── VIDEO GRID ── */
-  .video-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 16px;
-  }
-
-  .video-card {
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 18px 20px;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    text-decoration: none;
-    color: var(--white);
-    transition: all 0.25s;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .video-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(201,168,76,0.06), transparent);
-    opacity: 0;
-    transition: opacity 0.25s;
-  }
-
-  .video-card:hover::before { opacity: 1; }
-
-  .video-card:hover {
-    border-color: rgba(201,168,76,0.5);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
-  }
-
-  .video-icon {
-    width: 44px; height: 44px;
-    background: rgba(230,57,70,0.15);
-    border: 1px solid rgba(230,57,70,0.3);
-    border-radius: 12px;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-    font-size: 18px;
-  }
-
-  .video-meta {
-    flex: 1;
-    min-width: 0;
-  }
-
-  .video-label {
-    font-size: 11px;
-    color: var(--text-muted);
-    font-family: 'Space Mono', monospace;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-  }
-
-  .video-title {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--white);
-    margin-top: 3px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .arrow-icon {
-    color: var(--gold);
-    font-size: 14px;
-    flex-shrink: 0;
-    opacity: 0.6;
-    transition: opacity 0.2s, transform 0.2s;
-  }
-
-  .video-card:hover .arrow-icon {
-    opacity: 1;
-    transform: translateX(3px);
-  }
-
-  /* ── DRIVE FILES GRID ── */
-  .files-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 14px;
-  }
-
-  .file-card {
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 20px;
-    text-decoration: none;
-    color: var(--white);
-    transition: all 0.25s;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .file-card:hover {
-    border-color: rgba(26,179,166,0.5);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
-    background: rgba(26,179,166,0.05);
-  }
-
-  .file-icon-wrap {
-    width: 48px; height: 48px;
-    background: rgba(26,179,166,0.12);
-    border: 1px solid rgba(26,179,166,0.25);
-    border-radius: 12px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 22px;
-  }
-
-  .file-name {
-    font-size: 12px;
-    font-family: 'Space Mono', monospace;
-    color: var(--text-muted);
-    word-break: break-all;
-    line-height: 1.6;
-  }
-
-  .file-open {
-    font-size: 12px;
-    color: var(--teal);
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
-
-  /* ── KNOWLEDGE CARDS ── */
-  .knowledge-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 16px;
-  }
-
-  .knowledge-card {
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 22px 24px;
-    transition: all 0.25s;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .knowledge-card::after {
-    content: '';
-    position: absolute;
-    top: 0; left: 0;
-    width: 3px;
-    height: 100%;
-    background: linear-gradient(180deg, var(--gold), var(--teal));
-    border-radius: 3px 0 0 3px;
-  }
-
-  .knowledge-card:hover {
-    border-color: rgba(201,168,76,0.4);
-    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
-    transform: translateY(-2px);
-  }
-
-  .knowledge-card h3 {
-    font-family: 'Kanit', sans-serif;
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--gold-light);
-    margin-bottom: 8px;
-    display: flex;
-    align-items: flex-start;
-    gap: 8px;
-  }
-
-  .knowledge-card p {
-    font-size: 13.5px;
-    line-height: 1.75;
-    color: var(--text-muted);
-  }
-
-  /* ── COMPETENCY SECTION ── */
-  .competency-wrap {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-  }
-
-  @media (max-width: 700px) {
-    .competency-wrap { grid-template-columns: 1fr; }
-  }
-
-  .competency-group {
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 24px;
-  }
-
-  .comp-group-title {
-    font-family: 'Kanit', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 18px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .comp-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 10px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.04);
-    font-size: 14px;
-    color: var(--white);
-  }
-
-  .comp-item:last-child { border-bottom: none; }
-
-  .comp-num {
-    width: 28px; height: 28px;
-    border-radius: 8px;
-    background: rgba(201,168,76,0.1);
-    border: 1px solid rgba(201,168,76,0.25);
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'Space Mono', monospace;
-    font-size: 11px;
-    color: var(--gold);
-    flex-shrink: 0;
-  }
-
-  /* ── FUTURE SKILLS ── */
-  .future-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-  }
-
-  @media (max-width: 600px) {
-    .future-grid { grid-template-columns: 1fr; }
-  }
-
-  .future-card {
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 28px 24px;
-    position: relative;
-    overflow: hidden;
-    transition: all 0.25s;
-  }
-
-  .future-card:hover {
-    border-color: rgba(26,179,166,0.4);
-    transform: translateY(-3px);
-    box-shadow: 0 12px 40px rgba(0,0,0,0.3);
-  }
-
-  .future-card-num {
-    font-family: 'Kanit', sans-serif;
-    font-size: 64px;
-    font-weight: 900;
-    line-height: 1;
-    color: rgba(201,168,76,0.07);
-    position: absolute;
-    top: 10px; right: 16px;
-    pointer-events: none;
-    user-select: none;
-  }
-
-  .future-card-icon {
-    font-size: 28px;
-    margin-bottom: 14px;
-  }
-
-  .future-card h3 {
-    font-family: 'Kanit', sans-serif;
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--white);
-    margin-bottom: 8px;
-  }
-
-  .future-card .skill-en {
-    font-family: 'Space Mono', monospace;
-    font-size: 10px;
-    color: var(--teal);
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    margin-bottom: 10px;
-    display: block;
-  }
-
-  .future-card p {
-    font-size: 13px;
-    line-height: 1.7;
-    color: var(--text-muted);
-  }
-
-  /* ── MGMT SKILLS ── */
-  .mgmt-skills-row {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-  }
-
-  .mgmt-skill-pill {
-    background: rgba(201,168,76,0.08);
-    border: 1px solid rgba(201,168,76,0.25);
-    border-radius: 30px;
-    padding: 10px 20px;
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--gold-light);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: all 0.2s;
-  }
-
-  .mgmt-skill-pill:hover {
-    background: rgba(201,168,76,0.15);
-    transform: scale(1.04);
-  }
-
-  /* ── DOC LINK ── */
-  .doc-link-card {
-    background: linear-gradient(135deg, rgba(26,179,166,0.08), rgba(201,168,76,0.05));
-    border: 1px solid rgba(26,179,166,0.3);
-    border-radius: 16px;
-    padding: 24px 28px;
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    text-decoration: none;
-    color: var(--white);
-    transition: all 0.25s;
-  }
-
-  .doc-link-card:hover {
-    border-color: rgba(26,179,166,0.6);
-    transform: translateY(-2px);
-    box-shadow: 0 12px 40px rgba(26,179,166,0.1);
-  }
-
-  .doc-icon-big {
-    width: 56px; height: 56px;
-    background: rgba(26,179,166,0.15);
-    border: 1px solid rgba(26,179,166,0.3);
-    border-radius: 14px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 26px;
-    flex-shrink: 0;
-  }
-
-  .doc-info h3 {
-    font-family: 'Kanit', sans-serif;
-    font-size: 16px;
-    font-weight: 600;
-    margin-bottom: 4px;
-  }
-
-  .doc-info p {
-    font-size: 13px;
-    color: var(--text-muted);
-  }
-
-  .doc-arrow {
-    margin-left: auto;
-    font-size: 22px;
-    color: var(--teal);
-    flex-shrink: 0;
-    transition: transform 0.2s;
-  }
-
-  .doc-link-card:hover .doc-arrow { transform: translateX(4px); }
-
-  /* ── FOLDER LINK ── */
-  .folder-card {
-    background: rgba(201,168,76,0.06);
-    border: 1px solid rgba(201,168,76,0.25);
-    border-radius: 14px;
-    padding: 20px 24px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    text-decoration: none;
-    color: var(--white);
-    transition: all 0.25s;
-    margin-top: 12px;
-  }
-
-  .folder-card:hover {
-    border-color: rgba(201,168,76,0.5);
-    background: rgba(201,168,76,0.1);
-  }
-
-  /* ── ANIMATIONS ── */
-  @keyframes fadeSlideDown {
-    from { opacity: 0; transform: translateY(-16px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  /* ── FOOTER ── */
-  footer {
-    position: relative;
-    z-index: 5;
-    text-align: center;
-    padding: 32px 40px;
-    border-top: 1px solid var(--border);
-    font-size: 12px;
-    color: var(--text-muted);
-    font-family: 'Space Mono', monospace;
-    letter-spacing: 1px;
-  }
-
-  /* ── RESPONSIVE ── */
-
-  /* Tablet: 768px and below */
-  @media (max-width: 768px) {
-    header { padding: 32px 20px 28px; }
-    main { padding: 32px 20px 60px; }
-
-    .nav-tabs { gap: 6px; margin-top: 24px; }
-    .nav-tab { padding: 7px 14px; font-size: 12px; }
-
-    .section-title h2 { font-size: 17px; }
-    .section-block { margin-bottom: 48px; }
-
-    .video-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
-    .knowledge-grid { grid-template-columns: 1fr; gap: 12px; }
-    .competency-wrap { grid-template-columns: 1fr; gap: 14px; }
-    .future-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
-    .files-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
-
-    .doc-link-card { padding: 18px 20px; gap: 14px; }
-    .doc-icon-big { width: 46px; height: 46px; font-size: 20px; }
-    .doc-info h3 { font-size: 14px; }
-    .doc-info p { font-size: 12px; }
-
-    .mgmt-skills-row { gap: 8px; }
-    .mgmt-skill-pill { padding: 8px 14px; font-size: 13px; }
-
-    footer { padding: 24px 20px; font-size: 11px; }
-  }
-
-  /* Mobile: 480px and below */
-  @media (max-width: 480px) {
-    header { padding: 24px 16px 22px; }
-    main { padding: 24px 16px 48px; }
-
-    .ep-badge { font-size: 10px; padding: 5px 12px; letter-spacing: 1.5px; }
-
-    .header-desc { font-size: 13.5px; line-height: 1.75; margin-top: 12px; }
-
-    .nav-tabs { gap: 5px; margin-top: 20px; }
-    .nav-tab { padding: 6px 11px; font-size: 11.5px; border-radius: 6px; }
-
-    .section-title { gap: 10px; margin-bottom: 20px; }
-    .section-title h2 { font-size: 15px; white-space: nowrap; }
-    .section-icon { width: 30px; height: 30px; font-size: 14px; border-radius: 8px; }
-    .section-block { margin-bottom: 40px; }
-
-    /* Videos → single column on small phones */
-    .video-grid { grid-template-columns: 1fr; gap: 10px; }
-    .video-card { padding: 14px 16px; border-radius: 12px; }
-    .video-icon { width: 38px; height: 38px; font-size: 15px; border-radius: 10px; }
-    .video-label { font-size: 10px; }
-    .video-title { font-size: 12.5px; }
-
-    /* Knowledge → single column */
-    .knowledge-grid { grid-template-columns: 1fr; gap: 10px; }
-    .knowledge-card { padding: 16px 18px; border-radius: 12px; }
-    .knowledge-card h3 { font-size: 13.5px; margin-bottom: 6px; }
-    .knowledge-card p { font-size: 12.5px; line-height: 1.65; }
-
-    /* Competency */
-    .competency-wrap { grid-template-columns: 1fr; gap: 12px; }
-    .competency-group { padding: 18px 16px; border-radius: 12px; }
-    .comp-group-title { font-size: 12px; margin-bottom: 14px; }
-    .comp-item { font-size: 13px; gap: 10px; padding: 9px 0; }
-    .comp-num { width: 26px; height: 26px; font-size: 10px; border-radius: 6px; }
-
-    /* Future skills → single column */
-    .future-grid { grid-template-columns: 1fr; gap: 10px; }
-    .future-card { padding: 22px 18px; border-radius: 12px; }
-    .future-card-num { font-size: 48px; }
-    .future-card-icon { font-size: 24px; margin-bottom: 10px; }
-    .future-card h3 { font-size: 15px; }
-    .future-card .skill-en { font-size: 9px; }
-    .future-card p { font-size: 12.5px; }
-
-    /* Files → single column */
-    .files-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
-    .file-card { padding: 16px; border-radius: 12px; }
-    .file-icon-wrap { width: 40px; height: 40px; font-size: 18px; border-radius: 10px; }
-    .file-name { font-size: 11px; }
-    .file-open { font-size: 11px; }
-
-    .doc-link-card { padding: 16px; gap: 12px; border-radius: 12px; flex-wrap: wrap; }
-    .doc-arrow { display: none; }
-    .doc-icon-big { width: 42px; height: 42px; font-size: 18px; border-radius: 11px; }
-
-    .folder-card { padding: 16px 18px; gap: 12px; border-radius: 12px; }
-
-    .mgmt-skills-row { gap: 7px; }
-    .mgmt-skill-pill { padding: 7px 12px; font-size: 12px; border-radius: 22px; }
-
-    footer { padding: 20px 16px; font-size: 10.5px; text-align: center; line-height: 1.7; }
-  }
-
-  /* Very small phones: 360px and below */
-  @media (max-width: 360px) {
-    .nav-tab { padding: 5px 9px; font-size: 11px; }
-    .files-grid { grid-template-columns: 1fr; }
-    .future-grid { grid-template-columns: 1fr; }
-  }
+    content: ''; position: fixed; inset: 0;
+    background: radial-gradient(ellipse 60% 40% at 10% 20%, rgba(0,212,170,.07) 0%, transparent 60%),
+                radial-gradient(ellipse 50% 50% at 90% 80%, rgba(59,130,246,.06) 0%, transparent 60%);
+    pointer-events: none; z-index: 0;
+  }
+  #app { position: relative; z-index: 1; min-height: 100vh; }
+
+  /* ─── HOME ─── */
+  #screen-home { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; min-height: 100vh; padding: 40px 20px 60px; }
+  .home-badge { font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 3px; color: var(--accent); border: 1px solid var(--accent); border-radius: 4px; padding: 5px 14px; margin-bottom: 24px; opacity: .8; }
+  .home-title { font-size: clamp(24px, 4vw, 46px); font-weight: 700; line-height: 1.2; background: linear-gradient(135deg, #e2e8f0 0%, var(--accent) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px; text-align: center; }
+  .home-sub { color: var(--muted); font-size: 15px; margin-bottom: 36px; text-align: center; }
+
+  .section-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 3px; color: var(--muted); margin-bottom: 14px; text-align: left; width: 100%; max-width: 860px; padding: 0 4px; }
+  .mode-cards { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; max-width: 860px; width: 100%; margin-bottom: 40px; }
+  .mode-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px 26px; cursor: pointer; transition: all .25s; flex: 1; min-width: 220px; max-width: 280px; text-align: left; position: relative; overflow: hidden; }
+  .mode-card::before { content: ''; position: absolute; inset: 0; opacity: 0; transition: opacity .25s; }
+  .mode-card.general::before { background: linear-gradient(135deg, rgba(0,212,170,.1), transparent); }
+  .mode-card.specific::before { background: linear-gradient(135deg, rgba(59,130,246,.1), transparent); }
+  .mode-card.management::before { background: linear-gradient(135deg, rgba(168,85,247,.1), transparent); }
+  .mode-card.exam2563::before { background: linear-gradient(135deg, rgba(249,115,22,.1), transparent); }
+  .mode-card:hover { transform: translateY(-4px); }
+  .mode-card.general:hover { border-color: rgba(0,212,170,.5); }
+  .mode-card.specific:hover { border-color: rgba(59,130,246,.5); }
+  .mode-card.management:hover { border-color: rgba(168,85,247,.5); }
+  .mode-card.exam2563:hover { border-color: rgba(249,115,22,.5); }
+  .mode-card:hover::before { opacity: 1; }
+  .mode-icon { font-size: 28px; margin-bottom: 12px; }
+  .mode-title { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+  .mode-desc { color: var(--muted); font-size: 12px; line-height: 1.6; }
+  .mode-meta { margin-top: 14px; display: flex; gap: 8px; flex-wrap: wrap; }
+  .meta-chip { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--accent); background: rgba(0,212,170,.1); border-radius: 4px; padding: 3px 8px; }
+  .meta-chip.blue { color: var(--accent2); background: rgba(59,130,246,.1); }
+  .meta-chip.purple { color: var(--accent3); background: rgba(168,85,247,.1); }
+  .meta-chip.orange { color: var(--accent4); background: rgba(249,115,22,.1); }
+
+  /* ─── RESOURCES SECTION ─── */
+  .resources-wrap { max-width: 860px; width: 100%; }
+  .res-tabs { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .res-tab { padding: 7px 18px; border-radius: 6px; border: 1px solid var(--border); background: transparent; color: var(--muted); font-family: 'Sarabun', sans-serif; font-size: 13px; cursor: pointer; transition: all .18s; }
+  .res-tab.active { background: var(--surface2); border-color: var(--accent); color: var(--accent); }
+  .res-panel { display: none; }
+  .res-panel.active { display: block; animation: fadeIn .25s ease; }
+  .res-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; }
+  .res-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; display: flex; align-items: flex-start; gap: 12px; text-decoration: none; color: var(--text); transition: all .18s; }
+  .res-card:hover { border-color: var(--accent); background: var(--surface2); transform: translateY(-2px); }
+  .res-icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+  .res-info { flex: 1; min-width: 0; }
+  .res-title { font-size: 13px; font-weight: 600; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .res-url { font-size: 11px; color: var(--muted); font-family: 'IBM Plex Mono', monospace; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  /* competency card */
+  .competency-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+  .comp-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 18px 20px; }
+  .comp-title { font-size: 13px; font-weight: 700; color: var(--accent); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+  .comp-title.blue { color: var(--accent2); }
+  .comp-title.purple { color: var(--accent3); }
+  .comp-title.gold { color: var(--gold); }
+  .comp-list { list-style: none; }
+  .comp-list li { font-size: 13px; line-height: 1.7; color: #b0c4de; padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,.04); }
+  .comp-list li:last-child { border-bottom: none; }
+  .comp-list li::before { content: '▸ '; color: var(--muted); }
+  .topics-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px; }
+  .topic-chip { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 10px 14px; font-size: 13px; display: flex; align-items: center; gap: 8px; }
+  .topic-chip .tc-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+
+  /* ─── EXAM ─── */
+  #screen-exam { display: none; min-height: 100vh; }
+  .exam-header { position: sticky; top: 0; z-index: 100; background: rgba(10,14,26,.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 12px 20px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .exam-title { font-weight: 600; font-size: 14px; flex: 1; min-width: 120px; }
+  .timer-box { font-family: 'IBM Plex Mono', monospace; font-size: 20px; font-weight: 600; color: var(--accent); background: rgba(0,212,170,.1); border: 1px solid rgba(0,212,170,.3); border-radius: 8px; padding: 5px 14px; min-width: 88px; text-align: center; }
+  .timer-box.warn { color: var(--gold); background: rgba(245,158,11,.1); border-color: rgba(245,158,11,.3); }
+  .timer-box.danger { color: var(--danger); background: rgba(239,68,68,.1); border-color: rgba(239,68,68,.3); animation: pulse 1s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1}50%{opacity:.5} }
+  .progress-info { font-size: 12px; color: var(--muted); font-family: 'IBM Plex Mono', monospace; }
+  .progress-bar-wrap { height: 3px; background: var(--border); }
+  .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); transition: width .3s; }
+  .exam-body { max-width: 820px; margin: 0 auto; padding: 32px 20px 120px; }
+  .question-nav-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(36px, 1fr)); gap: 5px; margin-bottom: 28px; background: var(--surface); border-radius: var(--radius); padding: 14px; border: 1px solid var(--border); }
+  .qnav-btn { width: 36px; height: 36px; border-radius: 5px; border: 1px solid var(--border); background: var(--surface2); color: var(--muted); font-size: 10px; font-family: 'IBM Plex Mono', monospace; cursor: pointer; transition: all .15s; display: flex; align-items: center; justify-content: center; }
+  .qnav-btn.answered { background: rgba(0,212,170,.15); border-color: var(--accent); color: var(--accent); }
+  .qnav-btn.current { background: var(--accent); border-color: var(--accent); color: #000; font-weight: 700; }
+  .qnav-btn.wrong { background: rgba(239,68,68,.15); border-color: var(--danger); color: var(--danger); }
+  .qnav-btn.correct { background: rgba(34,197,94,.15); border-color: var(--success); color: var(--success); }
+  .question-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 26px 28px; margin-bottom: 18px; }
+  .question-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--accent); letter-spacing: 2px; margin-bottom: 10px; }
+  .question-text { font-size: 16px; line-height: 1.75; font-weight: 500; margin-bottom: 22px; }
+  .options { display: flex; flex-direction: column; gap: 9px; }
+  .option-btn { background: var(--surface2); border: 1.5px solid var(--border); border-radius: 8px; padding: 13px 16px; text-align: left; cursor: pointer; transition: all .18s; display: flex; align-items: flex-start; gap: 12px; font-size: 14px; line-height: 1.6; color: var(--text); width: 100%; }
+  .option-btn:hover:not(:disabled) { border-color: var(--accent); background: rgba(0,212,170,.07); }
+  .option-btn.selected { border-color: var(--accent2); background: rgba(59,130,246,.12); }
+  .option-btn.correct-ans { border-color: var(--success); background: rgba(34,197,94,.12); }
+  .option-btn.wrong-ans { border-color: var(--danger); background: rgba(239,68,68,.12); }
+  .option-btn:disabled { cursor: default; }
+  .option-letter { font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700; min-width: 20px; height: 20px; border-radius: 3px; background: var(--border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+  .option-btn.selected .option-letter { background: var(--accent2); color: #fff; }
+  .option-btn.correct-ans .option-letter { background: var(--success); color: #fff; }
+  .option-btn.wrong-ans .option-letter { background: var(--danger); color: #fff; }
+  .explanation-box { background: linear-gradient(135deg, rgba(0,212,170,.05), rgba(59,130,246,.05)); border: 1px solid rgba(0,212,170,.2); border-radius: 8px; padding: 16px 18px; margin-top: 14px; display: none; }
+  .explanation-box.show { display: block; animation: fadeIn .3s ease; }
+  .explanation-title { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--accent); letter-spacing: 1px; margin-bottom: 8px; }
+  .explanation-text { font-size: 13px; line-height: 1.8; color: #b0c4de; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(-8px)} to{opacity:1;transform:translateY(0)} }
+  .nav-buttons { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(10,14,26,.96); backdrop-filter: blur(12px); border-top: 1px solid var(--border); padding: 12px 20px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+  .btn { padding: 9px 20px; border-radius: 8px; border: none; cursor: pointer; font-family: 'Sarabun', sans-serif; font-size: 13px; font-weight: 600; transition: all .18s; }
+  .btn-outline { background: transparent; border: 1.5px solid var(--border); color: var(--muted); }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+  .btn-primary { background: var(--accent); color: #000; }
+  .btn-primary:hover { background: #00b891; }
+  .btn-danger { background: var(--danger); color: #fff; }
+  .btn-danger:hover { background: #dc2626; }
+  .btn-gold { background: var(--gold); color: #000; }
+  .btn-gold:hover { background: #d97706; }
+  .btn-purple { background: var(--accent3); color: #fff; }
+  .btn-purple:hover { background: #9333ea; }
+
+  /* ─── RESULT ─── */
+  #screen-result { display: none; min-height: 100vh; padding: 40px 20px; max-width: 900px; margin: 0 auto; }
+  .result-header { text-align: center; margin-bottom: 40px; }
+  .result-score-ring { width: 150px; height: 150px; margin: 0 auto 20px; position: relative; display: flex; align-items: center; justify-content: center; }
+  .result-score-ring svg { position: absolute; top: 0; left: 0; transform: rotate(-90deg); }
+  .result-score-inner { text-align: center; }
+  .result-pct { font-size: 38px; font-weight: 700; font-family: 'IBM Plex Mono', monospace; }
+  .result-label { font-size: 12px; color: var(--muted); }
+  .result-verdict { font-size: 19px; font-weight: 700; margin-bottom: 6px; background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .result-sub { color: var(--muted); font-size: 14px; }
+  .result-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-bottom: 28px; }
+  .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
+  .stat-val { font-size: 26px; font-weight: 700; font-family: 'IBM Plex Mono', monospace; }
+  .stat-key { font-size: 11px; color: var(--muted); margin-top: 4px; }
+  .review-section { margin-top: 28px; }
+  .review-title { font-size: 17px; font-weight: 700; margin-bottom: 14px; }
+  .review-item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; }
+  .review-item.wr { border-left: 3px solid var(--danger); }
+  .review-q { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+  .review-ans { font-size: 13px; color: var(--muted); line-height: 1.6; }
+  .review-expl { font-size: 13px; color: #94a3b8; margin-top: 10px; line-height: 1.7; padding: 10px 14px; background: rgba(0,212,170,.04); border-radius: 6px; border-left: 2px solid var(--accent); }
+  .loading-box { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 60vh; gap: 20px; }
+  .spinner { width: 44px; height: 44px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin .8s linear infinite; }
+  @keyframes spin { to{transform:rotate(360deg)} }
+  .loading-text { color: var(--muted); font-size: 14px; }
+  .error-box { text-align: center; padding: 36px; color: var(--danger); }
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  .divider { width: 100%; max-width: 860px; height: 1px; background: var(--border); margin: 8px 0 28px; }
 </style>
 </head>
 <body>
+<div id="app">
 
-<div class="glow-orb"></div>
+<!-- ══════════ HOME ══════════ -->
+<div id="screen-home">
+  <div class="home-badge">ธ.ก.ส. · IT-BAAC EXAM SIMULATOR v2</div>
+  <h1 class="home-title">ข้อสอบจำลองเลื่อนตำแหน่ง<br>คอมพิวเตอร์ Software ระดับ 8</h1>
+  <p class="home-sub">ข้อสอบสร้างโดย AI · 100 ข้อ · จับเวลา 150 นาที · พร้อมเฉลยอย่างละเอียด</p>
 
-<!-- HEADER -->
-<header>
-  <div class="header-inner">
-    <div class="ep-badge">Episode 01 &nbsp;·&nbsp; 2569</div>
-    <h1>หลักบริหาร & <span>Competency</span><br>ปี 69</h1>
-    <p class="header-desc">
-      องค์ความรู้ที่ต้องเพิ่มเติมในการทำงานยุคปัจจุบัน ให้ทันกับสถานการณ์และเทคโนโลยีที่เปลี่ยนแปลงอย่างรวดเร็ว
-      รองรับการแข่งขันที่สูงขึ้น เพื่อขับเคลื่อนองค์กรไปข้างหน้าได้อย่างมั่นคง
-    </p>
-    <nav class="nav-tabs">
-      <button class="nav-tab active" onclick="scrollTo('videos')">📹 วิดีโอ</button>
-      <button class="nav-tab" onclick="scrollTo('knowledge')">💡 องค์ความรู้</button>
-      <button class="nav-tab" onclick="scrollTo('competency')">🎯 Competency</button>
-      <button class="nav-tab" onclick="scrollTo('future')">🚀 Future Skills</button>
-      <button class="nav-tab" onclick="scrollTo('files')">📁 ไฟล์</button>
-      <a class="nav-tab" href="./exam.html" target="_blank" style="color:var(--teal);border-color:rgba(26,179,166,0.3);background:rgba(26,179,166,0.06);">📝 ทำข้อสอบ</a>
-    <a class="nav-tab" href="./exam-it.html" target="_blank" style="color:var(--teal);border-color:rgba(26,179,166,0.3);background:rgba(26,179,166,0.06);">📝 ทำข้อสอบ IT</a>
-    
-    </nav>
-  </div>
-</header>
-
-<main>
-
-  <!-- VIDEOS SECTION -->
-  <div class="section-block" id="videos">
-    <div class="section-title">
-      <div class="section-icon">📹</div>
-      <h2>วิดีโอบรรยาย</h2>
-      <div class="section-line"></div>
+  <div class="section-label">— เลือกชุดข้อสอบ</div>
+  <div class="mode-cards">
+    <div class="mode-card general" onclick="startExam('general')">
+      <div class="mode-icon">📘</div>
+      <div class="mode-title">ความรู้เนื้อหากลาง</div>
+      <div class="mode-desc">นโยบายรัฐ · วิสัยทัศน์ ธ.ก.ส. · SE-AM · PDPA · Cyber Security · Risk · CG · Market Conduct</div>
+      <div class="mode-meta"><span class="meta-chip">100 ข้อ</span><span class="meta-chip">150 นาที</span></div>
     </div>
-    <div class="video-grid">
-      <a href="https://youtu.be/jLo-wtqbmZM?si=VoZWYAT19K6Uqujg" target="_blank" class="video-card">
-        <div class="video-icon">▶</div>
-        <div class="video-meta">
-          <div class="video-label">YouTube · EP01</div>
-          <div class="video-title">บรรยาย ตอนที่ 1</div>
-        </div>
-        <span class="arrow-icon">→</span>
-      </a>
-      <a href="https://youtu.be/7eNqNTINBDg?si=_0FsbC6i78uEHTE8" target="_blank" class="video-card">
-        <div class="video-icon">▶</div>
-        <div class="video-meta">
-          <div class="video-label">YouTube · EP02</div>
-          <div class="video-title">บรรยาย ตอนที่ 2</div>
-        </div>
-        <span class="arrow-icon">→</span>
-      </a>
-      <a href="https://youtu.be/59-3IrzWAkM?si=FA288ZvLnp48pFEG" target="_blank" class="video-card">
-        <div class="video-icon">▶</div>
-        <div class="video-meta">
-          <div class="video-label">YouTube · EP03</div>
-          <div class="video-title">บรรยาย ตอนที่ 3</div>
-        </div>
-        <span class="arrow-icon">→</span>
-      </a>
-      <a href="https://youtu.be/KDLUVGrUjQo?si=ZLl-3mGJH76b8ouB" target="_blank" class="video-card">
-        <div class="video-icon">▶</div>
-        <div class="video-meta">
-          <div class="video-label">YouTube · EP04</div>
-          <div class="video-title">บรรยาย ตอนที่ 4</div>
-        </div>
-        <span class="arrow-icon">→</span>
-      </a>
-      <a href="https://youtu.be/idRn89bXAqo?si=Gb9qEI9w6rw_C-lw" target="_blank" class="video-card">
-        <div class="video-icon">▶</div>
-        <div class="video-meta">
-          <div class="video-label">YouTube · EP05</div>
-          <div class="video-title">บรรยาย ตอนที่ 5</div>
-        </div>
-        <span class="arrow-icon">→</span>
-      </a>
-      <a href="https://youtu.be/6LRO1EHetro?si=4KvFBP3lCE4GA_2c" target="_blank" class="video-card">
-        <div class="video-icon">▶</div>
-        <div class="video-meta">
-          <div class="video-label">YouTube · EP06</div>
-          <div class="video-title">บรรยาย ตอนที่ 6</div>
-        </div>
-        <span class="arrow-icon">→</span>
-      </a>
-      <a href="https://youtu.be/zAlK5yXor1k?si=3u9WQcEeLKKv9o1K" target="_blank" class="video-card">
-        <div class="video-icon">▶</div>
-        <div class="video-meta">
-          <div class="video-label">YouTube · EP07</div>
-          <div class="video-title">บรรยาย ตอนที่ 7</div>
-        </div>
-        <span class="arrow-icon">→</span>
-      </a>
-      <a href="https://youtu.be/J4TuthTr2dQ?si=fxiM7pBjkIARNsUO" target="_blank" class="video-card">
-        <div class="video-icon">▶</div>
-        <div class="video-meta">
-          <div class="video-label">YouTube · BONUS</div>
-          <div class="video-title">บรรยายเพิ่มเติม</div>
-        </div>
-        <span class="arrow-icon">→</span>
-      </a>
-      <a href="https://www.facebook.com/share/v/1FaQxcbgTq/" target="_blank" class="video-card">
-        <div class="video-icon" style="background:rgba(66,103,178,0.2);border-color:rgba(66,103,178,0.35);">f</div>
-        <div class="video-meta">
-          <div class="video-label">Facebook · Video</div>
-          <div class="video-title">Facebook Video</div>
-        </div>
-        <span class="arrow-icon">→</span>
-      </a>
+    <div class="mode-card specific" onclick="startExam('specific')">
+      <div class="mode-icon">💻</div>
+      <div class="mode-title">ความรู้เฉพาะตำแหน่ง</div>
+      <div class="mode-desc">Hardware · OS · Network · SDLC · Database · API · Docker · IT Project Mgmt · EA · แนวโน้ม IT</div>
+      <div class="mode-meta"><span class="meta-chip blue">100 ข้อ</span><span class="meta-chip blue">150 นาที</span></div>
+    </div>
+    <div class="mode-card management" onclick="startExam('management')">
+      <div class="mode-icon">🎯</div>
+      <div class="mode-title">หลักบริหาร &amp; Competency</div>
+      <div class="mode-desc">Strategic Mgmt · POLC/PDCA · SWOT · OKR/KPI · 4M · Future Skills · Core &amp; Mgmt Competency ปี 69</div>
+      <div class="mode-meta"><span class="meta-chip purple">100 ข้อ</span><span class="meta-chip purple">150 นาที</span></div>
+    </div>
+    <div class="mode-card exam2563" onclick="startExam('exam2563')">
+      <div class="mode-icon">📋</div>
+      <div class="mode-title">จำลองข้อสอบจริง ปี 2563</div>
+      <div class="mode-desc">สร้างจาก pattern ข้อสอบจริง: OS · SSD/RAID · Database SQL · SDLC · CMMI · Big Data · Cloud · IoT · Blockchain · EA · วิสัยทัศน์ ธ.ก.ส.</div>
+      <div class="mode-meta"><span class="meta-chip orange">60 ข้อ IT</span><span class="meta-chip orange">+ 20 ข้อ วิสัยทัศน์</span></div>
     </div>
   </div>
 
-  <!-- KNOWLEDGE SECTION -->
-  <div class="section-block" id="knowledge">
-    <div class="section-title">
-      <div class="section-icon">💡</div>
-      <h2>องค์ความรู้หลัก</h2>
-      <div class="section-line"></div>
+  <!-- RESOURCES -->
+  <div class="section-label">— แหล่งเรียนรู้ประกอบการสอบ</div>
+  <div class="resources-wrap">
+    <div class="res-tabs">
+      <button class="res-tab active" onclick="switchTab('yt')">▶ YouTube</button>
+      <button class="res-tab" onclick="switchTab('drive')">📁 เอกสาร PDF</button>
+      <button class="res-tab" onclick="switchTab('competency')">🎯 Competency</button>
+      <button class="res-tab" onclick="switchTab('ex2563')">📋 ข้อสอบจริง 2563</button>
+      <button class="res-tab" onclick="switchTab('topics')">📂 สรุปหัวข้อ</button>
     </div>
-    <div class="knowledge-grid">
-      <div class="knowledge-card">
-        <h3>💥 STRATEGIC MANAGEMENT</h3>
-        <p>การบริหารเชิงกลยุทธ์ เพื่อนำทิศทางองค์กรและตัดสินใจในระดับสูงสุดอย่างมีประสิทธิภาพ</p>
-      </div>
-      <div class="knowledge-card">
-        <h3>💥 POLC vs PDCA</h3>
-        <p>กรอบการบริหารงาน — Planning, Organizing, Leading, Controlling เทียบกับ Plan, Do, Check, Act</p>
-      </div>
-      <div class="knowledge-card">
-        <h3>💥 Organization Transformation</h3>
-        <p>การเปลี่ยนรูปองค์กรเพื่อรองรับการเปลี่ยนแปลงของโลกธุรกิจและเทคโนโลยีอย่างยั่งยืน</p>
-      </div>
-      <div class="knowledge-card">
-        <h3>💥 5W1H</h3>
-        <p>เทคนิคการตั้งคำถาม 6 ประเด็นพื้นฐาน: Who, What, Where, When, Why, How</p>
-      </div>
-      <div class="knowledge-card">
-        <h3>💥 SWOT Analysis</h3>
-        <p>เครื่องมือวิเคราะห์องค์กรหรือธุรกิจที่ใช้ประเมินสถานการณ์ปัจจุบัน ทั้ง Strengths, Weaknesses, Opportunities, Threats</p>
-      </div>
-      <div class="knowledge-card">
-        <h3>💥 SMART Goal</h3>
-        <p>กรอบแนวคิดการตั้งเป้าหมายที่มีประสิทธิภาพสูง: Specific, Measurable, Achievable, Relevant, Time-bound</p>
-      </div>
-      <div class="knowledge-card">
-        <h3>💥 People Management</h3>
-        <p>การบริหารคน — การดึงศักยภาพสูงสุดของพนักงานมาใช้เพื่อเป้าหมายองค์กร</p>
-      </div>
-      <div class="knowledge-card">
-        <h3>💥 Budget Management</h3>
-        <p>กระบวนการวางแผน จัดสรร ควบคุม และประเมินผลการใช้จ่ายเงินงบประมาณ</p>
-      </div>
-      <div class="knowledge-card">
-        <h3>💥 Strategic Plan</h3>
-        <p>แผนที่นำทางระยะยาว (3–5 ปี) ที่ระบุทิศทาง พันธกิจ วิสัยทัศน์ และเป้าหมายองค์กร</p>
-      </div>
-      <div class="knowledge-card">
-        <h3>💥 Action Plan</h3>
-        <p>แผนปฏิบัติการเชิงรายละเอียดที่แปลงเป้าหมายหรือกลยุทธ์ให้เป็นการลงมือทำที่ชัดเจน วัดผลได้</p>
-      </div>
-      <div class="knowledge-card">
-        <h3>💥 4M Framework</h3>
-        <p>กรอบการบริหารทรัพยากร: Man (คน), Machine (เครื่องจักร), Material (วัตถุดิบ), Method (วิธีการ)</p>
-      </div>
-      <div class="knowledge-card">
-        <h3>💥 Quality Management</h3>
-        <p>หลักการบริหารงานคุณภาพที่มุ่งเน้นความพึงพอใจของลูกค้าและการปรับปรุงอย่างต่อเนื่อง</p>
-      </div>
-      <div class="knowledge-card">
-        <h3>💥 OKR vs KPI</h3>
-        <p>OKR ขับเคลื่อนการเปลี่ยนแปลงเชิงกลยุทธ์ (Outcome) ส่วน KPI ใช้ควบคุมมาตรฐานการปฏิบัติงาน (Output)</p>
-      </div>
-      <div class="knowledge-card">
-        <h3>💥 Katz's 3 Skills</h3>
-        <p>ทักษะจำเป็น 3 ด้าน: Conceptual Skills (ความคิด), Human Skills (มนุษยสัมพันธ์), Technical Skills (เทคนิค)</p>
+
+    <!-- YouTube -->
+    <div class="res-panel active" id="tab-yt">
+      <div class="res-grid">
+        <a class="res-card" href="https://youtu.be/jLo-wtqbmZM?si=VoZWYAT19K6Uqujg" target="_blank">
+          <span class="res-icon">🎬</span>
+          <div class="res-info"><div class="res-title">EP.1 · ภาพรวมหลักบริหาร &amp; Competency ปี 69</div><div class="res-url">youtu.be/jLo-wtqbmZM</div></div>
+        </a>
+        <a class="res-card" href="https://youtu.be/7eNqNTINBDg?si=_0FsbC6i78uEHTE8" target="_blank">
+          <span class="res-icon">🎬</span>
+          <div class="res-info"><div class="res-title">EP.2 · วีดีโอการเรียนรู้</div><div class="res-url">youtu.be/7eNqNTINBDg</div></div>
+        </a>
+        <a class="res-card" href="https://youtu.be/59-3IrzWAkM?si=FA288ZvLnp48pFEG" target="_blank">
+          <span class="res-icon">🎬</span>
+          <div class="res-info"><div class="res-title">EP.3 · วีดีโอการเรียนรู้</div><div class="res-url">youtu.be/59-3IrzWAkM</div></div>
+        </a>
+        <a class="res-card" href="https://youtu.be/KDLUVGrUjQo?si=ZLl-3mGJH76b8ouB" target="_blank">
+          <span class="res-icon">🎬</span>
+          <div class="res-info"><div class="res-title">EP.4 · วีดีโอการเรียนรู้</div><div class="res-url">youtu.be/KDLUVGrUjQo</div></div>
+        </a>
+        <a class="res-card" href="https://youtu.be/idRn89bXAqo?si=Gb9qEI9w6rw_C-lw" target="_blank">
+          <span class="res-icon">🎬</span>
+          <div class="res-info"><div class="res-title">EP.5 · วีดีโอการเรียนรู้</div><div class="res-url">youtu.be/idRn89bXAqo</div></div>
+        </a>
+        <a class="res-card" href="https://youtu.be/6LRO1EHetro?si=4KvFBP3lCE4GA_2c" target="_blank">
+          <span class="res-icon">🎬</span>
+          <div class="res-info"><div class="res-title">EP.6 · วีดีโอการเรียนรู้</div><div class="res-url">youtu.be/6LRO1EHetro</div></div>
+        </a>
+        <a class="res-card" href="https://youtu.be/zAlK5yXor1k?si=3u9WQcEeLKKv9o1K" target="_blank">
+          <span class="res-icon">🎬</span>
+          <div class="res-info"><div class="res-title">EP.7 · วีดีโอการเรียนรู้</div><div class="res-url">youtu.be/zAlK5yXor1k</div></div>
+        </a>
+        <a class="res-card" href="https://youtu.be/J4TuthTr2dQ?si=fxiM7pBjkIARNsUO" target="_blank">
+          <span class="res-icon">🎬</span>
+          <div class="res-info"><div class="res-title">EP.8 · วีดีโอการเรียนรู้</div><div class="res-url">youtu.be/J4TuthTr2dQ</div></div>
+        </a>
+        <a class="res-card" href="https://www.facebook.com/share/v/1FaQxcbgTq/" target="_blank">
+          <span class="res-icon">📘</span>
+          <div class="res-info"><div class="res-title">วีดีโอ Facebook</div><div class="res-url">facebook.com/share/v/1FaQxcbgTq</div></div>
+        </a>
       </div>
     </div>
 
-    <!-- MGMT SKILLS PILLS -->
-    <div style="margin-top:28px;">
-      <p style="font-size:13px;color:var(--text-muted);margin-bottom:14px;font-family:'Space Mono',monospace;letter-spacing:1px;">💥 ทักษะจำเป็นของผู้บริหาร</p>
-      <div class="mgmt-skills-row">
-        <div class="mgmt-skill-pill">❤️ วางแผน</div>
-        <div class="mgmt-skill-pill">❤️ จัดองค์กร</div>
-        <div class="mgmt-skill-pill">❤️ การสื่อสาร</div>
-        <div class="mgmt-skill-pill">❤️ การโค้ช</div>
-        <div class="mgmt-skill-pill">❤️ การสร้างแรงจูงใจ</div>
+    <!-- Drive PDFs -->
+    <div class="res-panel" id="tab-drive">
+      <div class="res-grid">
+        <a class="res-card" href="https://drive.google.com/file/d/1-aEyFHSxOobehHuLh7jSsZ55UQi-_vHZ/view?usp=drive_link" target="_blank">
+          <span class="res-icon">📄</span>
+          <div class="res-info"><div class="res-title">เอกสารประกอบการสอบ 1</div><div class="res-url">drive.google.com · 1-aEyFH...</div></div>
+        </a>
+        <a class="res-card" href="https://drive.google.com/file/d/1HvSRjovyL-SqdNd82Wtda8WFxH2Xudxe/view?usp=drive_link" target="_blank">
+          <span class="res-icon">📄</span>
+          <div class="res-info"><div class="res-title">เอกสารประกอบการสอบ 2</div><div class="res-url">drive.google.com · 1HvSRj...</div></div>
+        </a>
+        <a class="res-card" href="https://drive.google.com/file/d/1EULxKSnErX3Kx_eNRXM0oFYG4F_Rwvz3/view?usp=drive_link" target="_blank">
+          <span class="res-icon">📄</span>
+          <div class="res-info"><div class="res-title">เอกสารประกอบการสอบ 3</div><div class="res-url">drive.google.com · 1EULxK...</div></div>
+        </a>
+        <a class="res-card" href="https://drive.google.com/file/d/1jVa7M9hHN0FWNbvwhMKmQXnVYMiMXAnS/view?usp=drive_link" target="_blank">
+          <span class="res-icon">📄</span>
+          <div class="res-info"><div class="res-title">เอกสารประกอบการสอบ 4</div><div class="res-url">drive.google.com · 1jVa7M...</div></div>
+        </a>
+        <a class="res-card" href="https://drive.google.com/file/d/1TmFSheoSqMaOs2wkxK9-E2vWnlAbCL56/view?usp=drive_link" target="_blank">
+          <span class="res-icon">📄</span>
+          <div class="res-info"><div class="res-title">เอกสารประกอบการสอบ 5</div><div class="res-url">drive.google.com · 1TmFSh...</div></div>
+        </a>
+        <a class="res-card" href="https://drive.google.com/file/d/1pUT6l9boZwVQ3iwvyN2MYo36WqkB_NN0/view?usp=drive_link" target="_blank">
+          <span class="res-icon">📄</span>
+          <div class="res-info"><div class="res-title">เอกสารประกอบการสอบ 6</div><div class="res-url">drive.google.com · 1pUT6l...</div></div>
+        </a>
+        <a class="res-card" href="https://drive.google.com/file/d/1XVViDPvDVIv8Rk-wDigpO_fP4KNLAfsR/view?usp=drive_link" target="_blank">
+          <span class="res-icon">📄</span>
+          <div class="res-info"><div class="res-title">เอกสารประกอบการสอบ 7</div><div class="res-url">drive.google.com · 1XVViD...</div></div>
+        </a>
+        <a class="res-card" href="https://docs.google.com/document/d/1vIHgyGrEBe0C9rB_saYjxmQ4ELt34nC5/edit?usp=drive_link" target="_blank">
+          <span class="res-icon">📝</span>
+          <div class="res-info"><div class="res-title">เอกสาร Google Docs (Word)</div><div class="res-url">docs.google.com · 1vIHgyGr...</div></div>
+        </a>
+        <a class="res-card" href="https://drive.google.com/drive/folders/1ulTyUICsXi4O5hoNzXRQo7ByNQi1dohY" target="_blank">
+          <span class="res-icon">📂</span>
+          <div class="res-info"><div class="res-title">โฟลเดอร์เอกสารทั้งหมด</div><div class="res-url">drive.google.com · folder</div></div>
+        </a>
       </div>
     </div>
-  </div>
 
-  <!-- COMPETENCY SECTION -->
-  <div class="section-block" id="competency">
-    <div class="section-title">
-      <div class="section-icon">🎯</div>
-      <h2>Competency</h2>
-      <div class="section-line"></div>
-    </div>
-    <div class="competency-wrap">
-      <div class="competency-group">
-        <div class="comp-group-title">Core Competency</div>
-        <div class="comp-item"><div class="comp-num">01</div>ร่วมพลังร่วมใจ</div>
-        <div class="comp-item"><div class="comp-num">02</div>สร้างสรรค์สิ่งใหม่</div>
-        <div class="comp-item"><div class="comp-num">03</div>ใส่ใจลูกค้า</div>
-        <div class="comp-item"><div class="comp-num">04</div>มีความเป็นมืออาชีพ</div>
-        <div class="comp-item"><div class="comp-num">05</div>ยึดมั่นหลักจริยธรรมและความโปร่งใส</div>
-      </div>
-      <div class="competency-group">
-        <div class="comp-group-title">Management Competency</div>
-        <div class="comp-item"><div class="comp-num">01</div>วิสัยทัศน์เชิงกลยุทธ์</div>
-        <div class="comp-item"><div class="comp-num">02</div>ผู้นำการเปลี่ยนแปลง</div>
-        <div class="comp-item"><div class="comp-num">03</div>การพัฒนาคน</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- FUTURE SKILLS SECTION -->
-  <div class="section-block" id="future">
-    <div class="section-title">
-      <div class="section-icon">🚀</div>
-      <h2>Future Skills — ทักษะที่จำเป็นในอนาคต</h2>
-      <div class="section-line"></div>
-    </div>
-    <div class="future-grid">
-      <div class="future-card">
-        <div class="future-card-num">1</div>
-        <div class="future-card-icon">🧠</div>
-        <h3>ตัดสินใจอย่างรอบคอบ</h3>
-        <span class="skill-en">Strategic Decision-Making</span>
-        <p>ใช้ข้อมูล ประสบการณ์ และวิจารณญาณในการตัดสินใจเชิงกลยุทธ์อย่างมีประสิทธิภาพ</p>
-      </div>
-      <div class="future-card">
-        <div class="future-card-num">2</div>
-        <div class="future-card-icon">🔍</div>
-        <h3>มองหาโอกาสและสร้างความแตกต่าง</h3>
-        <span class="skill-en">Opportunity Seeking & Differentiation</span>
-        <p>ค้นหาโอกาสใหม่และสร้างความได้เปรียบในการแข่งขันให้องค์กร</p>
-      </div>
-      <div class="future-card">
-        <div class="future-card-num">3</div>
-        <div class="future-card-icon">📊</div>
-        <h3>บริหารงานด้วยข้อมูล</h3>
-        <span class="skill-en">Data Optimization</span>
-        <p>ใช้ประโยชน์จากข้อมูลและ Analytics ในการวางแผนและตัดสินใจเพื่อผลลัพธ์ที่ดีที่สุด</p>
-      </div>
-      <div class="future-card">
-        <div class="future-card-num">4</div>
-        <div class="future-card-icon">⚡</div>
-        <h3>บูรณาการการทำงานด้วยเทคโนโลยีดิจิทัล</h3>
-        <span class="skill-en">Technology & Digital Utilization</span>
-        <p>นำเทคโนโลยีดิจิทัลมาผสานกับการทำงานเพื่อเพิ่มประสิทธิภาพและนวัตกรรม</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- FILES SECTION -->
-  <div class="section-block" id="files">
-    <div class="section-title">
-      <div class="section-icon">📁</div>
-      <h2>เอกสารและไฟล์</h2>
-      <div class="section-line"></div>
-    </div>
-
-    <!-- Google Doc -->
-    <a href="https://docs.google.com/document/d/1vIHgyGrEBe0C9rB_saYjxmQ4ELt34nC5/edit?usp=drive_link&ouid=103673561605710192342&rtpof=true&sd=true" target="_blank" class="doc-link-card" style="margin-bottom:24px;">
-      <div class="doc-icon-big">📄</div>
-      <div class="doc-info">
-        <h3>เอกสารหลักสูตร Google Docs</h3>
-        <p>เอกสารประกอบการบรรยาย — คลิกเพื่อเปิดใน Google Docs</p>
-      </div>
-      <span class="doc-arrow">→</span>
-    </a>
-
-    <!-- Drive Files -->
-    <p style="font-size:12px;color:var(--text-muted);font-family:'Space Mono',monospace;letter-spacing:1px;margin-bottom:14px;">GOOGLE DRIVE FILES</p>
-    <div class="files-grid">
-      <a href="https://drive.google.com/file/d/1-aEyFHSxOobehHuLh7jSsZ55UQi-_vHZ/view?usp=drive_link" target="_blank" class="file-card">
-        <div class="file-icon-wrap">📎</div>
-        <div class="file-name">ไฟล์ที่ 1</div>
-        <div class="file-open">เปิดไฟล์ →</div>
-      </a>
-      <a href="https://drive.google.com/file/d/1HvSRjovyL-SqdNd82Wtda8WFxH2Xudxe/view?usp=drive_link" target="_blank" class="file-card">
-        <div class="file-icon-wrap">📎</div>
-        <div class="file-name">ไฟล์ที่ 2</div>
-        <div class="file-open">เปิดไฟล์ →</div>
-      </a>
-      <a href="https://drive.google.com/file/d/1EULxKSnErX3Kx_eNRXM0oFYG4F_Rwvz3/view?usp=drive_link" target="_blank" class="file-card">
-        <div class="file-icon-wrap">📎</div>
-        <div class="file-name">ไฟล์ที่ 3</div>
-        <div class="file-open">เปิดไฟล์ →</div>
-      </a>
-      <a href="https://drive.google.com/file/d/1jVa7M9hHN0FWNbvwhMKmQXnVYMiMXAnS/view?usp=drive_link" target="_blank" class="file-card">
-        <div class="file-icon-wrap">📎</div>
-        <div class="file-name">ไฟล์ที่ 4</div>
-        <div class="file-open">เปิดไฟล์ →</div>
-      </a>
-      <a href="https://drive.google.com/file/d/1TmFSheoSqMaOs2wkxK9-E2vWnlAbCL56/view?usp=drive_link" target="_blank" class="file-card">
-        <div class="file-icon-wrap">📎</div>
-        <div class="file-name">ไฟล์ที่ 5</div>
-        <div class="file-open">เปิดไฟล์ →</div>
-      </a>
-      <a href="https://drive.google.com/file/d/1pUT6l9boZwVQ3iwvyN2MYo36WqkB_NN0/view?usp=drive_link" target="_blank" class="file-card">
-        <div class="file-icon-wrap">📎</div>
-        <div class="file-name">ไฟล์ที่ 6</div>
-        <div class="file-open">เปิดไฟล์ →</div>
-      </a>
-      <a href="https://drive.google.com/file/d/1XVViDPvDVIv8Rk-wDigpO_fP4KNLAfsR/view?usp=drive_link" target="_blank" class="file-card">
-        <div class="file-icon-wrap">📎</div>
-        <div class="file-name">ไฟล์ที่ 7</div>
-        <div class="file-open">เปิดไฟล์ →</div>
-      </a>
-    </div>
-
-    <!-- Drive Folder -->
-    <a href="https://drive.google.com/drive/folders/1ulTyUICsXi4O5hoNzXRQo7ByNQi1dohY" target="_blank" class="folder-card">
-      <span style="font-size:24px;">📂</span>
-      <div>
-        <div style="font-weight:700;font-size:15px;margin-bottom:3px;">โฟลเดอร์ Google Drive ทั้งหมด</div>
-        <div style="font-size:12px;color:var(--text-muted);">เปิดโฟลเดอร์เพื่อดูไฟล์ทั้งหมด</div>
-      </div>
-      <span style="margin-left:auto;color:var(--gold);font-size:18px;">→</span>
-    </a>
-  </div>
-
-  <!-- EXAM SECTION -->
-  <div class="section-block" id="exam">
-    <div class="section-title">
-      <div class="section-icon">📝</div>
-      <h2>แบบทดสอบ 100 ข้อ</h2>
-      <div class="section-line"></div>
-    </div>
-
-    <!-- START SCREEN -->
-    <div id="exam-start">
-      <div class="exam-start-card">
-        <div class="exam-start-icon">🎓</div>
-        <h2 class="exam-start-title">แบบทดสอบหลักบริหาร & Competency</h2>
-        <p class="exam-start-desc">ทดสอบความเข้าใจในเนื้อหาหลักสูตร ครอบคลุมทุกหัวข้อ<br>Strategic Management, Competency, Future Skills และอื่น ๆ</p>
-        <div class="exam-info-row">
-          <div class="exam-info-box"><span class="eib-num">100</span><span class="eib-label">ข้อ</span></div>
-          <div class="exam-info-box"><span class="eib-num">1</span><span class="eib-label">คะแนน/ข้อ</span></div>
-          <div class="exam-info-box"><span class="eib-num">60%</span><span class="eib-label">เกณฑ์ผ่าน</span></div>
+    <!-- Competency -->
+    <div class="res-panel" id="tab-competency">
+      <div class="competency-grid">
+        <div class="comp-card">
+          <div class="comp-title">💚 Core Competency (5 ด้าน)</div>
+          <ul class="comp-list">
+            <li>ร่วมพลังร่วมใจ</li>
+            <li>สร้างสรรค์สิ่งใหม่</li>
+            <li>ใส่ใจลูกค้า</li>
+            <li>มีความเป็นมืออาชีพ</li>
+            <li>ยึดมั่นหลักจริยธรรมและความโปร่งใส</li>
+          </ul>
         </div>
-        <button class="exam-btn-start" onclick="startExam()">เริ่มทำข้อสอบ →</button>
-      </div>
-    </div>
-
-    <!-- QUIZ SCREEN -->
-    <div id="exam-quiz" style="display:none;">
-      <div class="exam-progress-bar-wrap">
-        <div class="exam-progress-info">
-          <span id="q-current">1</span> / <span>100</span>
-          <span class="exam-timer" id="exam-timer">⏱ 00:00</span>
+        <div class="comp-card">
+          <div class="comp-title blue">🔵 Management Competency (3 ด้าน)</div>
+          <ul class="comp-list">
+            <li>วิสัยทัศน์เชิงกลยุทธ์</li>
+            <li>ผู้นำการเปลี่ยนแปลง</li>
+            <li>การพัฒนาคน</li>
+          </ul>
         </div>
-        <div class="exam-bar-bg"><div class="exam-bar-fill" id="exam-bar"></div></div>
-      </div>
-
-      <div class="exam-card" id="exam-card">
-        <div class="exam-q-num" id="q-num-label">ข้อที่ 1</div>
-        <div class="exam-q-cat" id="q-cat-label">หมวด: —</div>
-        <p class="exam-q-text" id="q-text">—</p>
-        <div class="exam-choices" id="q-choices"></div>
-        <div class="exam-feedback" id="q-feedback" style="display:none;"></div>
-        <div class="exam-nav">
-          <button class="exam-btn-nav" id="btn-next" onclick="nextQuestion()" style="display:none;">ข้อถัดไป →</button>
+        <div class="comp-card">
+          <div class="comp-title purple">🟣 Future Skills (4 กลุ่ม)</div>
+          <ul class="comp-list">
+            <li>ตัดสินใจอย่างรอบคอบ (Strategic Decision-Making)</li>
+            <li>มองหาโอกาสและสร้างความแตกต่าง (Opportunity Seeking)</li>
+            <li>บริหารงานด้วยข้อมูล (Data Optimization)</li>
+            <li>บูรณาการด้วยเทคโนโลยีดิจิทัล (Technology Utilization)</li>
+          </ul>
         </div>
-      </div>
-
-      <div class="exam-skip-row">
-        <span class="exam-answered-count">ตอบแล้ว: <strong id="answered-count">0</strong>/100</span>
-        <button class="exam-btn-finish" onclick="confirmFinish()">ส่งข้อสอบ ✓</button>
-      </div>
-    </div>
-
-    <!-- RESULT SCREEN -->
-    <div id="exam-result" style="display:none;">
-      <div class="result-card">
-        <div class="result-icon" id="result-icon">🏆</div>
-        <h2 class="result-title" id="result-title">ผลการทดสอบ</h2>
-        <div class="result-score-ring">
-          <svg viewBox="0 0 120 120" width="160" height="160">
-            <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="10"/>
-            <circle cx="60" cy="60" r="50" fill="none" stroke-width="10"
-              stroke-linecap="round"
-              stroke-dasharray="314"
-              stroke-dashoffset="314"
-              id="result-ring"
-              style="transform:rotate(-90deg);transform-origin:50% 50%;transition:stroke-dashoffset 1.2s ease;"/>
-          </svg>
-          <div class="result-score-text">
-            <div class="result-score-num" id="result-score">—</div>
-            <div class="result-score-max">/ 100</div>
+        <div class="comp-card">
+          <div class="comp-title gold">🟡 ทักษะจำเป็นผู้บริหาร (Katz)</div>
+          <ul class="comp-list">
+            <li>Conceptual Skills — ทักษะด้านความคิด</li>
+            <li>Human Skills — ทักษะด้านมนุษย์สัมพันธ์</li>
+            <li>Technical Skills — ทักษะทางเทคนิค</li>
+          </ul>
+          <div style="margin-top:12px;font-size:12px;color:var(--muted);">ทักษะหลัก: วางแผน · จัดองค์กร · สื่อสาร · โค้ช · สร้างแรงจูงใจ</div>
+        </div>
+        <div class="comp-card" style="grid-column: span 2;">
+          <div class="comp-title">💥 หัวข้อหลักบริหาร Ep.1 ปี 69</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px 16px;margin-top:4px;">
+            <ul class="comp-list">
+              <li>Strategic Management</li>
+              <li>POLC vs PDCA</li>
+              <li>Organization Transformation</li>
+              <li>5W1H (Who/What/Where/When/Why/How)</li>
+              <li>SWOT Analysis</li>
+              <li>SMART Goal</li>
+            </ul>
+            <ul class="comp-list">
+              <li>People Management</li>
+              <li>Budget Management</li>
+              <li>Strategic Plan (3-5 ปี)</li>
+              <li>Action Plan</li>
+              <li>4M (Man/Machine/Material/Method)</li>
+              <li>OKR vs KPI</li>
+            </ul>
           </div>
         </div>
-        <div class="result-grade" id="result-grade">—</div>
-        <div class="result-meta-row">
-          <div class="result-meta-box"><div class="rmb-val" id="res-correct">—</div><div class="rmb-label">ถูก</div></div>
-          <div class="result-meta-box"><div class="rmb-val" id="res-wrong">—</div><div class="rmb-label">ผิด</div></div>
-          <div class="result-meta-box"><div class="rmb-val" id="res-time">—</div><div class="rmb-label">เวลา</div></div>
-        </div>
-
-        <!-- Category breakdown -->
-        <div class="result-breakdown" id="result-breakdown"></div>
-
-        <div class="result-actions">
-          <button class="exam-btn-start" onclick="reviewAnswers()">ดูเฉลย 📋</button>
-          <button class="exam-btn-outline" onclick="resetExam()">ทำใหม่ 🔄</button>
-        </div>
       </div>
     </div>
 
-    <!-- REVIEW SCREEN -->
-    <div id="exam-review" style="display:none;">
-      <div class="review-header">
-        <h3 class="review-title">เฉลยและคำอธิบาย</h3>
-        <button class="exam-btn-outline" onclick="resetExam()">ทำใหม่ 🔄</button>
+    <!-- ข้อสอบจริง 2563 panel -->
+    <div class="res-panel" id="tab-ex2563">
+      <div style="font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.7;">
+        📋 ข้อสอบจริงปี 2563 (คอมพิวเตอร์ 60 ข้อ + พันธกิจ/วิสัยทัศน์ 20 ข้อ) — แสดงข้อที่มีเฉลยชัดเจน เพื่อใช้เป็น pattern การเตรียมตัว
       </div>
-      <div id="review-list"></div>
+      <div style="display:flex;flex-direction:column;gap:10px;" id="real-q-list"></div>
     </div>
 
-  </div><!-- end exam section -->
+    <!-- Topics summary -->
+    <div class="res-panel" id="tab-topics">
+      <div style="margin-bottom:14px;font-size:13px;color:var(--muted);">สรุปขอบเขตเนื้อหาที่ออกสอบทั้งหมด</div>
+      <div style="font-size:12px;font-family:'IBM Plex Mono',monospace;color:var(--accent);margin-bottom:8px;letter-spacing:1px;">📘 ความรู้กลาง (100 ข้อ)</div>
+      <div class="topics-grid" style="margin-bottom:20px;">
+        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent)"></span>นโยบายและทิศทางภาครัฐ</div>
+        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent)"></span>วิสัยทัศน์ พันธกิจ ธ.ก.ส.</div>
+        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent)"></span>SE-AM ปี 2565</div>
+        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent)"></span>บริหารความเสี่ยง & ปปง.</div>
+        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent)"></span>Risk Culture</div>
+        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent)"></span>Market Conduct</div>
+        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent)"></span>PDPA พ.ร.บ. 2562</div>
+        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent)"></span>Cyber Security</div>
+        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent)"></span>Corporate Governance & Data Governance</div>
+      </div>
+      <div style="font-size:12px;font-family:'IBM Plex Mono',monospace;color:var(--accent2);margin-bottom:8px;letter-spacing:1px;">💻 ความรู้เฉพาะตำแหน่ง (100 ข้อ)</div>
+      <div class="topics-grid" style="margin-bottom:20px;">
+        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent2)"></span>Hardware (CPU/RAM/ROM/I/O)</div>
+        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent2)"></span>Operating System & Driver</div>
+        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent2)"></span>Network (LAN/MAN/WAN/อุปกรณ์)</div>
+        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent2)"></span>SDLC วงจรพัฒนาระบบ</div>
+        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent2)"></span>Mobile App Development</div>
+        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent2)"></span>โครงสร้างข้อมูล (Array/Stack/Queue/Tree)</div>
+        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent2)"></span>Database SQL & NoSQL</div>
+        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent2)"></span>API & Docker & Container</div>
+        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent2)"></span>แนวโน้ม IT (AI/IoT/Metaverse/DeFi)</div>
+        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent2)"></span>IT Project Management</div>
+        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent2)"></span>Enterprise Architecture</div>
+      </div>
+      <div style="font-size:12px;font-family:'IBM Plex Mono',monospace;color:var(--accent3);margin-bottom:8px;letter-spacing:1px;">🎯 หลักบริหาร & Competency (100 ข้อ)</div>
+      <div class="topics-grid" style="margin-bottom:20px;">
+        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent3)"></span>Strategic Management</div>
+        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent3)"></span>POLC / PDCA</div>
+        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent3)"></span>SWOT / 5W1H / SMART Goal</div>
+        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent3)"></span>OKR vs KPI</div>
+        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent3)"></span>4M Resource Management</div>
+        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent3)"></span>People & Budget Management</div>
+        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent3)"></span>Quality Management Principles</div>
+        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent3)"></span>Core Competency 5 ด้าน</div>
+        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent3)"></span>Management Competency 3 ด้าน</div>
+        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent3)"></span>Future Skills 4 กลุ่ม</div>
+        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent3)"></span>Organization Transformation</div>
+        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent3)"></span>Katz Skills (Conceptual/Human/Technical)</div>
+      </div>
+      <div style="font-size:12px;font-family:'IBM Plex Mono',monospace;color:var(--accent4);margin-bottom:8px;letter-spacing:1px;">📋 จำลองข้อสอบจริง ปี 2563 (80 ข้อ)</div>
+      <div class="topics-grid">
+        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent4)"></span>SSD / RAID / Blade Server</div>
+        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent4)"></span>ER Diagram & Relationships</div>
+        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent4)"></span>SQL: SELECT / UPDATE / DROP / TRUNCATE</div>
+        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent4)"></span>Data Warehouse & Multidimensional DB</div>
+        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent4)"></span>Stack LIFO / Queue FIFO / Sorting</div>
+        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent4)"></span>RESTful+JSON vs SOAP+XML</div>
+        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent4)"></span>Unit/Integration/System/Acceptance Test</div>
+        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent4)"></span>Direct/Parallel/Phase/Pilot Installation</div>
+        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent4)"></span>Corrective/Adaptive/Perfective/Preventive Maintenance</div>
+        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent4)"></span>CMMI Level / DFD / PERT คำนวณ</div>
+        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent4)"></span>Big Data / Cloud / IoT / Blockchain / EA</div>
+        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent4)"></span>วิสัยทัศน์ ธ.ก.ส. / Financial Literacy / FinTech</div>
+      </div>
+    </div>
+  </div>
+</div>
 
-</main>
+<!-- ══════════ EXAM ══════════ -->
+<div id="screen-exam">
+  <div class="exam-header">
+    <div class="exam-title" id="exam-title">ข้อสอบ</div>
+    <div class="progress-info" id="progress-info">0/100</div>
+    <div class="timer-box" id="timer">2:30:00</div>
+    <button class="btn btn-danger" onclick="confirmSubmit()" style="font-size:12px;padding:7px 14px;">ส่งคำตอบ</button>
+  </div>
+  <div class="progress-bar-wrap">
+    <div class="progress-bar-fill" id="progress-bar" style="width:0%"></div>
+  </div>
+  <div class="exam-body">
+    <div class="loading-box" id="loading-questions">
+      <div class="spinner"></div>
+      <div class="loading-text" id="loading-text">กำลังสร้างชุดข้อสอบ กรุณารอสักครู่…</div>
+    </div>
+    <div id="questions-area" style="display:none"></div>
+  </div>
+  <div class="nav-buttons">
+    <button class="btn btn-outline" onclick="goToQuestion(currentQ - 1)">◀ ก่อนหน้า</button>
+    <button class="btn btn-outline" onclick="goToQuestion(currentQ + 1)">ถัดไป ▶</button>
+    <button class="btn btn-gold" onclick="toggleExplanation()">💡 ดูเฉลย</button>
+    <button class="btn btn-outline" onclick="goHome()">⬅ กลับหน้าหลัก</button>
+  </div>
+</div>
 
-<footer>
-  หลักบริหาร & Competency ปี 69 &nbsp;·&nbsp; Ep.1 &nbsp;·&nbsp; <span style="color:var(--teal)">Strategic Management</span>
-</footer>
+<!-- ══════════ RESULT ══════════ -->
+<div id="screen-result">
+  <div class="result-header">
+    <div class="result-score-ring">
+      <svg width="150" height="150" viewBox="0 0 150 150">
+        <circle cx="75" cy="75" r="64" fill="none" stroke="#1c2333" stroke-width="11"/>
+        <circle cx="75" cy="75" r="64" fill="none" stroke="url(#gr)" stroke-width="11"
+          stroke-dasharray="402" stroke-dashoffset="402" id="ring-circle" stroke-linecap="round"/>
+        <defs><linearGradient id="gr" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#00d4aa"/><stop offset="100%" stop-color="#3b82f6"/>
+        </linearGradient></defs>
+      </svg>
+      <div class="result-score-inner">
+        <div class="result-pct" id="res-pct">0%</div>
+        <div class="result-label" id="res-fraction">0/100</div>
+      </div>
+    </div>
+    <div class="result-verdict" id="res-verdict"></div>
+    <div class="result-sub" id="res-sub"></div>
+  </div>
+  <div class="result-stats" id="result-stats"></div>
+  <div style="text-align:center;margin-bottom:28px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+    <button class="btn btn-primary" onclick="startExam(currentMode)">🔄 ทำข้อสอบใหม่</button>
+    <button class="btn btn-outline" onclick="goHome()">⬅ กลับหน้าหลัก</button>
+  </div>
+  <div class="review-section" id="review-section"></div>
+</div>
+
+</div><!-- #app -->
 
 <script>
-  // Scroll-reveal
-  const blocks = document.querySelectorAll('.section-block');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-      }
-    });
-  }, { threshold: 0.08 });
+const API_URL = "https://api.anthropic.com/v1/messages";
+let questions = [], userAnswers = [], currentQ = 0, currentMode = '';
+let timerInterval = null, timeLeft = 0, examStartTime = null;
+let examSubmitted = false, explanationVisible = false;
 
-  blocks.forEach(b => observer.observe(b));
-
-  // Trigger visible for above-fold
-  setTimeout(() => blocks[0].classList.add('visible'), 100);
-
-  // Nav scroll
-  function scrollTo(id) {
-    document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
-
-  // Active tab highlight
-  document.querySelectorAll('.nav-tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-      document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-    });
+// ─── Tab switching ───
+function switchTab(id) {
+  const ids = ['yt','drive','competency','ex2563','topics'];
+  document.querySelectorAll('.res-tab').forEach((t,i) => {
+    t.classList.toggle('active', ids[i] === id);
   });
-</script>
+  document.querySelectorAll('.res-panel').forEach(p => {
+    p.classList.toggle('active', p.id === 'tab-'+id);
+  });
+}
 
+// ─── Real 2563 Q list ───
+const REAL_Q_2563 = [
+  {no:1, topic:'OS / Hardware', q:'เทคโนโลยีที่นำหน่วยความจำประเภท Flash Memory (เก็บข้อมูลใน ChipSet) มาใช้เก็บข้อมูลแทนจานแม่เหล็ก เรียกว่าอะไร', options:['SCSI — Small Computer System Interface สำหรับเชื่อมต่ออุปกรณ์','SSD — Solid State Drive ใช้ Flash Memory เก็บข้อมูล','HDD — Hard Disk Drive ใช้จานแม่เหล็กหมุน','FKSI — ไม่มีอยู่จริงในมาตรฐานอุตสาหกรรม'], ans:1, expl:'SSD (Solid State Drive) ใช้ Flash Memory ในการเก็บข้อมูล ต่างจาก HDD ที่ใช้จานแม่เหล็กหมุน SSD ทำงานได้เร็วกว่า ทนทานกว่า และไม่มีชิ้นส่วนที่เคลื่อนไหว'},
+  {no:2, topic:'Hardware', q:'เทคโนโลยีนำฮาร์ดดิสก์หลายอันมาต่อเข้าด้วยกัน เพื่อเพิ่มความน่าเชื่อถือของข้อมูล ด้วยการ mirroring, striping และ error correction เรียกว่าอะไร', options:['Ghost — เครื่องมือสำหรับสำเนาข้อมูลระหว่างดิสก์','Raid — Redundant Array of Independent Disks รวมฮาร์ดดิสก์','Clone — การทำสำเนาดิสก์ทั้งก้อนแบบ 1:1','Merge — การรวมพาร์ทิชันของดิสก์เข้าด้วยกัน'], ans:1, expl:'RAID (Redundant Array of Independent Disks) คือเทคโนโลยีรวมฮาร์ดดิสก์หลายลูกเพื่อเพิ่ม Performance หรือ Fault Tolerance มีหลาย Level เช่น RAID 0 (striping), RAID 1 (mirroring), RAID 5 (parity)'},
+  {no:3, topic:'OS', q:'หน้าที่ของ OS ครอบคลุมข้อใดต่อไปนี้', options:['Utility — โปรแกรมเสริมประสิทธิภาพคอมพิวเตอร์','Monitor — การตรวจสอบสถานะฮาร์ดแวร์ทั้งหมด','แปล Source Code — การแปลภาษาโปรแกรมเป็นภาษาเครื่อง','User Interface — ส่วนติดต่อผู้ใช้เพื่อสื่อสารกับระบบ'], ans:3, expl:'หนึ่งในหน้าที่หลักของ OS คือ User Interface (UI) ทั้งแบบ CLI และ GUI เพื่อให้ผู้ใช้สั่งงานคอมพิวเตอร์ได้ นอกจากนี้ OS ยังจัดการ Process, Memory, File System, I/O และความปลอดภัย'},
+  {no:5, topic:'Hardware / Server', q:'ธนาคารมีเครื่อง Server หลายเครื่องทำให้มีปัญหาพื้นที่จัดวางจำกัด ควรเปลี่ยนเป็น Server แบบใด', options:['Blade Server — เซิร์ฟเวอร์แบบใบมีดรวมหลายโหนดในตู้เดียว','Rack Server — เซิร์ฟเวอร์มาตรฐานติดตั้งในตู้ Rack','Tower Server — เซิร์ฟเวอร์แบบตั้งโต๊ะทรงสี่เหลี่ยม','Cloud Server — เซิร์ฟเวอร์เสมือนบน Cloud Computing'], ans:0, expl:'Blade Server คือเซิร์ฟเวอร์แบบ "ใบมีด" บรรจุหลาย Server Node ในตู้ Chassis เดียว ประหยัดพื้นที่มากที่สุด ลดการใช้ไฟและระบบระบายความร้อนได้ดีกว่า Tower/Rack Server'},
+  {no:6, topic:'Database', q:'ความสัมพันธ์ระหว่างนักเรียนกับรายวิชาที่ลงทะเบียนเป็นแบบใด', options:['ความสัมพันธ์ one to many ระหว่าง attribute ของตาราง','ความสัมพันธ์ many to many ระหว่าง attribute ของตาราง','ความสัมพันธ์ one to many ระหว่าง entity สองตาราง','ความสัมพันธ์ many to many ระหว่าง entity สองตาราง'], ans:3, expl:'นักเรียน 1 คนลงทะเบียนได้หลายรายวิชา และ 1 รายวิชามีนักเรียนหลายคน จึงเป็น many-to-many ระหว่าง entity (Student และ Course) ในการออกแบบ DB จะต้องสร้างตาราง Junction เพิ่ม'},
+  {no:7, topic:'Database', q:'ความสัมพันธ์ระหว่างลูกค้ากับสินค้าที่สั่งซื้อเป็นแบบใด', options:['one to one — ลูกค้า 1 คนสั่งสินค้าได้ 1 รายการ','one to many — ลูกค้า 1 คนสั่งสินค้าได้หลายรายการ','many to one — ลูกค้าหลายคนสั่งสินค้าได้ 1 รายการ','many to many — ลูกค้าหลายคนสั่งสินค้าได้หลายรายการ'], ans:1, expl:'ลูกค้า 1 คนสามารถสั่งซื้อสินค้าได้หลายรายการ (one-to-many) แต่สินค้าแต่ละรายการในคำสั่งซื้อเป็นของลูกค้าคนใดคนหนึ่ง ต่างจาก many-to-many ที่ลูกค้าสามารถสั่งสินค้าซ้ำกันหลายคน'},
+  {no:8, topic:'Database', q:'Data Warehouse ควรใช้ Database แบบใด', options:['OLTP Database — สำหรับงาน Transaction ประจำวัน','Object Oriented Database — สำหรับเก็บ Object ซับซ้อน','Relational Database — สำหรับงาน Query ทั่วไปแบบตาราง','Multidimensional Database — สำหรับวิเคราะห์ข้อมูลหลายมิติ'], ans:3, expl:'Data Warehouse ใช้ Multidimensional Database (OLAP) เพื่อรองรับการวิเคราะห์ข้อมูลหลายมิติ (Dimension) เช่น ยอดขายแยกตามเวลา ภูมิภาค และสินค้า ทำให้ Query สรุปข้อมูลขนาดใหญ่ได้เร็ว'},
+  {no:10, topic:'Database / SQL', q:'คำสั่งใดที่ดำเนินการในฐานข้อมูลแล้วไม่สามารถกู้คืนข้อมูลกลับได้', options:['DELETE — ลบแถวข้อมูล สามารถ Rollback ได้ถ้ายังไม่ Commit','TRUNCATE — ลบข้อมูลทุกแถว บางระบบ Rollback ไม่ได้','DROP — ลบตารางพร้อมโครงสร้างทั้งหมด กู้คืนไม่ได้','INSERT — เพิ่มข้อมูลใหม่ สามารถ Rollback ได้ก่อน Commit'], ans:2, expl:'DROP เป็นคำสั่ง DDL ที่ลบทั้งตาราง (โครงสร้าง+ข้อมูล) ออกจากฐานข้อมูลโดยสมบูรณ์ ไม่สามารถ Rollback ได้ ต่างจาก DELETE/TRUNCATE ที่เป็น DML และ TRUNCATE ที่บาง DBMS สามารถ Rollback ได้'},
+  {no:11, topic:'Database / SQL', q:'จากตาราง Employee คำสั่ง UPDATE ใดประมวลผลได้ถูกต้อง ไม่กระทบ Record อื่น', options:['UPDATE Employee SET Surname="Koffman" WHERE ID="6666" — ID ที่ไม่มีอยู่จริง','UPDATE Employee SET Surname="Cantona" WHERE Department_Name="Logistic" — Department ไม่มีในตาราง','UPDATE Employee SET Name="Bovy" WHERE Department_ID="2" — กระทบหลาย Record','UPDATE Employee SET Department_ID="3" WHERE ID="4444" — ใช้ Primary Key ระบุแถวเดียว'], ans:3, expl:'การ UPDATE ที่ปลอดภัยที่สุดคือใช้ Primary Key (ID="4444") เป็นเงื่อนไข เพราะ Primary Key ไม่ซ้ำกัน จึงกระทบเพียง 1 แถว ตัวเลือกอื่นใช้คอลัมน์ที่ซ้ำได้หรือข้อมูลที่ไม่มีอยู่'},
+  {no:12, topic:'Database / SQL', q:'คำสั่ง SQL ใดไม่ถูกต้อง ถ้าต้องการ SELECT ข้อมูล salary < 50,000', options:['WHERE Salary <= 49999 — ใช้ได้ถ้า salary เป็น Integer','WHERE Salary BETWEEN 0 AND 49999 — ระบุช่วงรวม 0-49999','WHERE NOT (salary >= 50000) — ตรงกับ salary < 50000','WHERE Salary > 0 OR salary < 50000 — ผิด OR ควรเป็น AND'], ans:1, expl:'BETWEEN 0 AND 49999 ไม่ครอบคลุม Salary ที่ติดลบ และไม่ครอบคลุมค่า 49999.50 ถ้า Salary เป็น Decimal ส่วน "Salary > 0 OR salary < 50000" ผิดตรรกะ ควรใช้ AND ไม่ใช่ OR'},
+  {no:14, topic:'Data Structure', q:'ข้อใดเป็นลักษณะของโครงสร้างข้อมูลแบบ Stack', options:['FIFO (First In First Out) — เข้าก่อนออกก่อนเหมือนแถวคิว','LIFO (Last In First Out) — เข้าหลังออกก่อนเหมือนกองจาน','FKSC — ไม่มีอยู่จริงในโครงสร้างข้อมูลมาตรฐาน','Flow — การไหลของข้อมูลตามเส้นทางที่กำหนด'], ans:1, expl:'Stack ใช้หลัก LIFO (Last In First Out) ข้อมูลที่เพิ่มเข้ามาล่าสุด (push) จะถูกดึงออกก่อน (pop) เปรียบเหมือนกองจานหรือ undo history ใน Text Editor'},
+  {no:15, topic:'Data Structure', q:'โครงสร้างข้อมูลแบบใดใช้หลักการ "เข้าก่อน (First In) ออกก่อน (First Out)"', options:['Stack — โครงสร้างแบบ LIFO เข้าหลังออกก่อน','Queue — โครงสร้างแบบ FIFO เข้าก่อนออกก่อน','Linked List — โครงสร้างแบบ Linear เชื่อมโยงด้วย Pointer','Push — คำสั่งเพิ่มข้อมูลใน Stack ไม่ใช่โครงสร้าง'], ans:1, expl:'Queue ใช้หลัก FIFO (First In First Out) ข้อมูลที่เข้ามาก่อนจะออกก่อน เปรียบเหมือนแถวคิวซื้อของ ใช้ในระบบ Print Spooler, Task Scheduling, Message Queue'},
+  {no:16, topic:'Integration', q:'รูปแบบไฟล์ที่เหมาะสมที่สุดสำหรับการเชื่อมข้อมูลระหว่างระบบที่ต่างแพลตฟอร์ม', options:['CSV — Comma Separated Values เหมาะ Spreadsheet','Text File — ไฟล์ข้อความธรรมดา ไม่มีโครงสร้าง','XML — Extensible Markup Language รองรับข้อมูลซับซ้อน','SOAP — Protocol ไม่ใช่ format ไฟล์'], ans:2, expl:'XML เป็นมาตรฐานสากลสำหรับแลกเปลี่ยนข้อมูลระหว่างระบบ รองรับโครงสร้างซับซ้อน มี Schema validation และทำงานข้ามแพลตฟอร์มได้ดี แม้ปัจจุบัน JSON นิยมมากขึ้นสำหรับ REST API'},
+  {no:17, topic:'Integration / API', q:'การเชื่อมโยงระบบ Mobile Application บนระบบที่ไม่เสถียร ควรใช้การเชื่อมโยงแบบใด', options:['RESTful + JSON — เบา ยืดหยุ่น เหมาะ Mobile ที่ไม่เสถียร','RESTful + XML — ใหญ่กว่า JSON ทำงานหนักกว่าบน Mobile','SOAP + JSON — SOAP ไม่รองรับ JSON เป็น Native','SOAP + XML — หนักมาก ไม่เหมาะเครือข่ายไม่เสถียร'], ans:0, expl:'RESTful API + JSON เบาที่สุด ใช้ Bandwidth น้อย Parse เร็ว เหมาะกับ Mobile Application โดยเฉพาะเครือข่ายไม่เสถียร ต่างจาก SOAP+XML ที่ Overhead สูงและซับซ้อนกว่า'},
+  {no:18, topic:'SDLC / Testing', q:'ลำดับการทดสอบระบบที่ถูกต้องที่สุดคือข้อใด', options:['Unit Test → Integration Test → System Test → Acceptance Test','Integration Test → System Test → Acceptance Test → Unit Test','Unit Test → System Test → Acceptance Test → Integration Test','Integration Test → Acceptance Test → System Test → Unit Test'], ans:0, expl:'ลำดับมาตรฐาน: Unit Test (ทดสอบแต่ละโมดูล) → Integration Test (ทดสอบการเชื่อมต่อ) → System Test (ทดสอบทั้งระบบ) → Acceptance Test (ผู้ใช้ยืนยัน) ตามแนวทาง V-Model'},
+  {no:19, topic:'SDLC / Installation', q:'การติดตั้งระบบแบบใดที่หยุดระบบงานเดิมและใช้ระบบใหม่ทันที เนื่องจากระบบเก่าและใหม่แตกต่างกันมาก', options:['Direct Installation — หยุดระบบเก่า เริ่มระบบใหม่ทันที ความเสี่ยงสูง','Parallel Installation — รันระบบเก่าและใหม่พร้อมกันสักระยะ','Phase Installation — ค่อยๆ เปลี่ยนทีละส่วนตามแผนงาน','Pilot Project — ทดลองในพื้นที่/ส่วนงานเดียวก่อน'], ans:0, expl:'Direct Installation (หรือ Direct Cutover) คือหยุดระบบเก่าและเปิดระบบใหม่ทันที มีความเสี่ยงสูงที่สุดแต่ต้นทุนต่ำที่สุด เหมาะเมื่อระบบเก่าและใหม่ไม่สามารถทำงานร่วมกันได้'},
+  {no:20, topic:'SDLC / Maintenance', q:'ป่วยแล้วไปพบแพทย์ แพทย์จ่ายยามาให้กิน เปรียบได้กับการบำรุงรักษาระบบแบบใด', options:['Corrective Maintenance — แก้ไขข้อผิดพลาดที่เกิดขึ้น','Adaptive Maintenance — ปรับระบบรองรับสภาพแวดล้อมใหม่','Perfective Maintenance — ปรับปรุงประสิทธิภาพให้ดีขึ้น','Preventive Maintenance — บำรุงรักษาเชิงป้องกันล่วงหน้า'], ans:0, expl:'Corrective Maintenance คือการแก้ไขข้อผิดพลาดหรือ Bug ที่เกิดขึ้นในระบบ เปรียบเหมือนการรักษาอาการป่วย ต่างจาก Preventive (ฉีดวัคซีนป้องกัน) และ Perfective (ออกกำลังกายให้แข็งแรงขึ้น)'},
+  {no:22, topic:'SDLC / Requirements', q:'ข้อใดไม่ใช่ความต้องการด้านฟังก์ชัน (Functional Requirement)', options:['ระบบต้องประมวลผลได้อย่างรวดเร็วภายใน 2 วินาที (Non-Functional)','ระบบสามารถออกรายงานสรุปยอดรายเดือนได้ (Functional)','ระบบสามารถคำนวณดอกเบี้ยตามสูตรได้ (Functional)','ระบบสามารถเปลี่ยนค่า Configuration ผ่านหน้าจอได้ (Functional)'], ans:0, expl:'Non-Functional Requirement คือคุณสมบัติเชิงคุณภาพ เช่น ความเร็ว ความปลอดภัย ความน่าเชื่อถือ Functional Requirement คือสิ่งที่ระบบต้องทำได้ เช่น ออกรายงาน คำนวณ เปลี่ยน Config'},
+  {no:23, topic:'CMMI', q:'CMMI ของธนาคาร ธ.ก.ส. ปัจจุบันอยู่ในระดับใด', options:['ระดับ 3 นิยาม — กระบวนการถูกกำหนดไว้เป็นลายลักษณ์อักษร','ระดับ 5 นิยาม — กระบวนการมีการปรับปรุงอย่างต่อเนื่อง','ระดับ 3 กำหนด — Defined Process มีมาตรฐานทั่วองค์กร','ระดับ 5 กำหนด — Optimizing ปรับปรุงด้วยข้อมูล'], ans:2, expl:'ธ.ก.ส. อยู่ที่ CMMI Level 3 (Defined) หมายความว่าองค์กรมีกระบวนการพัฒนาซอฟต์แวร์ที่กำหนดเป็นมาตรฐานทั่วทั้งองค์กร มีการนำ Best Practice ไปใช้อย่างสม่ำเสมอ'},
+  {no:24, topic:'SDLC / DFD', q:'ประโยชน์หลักของการเขียน Data Flow Diagram (DFD) คืออะไร', options:['วาดเป็นภาพง่ายกว่าเขียนเป็นตัวอักษรและข้อความ','สามารถแก้ไขข้อผิดพลาดในระบบได้อย่างถูกจุด','สามารถเห็นขั้นตอนและการไหลของข้อมูลได้ชัดเจน','เรียงลำดับความสำคัญของฟังก์ชันในระบบ'], ans:2, expl:'DFD ใช้แสดงขั้นตอนการไหลของข้อมูล (Data Flow) ระหว่าง Process, Data Store และ External Entity ทำให้ทีมพัฒนาและผู้ใช้เห็นภาพรวมระบบ เข้าใจง่าย ก่อนเขียน Code'},
+  {no:27, topic:'Technology / Big Data', q:'ข้อใดกล่าวถึง Big Data ได้ถูกต้องที่สุด', options:['ข้อมูลที่เติบโตอย่างรวดเร็วในช่วงเวลาหนึ่งแล้วหมดความสำคัญ','ข้อมูลขนาดใหญ่ที่มีความหลากหลาย ปริมาณมาก และเปลี่ยนเร็ว','ข้อมูลที่ถูก Encrypt เก็บไว้ในระบบ Cloud ขนาดใหญ่','ข้อมูลที่ต้องการ Server ขนาดใหญ่ในการจัดเก็บ'], ans:1, expl:'Big Data มีลักษณะ 5V: Volume (ปริมาณมาก), Velocity (เปลี่ยนเร็ว), Variety (หลากหลาย), Veracity (ความถูกต้อง), Value (มีคุณค่า) ไม่ใช่แค่ข้อมูลขนาดใหญ่เท่านั้น'},
+  {no:29, topic:'Technology / Cloud', q:'ข้อใดคือประโยชน์ของ Cloud Computing', options:['เข้าถึงข้อมูลจากที่ใดก็ได้ผ่าน Internet เพียงอย่างเดียว','ขยายขนาด Resource ได้ง่ายและรวดเร็วตามความต้องการ','ประหยัดต้นทุนการลงทุนด้าน Hardware เท่านั้น','ถูกต้องทุกข้อที่กล่าวมาข้างต้น'], ans:3, expl:'Cloud Computing มีประโยชน์หลายด้านพร้อมกัน: Accessibility (เข้าถึงได้ทุกที่), Scalability (ขยายลดทรัพยากรได้), Cost Saving (ลงทุนน้อยกว่า On-Premise) จึงถูกต้องทุกข้อ'},
+  {no:30, topic:'Technology / IoT', q:'ข้อใดกล่าวถึง Internet of Things (IoT) ได้ถูกต้องที่สุด', options:['เทคโนโลยีที่ช่วยเข้าถึงโครงสร้างพื้นฐานเครือข่าย','การใช้อินเทอร์เน็ตในอุตสาหกรรมขนาดใหญ่','เทคโนโลยี RFID และ Sensor ที่ใช้ตรวจวัดสิ่งแวดล้อม','การเชื่อมต่ออุปกรณ์ผ่าน Sensor และอินเทอร์เน็ต'], ans:3, expl:'IoT (Internet of Things) คือการเชื่อมต่ออุปกรณ์ต่างๆ (เช่น เครื่องใช้ไฟฟ้า รถยนต์ เซ็นเซอร์) เข้ากับอินเทอร์เน็ตเพื่อรับส่งข้อมูลและควบคุมจากระยะไกลได้อัตโนมัติ'},
+  {no:32, topic:'Technology / Blockchain', q:'ข้อใดกล่าวถึง Blockchain ได้ถูกต้องที่สุด', options:['เทคโนโลยีเกี่ยวกับการทำธุรกรรมการเงินโดยตรง','เทคโนโลยีเกี่ยวกับการทำบัญชีในองค์กรขนาดใหญ่','เทคโนโลยีเข้ารหัสข้อมูลการเงินในรูปแบบบล็อก','ระบบโครงข่ายเก็บบัญชีธุรกรรมออนไลน์แบบกระจายศูนย์'], ans:3, expl:'Blockchain คือระบบบัญชีแบบกระจายศูนย์ (Distributed Ledger) ที่ข้อมูลถูกเก็บในหลาย Node พร้อมกัน ทำให้แก้ไขยาก มีความโปร่งใสสูง ใช้ใน Cryptocurrency, Smart Contract และการตรวจสอบซัพพลายเชน'},
+  {no:35, topic:'วิสัยทัศน์ / Financial', q:'ข้อใดตรงกับ Financial Literacy ตามนโยบาย ธ.ก.ส.', options:['ให้ความรู้การบริหารเงินแก่เกษตรกรและประชาชน','สนับสนุนแหล่งเงินทุนให้แก่เกษตรกรโดยตรง','สนับสนุนเกษตรกรด้านเงินฝากและออมทรัพย์','สนับสนุนนวัตกรรมทางการเงินใหม่ๆ'], ans:0, expl:'Financial Literacy หมายถึงการส่งเสริมความรู้ทางการเงิน เช่น การออม การลงทุน การวางแผนการเงิน การบริหารหนี้ ให้แก่เกษตรกรและประชาชน เพื่อให้สามารถดูแลการเงินของตนเองได้อย่างมีประสิทธิภาพ'},
+];
+
+function buildRealQList() {
+  const container = document.getElementById('real-q-list');
+  if (!container) return;
+  REAL_Q_2563.forEach(q => {
+    const div = document.createElement('div');
+    div.style.cssText = 'background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 18px;border-left:3px solid var(--accent4)';
+    const optLetters = ['ก','ข','ค','ง'];
+    let optHtml = q.options.map((o,i) => {
+      const isAns = i === q.ans;
+      return `<div style="padding:7px 10px;border-radius:6px;margin-top:5px;font-size:13px;display:flex;gap:8px;align-items:flex-start;background:${isAns?'rgba(34,197,94,.1)':'rgba(255,255,255,.02)'};border:1px solid ${isAns?'var(--success)':'var(--border)'}">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;min-width:18px;color:${isAns?'var(--success)':'var(--muted)'};">${optLetters[i]}.</span>
+        <span style="color:${isAns?'var(--text)':'#94a3b8'}">${o}${isAns?' ✓':''}</span>
+      </div>`;
+    }).join('');
+    div.innerHTML = `
+      <div style="display:flex;gap:8px;align-items:flex-start;margin-bottom:10px;">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--accent4);background:rgba(249,115,22,.1);padding:2px 8px;border-radius:4px;flex-shrink:0">ข้อ ${q.no}</span>
+        <span style="font-size:10px;color:var(--muted);background:var(--surface2);padding:2px 8px;border-radius:4px;flex-shrink:0">${q.topic}</span>
+      </div>
+      <div style="font-size:14px;font-weight:600;line-height:1.65;margin-bottom:10px">${q.q}</div>
+      ${optHtml}
+      <div style="margin-top:12px;padding:10px 12px;background:rgba(0,212,170,.04);border-radius:6px;border-left:2px solid var(--accent);font-size:12px;color:#94a3b8;line-height:1.7">
+        <span style="color:var(--accent);font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:1px">📖 EXPLANATION</span><br>${q.expl}
+      </div>`;
+    container.appendChild(div);
+  });
+}
+
+// init real Q list on load
+window.addEventListener('DOMContentLoaded', buildRealQList);
+
+// ─── Prompts ───
+const PROMPTS = {
+  general: `คุณคือผู้ออกข้อสอบสำหรับ ธ.ก.ส. สร้างข้อสอบแบบปรนัย 4 ตัวเลือก จำนวน 100 ข้อ สำหรับ "ความรู้เนื้อหากลาง" ตำแหน่งคอมพิวเตอร์ Software ระดับ 8
+
+ครอบคลุมหัวข้อ (แต่ละหัวข้อ ~11 ข้อ):
+1. นโยบายและทิศทางภาครัฐ เศรษฐกิจ สังคม เทคโนโลยีนวัตกรรม
+2. วิสัยทัศน์ พันธกิจ ยุทธศาสตร์ นโยบาย ทิศทาง ธ.ก.ส.
+3. SE-AM (State Enterprise Assessment Model) ฉบับปรับปรุง ปี 2565
+4. การบริหารความเสี่ยงและการควบคุมภายใน / Financial Literacy / ปปง.
+5. Risk Culture (วัฒนธรรมองค์กรในการบริหารความเสี่ยง)
+6. Market Conduct (หลักเกณฑ์การให้บริการลูกค้าอย่างเป็นธรรม)
+7. PDPA พระราชบัญญัติคุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562
+8. Cyber Security (ความมั่นคงปลอดภัยทางไซเบอร์)
+9. Corporate Governance (CG) และ Data Governance
+
+กฎสำคัญ: ตัวเลือก ก ข ค ง ต้องมีความยาวใกล้เคียงกันมาก เพื่อป้องกันการเดา เฉลยกระจายสม่ำเสมอ คำอธิบาย 2-4 ประโยคละเอียด
+
+ตอบเป็น JSON เท่านั้น:
+{"questions":[{"id":1,"topic":"หัวข้อ","question":"คำถาม","options":{"a":"ตัวเลือก ก","b":"ตัวเลือก ข","c":"ตัวเลือก ค","d":"ตัวเลือก ง"},"answer":"a","explanation":"คำอธิบาย"}]}`,
+
+  specific: `คุณคือผู้ออกข้อสอบสำหรับ ธ.ก.ส. สร้างข้อสอบแบบปรนัย 4 ตัวเลือก จำนวน 100 ข้อ สำหรับ "ความรู้เฉพาะตำแหน่ง" คอมพิวเตอร์ Software ระดับ 8
+
+ครอบคลุมหัวข้อ:
+1. Hardware (CPU, RAM, ROM, Register, I/O, Secondary Storage) ~10 ข้อ
+2. ระบบปฏิบัติการ (OS, Utility, Device Driver, Assembler, Interpreter, Compiler) ~10 ข้อ
+3. Network (Star/Ring/Bus, LAN/MAN/WAN, Modem, Router, Hub, Bridge, Repeater, UTP) ~10 ข้อ
+4. SDLC (Feasibility, Analysis, Design, Testing-Black/White Box, Installation types, Maintenance) ~12 ข้อ
+5. Mobile App Development (5 ขั้นตอน Plan/Design/Code/Deploy/Monitor, Agile, Testing types) ~8 ข้อ
+6. Data Structure (Array 1D/2D, Stack-LIFO, Queue-FIFO, Linked List, Tree, Graph, Sort, Search) ~12 ข้อ
+7. Database Design SQL vs NoSQL (ER Diagram, Normalization, Column/Key-Value/Document/Graph) ~10 ข้อ
+8. System Integration (API-REST/SOAP, JWT, HTTP Status Code, Docker, Container vs VM) ~10 ข้อ
+9. IT Trends (IoT, AI, Metaverse, DeFi, Virtual Bank, 5G, NFT, AR/VR) ~8 ข้อ
+10. IT Project Management (Triangle, Gantt, PERT/CPM, SDLC Waterfall, Agile, Risk Level) ~10 ข้อ
+
+กฎสำคัญ: ตัวเลือก ก ข ค ง ยาวใกล้เคียงกัน บางข้อคำนวณ เฉลยกระจาย คำอธิบาย 2-4 ประโยค
+
+ตอบเป็น JSON เท่านั้น:
+{"questions":[{"id":1,"topic":"หัวข้อ","question":"คำถาม","options":{"a":"ตัวเลือก ก","b":"ตัวเลือก ข","c":"ตัวเลือก ค","d":"ตัวเลือก ง"},"answer":"a","explanation":"คำอธิบาย"}]}`,
+
+  management: `คุณคือผู้ออกข้อสอบสำหรับ ธ.ก.ส. สร้างข้อสอบแบบปรนัย 4 ตัวเลือก จำนวน 100 ข้อ สำหรับ "หลักบริหาร & Competency ปี 69"
+
+ครอบคลุมหัวข้อ:
+1. Strategic Management (การบริหารเชิงกลยุทธ์) ~10 ข้อ
+2. POLC (Plan-Organize-Lead-Control) vs PDCA (Plan-Do-Check-Act) ~8 ข้อ
+3. Organization Transformation (การเปลี่ยนรูปองค์กร) ~7 ข้อ
+4. 5W1H เทคนิคการตั้งคำถาม 6 ประเด็น (Who/What/Where/When/Why/How) ~6 ข้อ
+5. SWOT Analysis การวิเคราะห์องค์กร ~8 ข้อ
+6. SMART Goal การตั้งเป้าหมาย (Specific/Measurable/Achievable/Relevant/Time-bound) ~7 ข้อ
+7. People Management & Budget Management ~8 ข้อ
+8. Strategic Plan (แผนกลยุทธ์ 3-5 ปี) & Action Plan ~7 ข้อ
+9. 4M (Man/Machine/Material/Method) ~6 ข้อ
+10. Katz Skills (Conceptual/Human/Technical) & ทักษะผู้บริหาร ~7 ข้อ
+11. Quality Management Principles ~6 ข้อ
+12. OKR vs KPI ความแตกต่างและการใช้งาน ~8 ข้อ
+13. Core Competency 5 ด้าน ธ.ก.ส. (ร่วมพลัง/สร้างสรรค์/ใส่ใจลูกค้า/มืออาชีพ/จริยธรรม) ~6 ข้อ
+14. Management Competency 3 ด้าน (วิสัยทัศน์กลยุทธ์/ผู้นำเปลี่ยนแปลง/พัฒนาคน) ~5 ข้อ
+15. Future Skills 4 กลุ่ม (Strategic Decision/Opportunity/Data Optimization/Digital) ~5 ข้อ
+
+กฎสำคัญ: ตัวเลือก ก ข ค ง ต้องมีความยาวใกล้เคียงกันมาก ข้อสอบวัดความเข้าใจ ไม่ใช่แค่ท่องจำ เฉลยกระจายสม่ำเสมอ คำอธิบาย 2-4 ประโยคละเอียด
+
+ตอบเป็น JSON เท่านั้น:
+{"questions":[{"id":1,"topic":"หัวข้อ","question":"คำถาม","options":{"a":"ตัวเลือก ก","b":"ตัวเลือก ข","c":"ตัวเลือก ค","d":"ตัวเลือก ง"},"answer":"a","explanation":"คำอธิบาย"}]}`,
+
+  exam2563: `คุณคือผู้ออกข้อสอบสำหรับ ธ.ก.ส. สร้างข้อสอบแบบปรนัย 4 ตัวเลือก จำนวน 80 ข้อ โดยจำลองจาก pattern ข้อสอบจริงปี 2563
+
+ส่วนที่ 1: คอมพิวเตอร์ (60 ข้อ) ครอบคลุม:
+- OS & Hardware: SSD vs HDD, RAID levels, Blade/Rack/Tower Server, หน้าที่ OS, ระบบเปิด/ปิด ~8 ข้อ
+- Database: ER Diagram relationship types (1:1, 1:N, M:N), SQL commands (SELECT/UPDATE/DELETE/DROP/TRUNCATE), Data Warehouse, Multidimensional DB, Sub/Main class ~10 ข้อ
+- Data Structure: Stack (LIFO), Queue (FIFO), Linked List, Tree, Graph, Sorting algorithms ~8 ข้อ
+- System Integration: XML vs JSON, RESTful vs SOAP, รูปแบบไฟล์แลกเปลี่ยนข้อมูล ~6 ข้อ
+- SDLC & Testing: Unit/Integration/System/Acceptance Test ลำดับ, Installation types (Direct/Parallel/Phase/Pilot), Maintenance types (Corrective/Adaptive/Perfective/Preventive) ~10 ข้อ
+- CMMI Level, DFD, Requirements (Functional vs Non-Functional), PERT/CPM calculation ~8 ข้อ
+- Technology: Big Data (5V), Cloud Computing benefits, IoT, Blockchain, Enterprise Architecture, FinTech ~10 ข้อ
+
+ส่วนที่ 2: พันธกิจ วิสัยทัศน์ เศรษฐกิจ สังคม (20 ข้อ)
+- วิสัยทัศน์/พันธกิจ ธ.ก.ส., Financial Literacy, PDPA, Cyber Security, ความเป็นธรรมลูกค้า, นโยบายรัฐบาล, FinTech ~20 ข้อ
+
+กฎสำคัญ: ตัวเลือก ก ข ค ง ยาวใกล้เคียงกัน มีข้อคำนวณ PERT อย่างน้อย 1 ข้อ เฉลยกระจายสม่ำเสมอ คำอธิบาย 2-4 ประโยคละเอียด
+
+ตอบเป็น JSON เท่านั้น:
+{"questions":[{"id":1,"topic":"หัวข้อ","question":"คำถาม","options":{"a":"ตัวเลือก ก","b":"ตัวเลือก ข","c":"ตัวเลือก ค","d":"ตัวเลือก ง"},"answer":"a","explanation":"คำอธิบาย"}]}`
+};
+
+const MODE_LABELS = {
+  general: '📘 ความรู้เนื้อหากลาง',
+  specific: '💻 ความรู้เฉพาะตำแหน่ง',
+  management: '🎯 หลักบริหาร & Competency',
+  exam2563: '📋 จำลองข้อสอบจริง ปี 2563'
+};
+
+function show(id) {
+  ['screen-home','screen-exam','screen-result'].forEach(s => {
+    document.getElementById(s).style.display = 'none';
+  });
+  const el = document.getElementById(id);
+  el.style.display = id === 'screen-home' ? 'flex' : 'block';
+  window.scrollTo(0,0);
+}
+
+function goHome() {
+  if (timerInterval) clearInterval(timerInterval);
+  show('screen-home');
+}
+
+async function startExam(mode) {
+  currentMode = mode;
+  questions = []; userAnswers = []; currentQ = 0;
+  examSubmitted = false; explanationVisible = false;
+  document.getElementById('exam-title').textContent = MODE_LABELS[mode] || 'ข้อสอบ';
+  show('screen-exam');
+  document.getElementById('loading-questions').style.display = 'flex';
+  document.getElementById('loading-text').textContent = 'กำลังสร้างชุดข้อสอบ กรุณารอสักครู่…';
+  document.getElementById('questions-area').style.display = 'none';
+  try {
+    const qs = await fetchQuestions(mode);
+    questions = qs;
+    userAnswers = new Array(questions.length).fill(null);
+    renderNav();
+    showQuestion(0);
+    startTimer(150 * 60);
+    document.getElementById('loading-questions').style.display = 'none';
+    document.getElementById('questions-area').style.display = 'block';
+  } catch(e) {
+    document.getElementById('loading-questions').innerHTML =
+      `<div class="error-box">❌ เกิดข้อผิดพลาด<br><small>${e.message}</small><br><br>
+       <button class="btn btn-primary" onclick="startExam('${mode}')">ลองใหม่</button>
+       <button class="btn btn-outline" style="margin-left:8px" onclick="goHome()">กลับหน้าหลัก</button></div>`;
+  }
+}
+
+async function fetchQuestions(mode) {
+  const res = await fetch(API_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 16000,
+      messages: [{ role: 'user', content: PROMPTS[mode] }]
+    })
+  });
+  if (!res.ok) throw new Error(`API ${res.status}`);
+  const data = await res.json();
+  const text = data.content.map(c => c.text||'').join('');
+  const match = text.match(/\{[\s\S]*\}/);
+  if (!match) throw new Error('ไม่พบ JSON');
+  const parsed = JSON.parse(match[0]);
+  if (!parsed.questions || parsed.questions.length < 5) throw new Error('ข้อสอบไม่ครบ');
+  return parsed.questions;
+}
+
+function startTimer(seconds) {
+  if (timerInterval) clearInterval(timerInterval);
+  timeLeft = seconds; examStartTime = Date.now();
+  updateTimerDisplay();
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    updateTimerDisplay();
+    if (timeLeft <= 0) { clearInterval(timerInterval); submitExam(); }
+  }, 1000);
+}
+
+function updateTimerDisplay() {
+  const h = Math.floor(timeLeft/3600), m = Math.floor((timeLeft%3600)/60), s = timeLeft%60;
+  const t = document.getElementById('timer');
+  t.textContent = `${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  t.className = 'timer-box';
+  if (timeLeft < 300) t.classList.add('danger');
+  else if (timeLeft < 900) t.classList.add('warn');
+}
+
+function renderNav() {
+  const area = document.getElementById('questions-area');
+  area.innerHTML = '';
+  const grid = document.createElement('div');
+  grid.className = 'question-nav-grid'; grid.id = 'nav-grid';
+  for (let i = 0; i < questions.length; i++) {
+    const btn = document.createElement('button');
+    btn.className = 'qnav-btn'; btn.textContent = i+1;
+    btn.onclick = () => goToQuestion(i);
+    grid.appendChild(btn);
+  }
+  area.appendChild(grid);
+  const qWrap = document.createElement('div'); qWrap.id = 'q-wrap';
+  area.appendChild(qWrap);
+}
+
+function showQuestion(idx) {
+  if (idx < 0 || idx >= questions.length) return;
+  currentQ = idx; explanationVisible = false;
+  const q = questions[idx]; const answered = userAnswers[idx];
+  const total = questions.length;
+  document.getElementById('progress-info').textContent = `${idx+1}/${total}`;
+  document.getElementById('progress-bar').style.width = `${((idx+1)/total)*100}%`;
+  updateNavGrid();
+  const optLetters = {a:'ก',b:'ข',c:'ค',d:'ง'};
+  let optHtml = Object.entries(q.options).map(([key,val]) => {
+    let cls = 'option-btn';
+    if (examSubmitted) { if (key===q.answer) cls+=' correct-ans'; else if (key===answered&&answered!==q.answer) cls+=' wrong-ans'; }
+    else if (key===answered) cls+=' selected';
+    return `<button class="${cls}" onclick="selectAnswer('${key}')" ${examSubmitted?'disabled':''}>
+      <span class="option-letter">${optLetters[key]}</span><span>${val}</span></button>`;
+  }).join('');
+  const exShow = (examSubmitted||explanationVisible)?'show':'';
+  document.getElementById('q-wrap').innerHTML = `
+    <div class="question-card">
+      <div class="question-num">ข้อ ${q.id} · ${q.topic||''}</div>
+      <div class="question-text">${q.question}</div>
+      <div class="options">${optHtml}</div>
+      <div class="explanation-box ${exShow}" id="explanation-box">
+        <div class="explanation-title">📖 เฉลยและคำอธิบาย</div>
+        <div class="explanation-text"><strong>เฉลย: ตัวเลือก ${optLetters[q.answer]} — ${q.options[q.answer]}</strong><br><br>${q.explanation}</div>
+      </div>
+    </div>`;
+}
+
+function updateNavGrid() {
+  document.querySelectorAll('.qnav-btn').forEach((btn,i) => {
+    btn.className = 'qnav-btn';
+    if (i===currentQ) btn.classList.add('current');
+    else if (examSubmitted) { if (userAnswers[i]!==null) btn.classList.add(userAnswers[i]===questions[i].answer?'correct':'wrong'); }
+    else if (userAnswers[i]!==null) btn.classList.add('answered');
+  });
+}
+
+function selectAnswer(key) {
+  if (examSubmitted) return;
+  userAnswers[currentQ] = key; showQuestion(currentQ);
+}
+
+function goToQuestion(idx) {
+  if (idx<0||idx>=questions.length) return; showQuestion(idx);
+}
+
+function toggleExplanation() {
+  explanationVisible = !explanationVisible;
+  const box = document.getElementById('explanation-box');
+  if (box) box.className = 'explanation-box'+(explanationVisible?' show':'');
+}
+
+function confirmSubmit() {
+  const unanswered = userAnswers.filter(a=>a===null).length;
+  if (unanswered>0 && !confirm(`ยังไม่ได้ตอบอีก ${unanswered} ข้อ\nต้องการส่งคำตอบหรือไม่?`)) return;
+  submitExam();
+}
+
+function submitExam() {
+  if (timerInterval) clearInterval(timerInterval);
+  examSubmitted = true; showQuestion(currentQ); showResult();
+}
+
+function showResult() {
+  const total = questions.length;
+  let correct = 0;
+  questions.forEach((q,i) => { if (userAnswers[i]===q.answer) correct++; });
+  const pct = Math.round((correct/total)*100);
+  const elapsed = Math.round((Date.now()-examStartTime)/1000);
+  const em = Math.floor(elapsed/60), es = elapsed%60;
+  const circumference = 402;
+  const offset = circumference-(pct/100)*circumference;
+  document.getElementById('res-pct').textContent = pct+'%';
+  document.getElementById('res-fraction').textContent = `${correct}/${total} ข้อ`;
+  document.getElementById('res-verdict').textContent =
+    pct>=60?'🏆 ผ่านเกณฑ์! ยอดเยี่ยม':pct>=50?'📚 ใกล้ผ่านแล้ว ฝึกต่อไป':'💪 ต้องพัฒนาเพิ่มเติม';
+  document.getElementById('res-sub').textContent =
+    pct>=60?'คุณทำได้ดีมาก พร้อมสำหรับการสอบจริง':'ทบทวนบทที่ยังอ่อนแล้วลองทำใหม่';
+  document.getElementById('result-stats').innerHTML = `
+    <div class="stat-card"><div class="stat-val" style="color:var(--success)">${correct}</div><div class="stat-key">ตอบถูก</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:var(--danger)">${total-correct}</div><div class="stat-key">ตอบผิด</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:var(--muted)">${userAnswers.filter(a=>a===null).length}</div><div class="stat-key">ไม่ตอบ</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:var(--accent)">${pct}%</div><div class="stat-key">คะแนน</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:var(--gold);font-size:18px">${em}:${String(es).padStart(2,'0')}</div><div class="stat-key">เวลาที่ใช้</div></div>`;
+  const optLetters = {a:'ก',b:'ข',c:'ค',d:'ง'};
+  const wrongs = questions.filter((q,i)=>userAnswers[i]!==q.answer);
+  let reviewHtml = `<div class="review-title">📋 สรุปข้อที่ตอบผิด (${wrongs.length} ข้อ)</div>`;
+  wrongs.forEach(q => {
+    const ua = userAnswers[q.id-1];
+    reviewHtml += `<div class="review-item wr">
+      <div class="review-q">ข้อ ${q.id} · ${q.topic||''}: ${q.question}</div>
+      <div class="review-ans">
+        คำตอบของคุณ: <span style="color:var(--danger)">${ua?`ตัวเลือก ${optLetters[ua]} — ${q.options[ua]}`:'ไม่ได้ตอบ'}</span><br>
+        เฉลยที่ถูกต้อง: <span style="color:var(--success)">ตัวเลือก ${optLetters[q.answer]} — ${q.options[q.answer]}</span>
+      </div>
+      <div class="review-expl">${q.explanation}</div>
+    </div>`;
+  });
+  document.getElementById('review-section').innerHTML = reviewHtml;
+  show('screen-result');
+  setTimeout(() => {
+    const circle = document.getElementById('ring-circle');
+    if (circle) { circle.style.transition='stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1)'; circle.setAttribute('stroke-dashoffset',offset); }
+  }, 100);
+}
+</script>
 </body>
 </html>
