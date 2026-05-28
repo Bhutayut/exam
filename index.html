@@ -3,866 +3,1185 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BAAC Software ระดับ 8 — ข้อสอบจำลอง</title>
-<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<title>ข้อสอบเลื่อนตำแหน่งระดับ 8 | ธ.ก.ส. Computer Software</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #0a0e1a;
-    --surface: #111827;
-    --surface2: #1c2333;
-    --border: #2a3a52;
-    --accent: #00d4aa;
-    --accent2: #3b82f6;
-    --accent3: #a855f7;
-    --accent4: #f97316;
-    --gold: #f59e0b;
-    --danger: #ef4444;
-    --success: #22c55e;
-    --text: #e2e8f0;
-    --muted: #64748b;
-    --radius: 12px;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Sarabun', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
-  body::before {
-    content: ''; position: fixed; inset: 0;
-    background: radial-gradient(ellipse 60% 40% at 10% 20%, rgba(0,212,170,.07) 0%, transparent 60%),
-                radial-gradient(ellipse 50% 50% at 90% 80%, rgba(59,130,246,.06) 0%, transparent 60%);
-    pointer-events: none; z-index: 0;
-  }
-  #app { position: relative; z-index: 1; min-height: 100vh; }
+:root{
+  --g1:#005f2e;--g2:#007a3d;--g3:#e8f5ee;
+  --gold:#c8a84b;--gold2:#e2c070;
+  --navy:#1a2340;--red:#b91c1c;--ok:#15623a;
+  --bg:#f5f3ee;--white:#fff;--border:#ddd6c8;
+  --gray:#6b7280;--gray2:#f0ede6;
+  --shadow:0 2px 16px rgba(0,70,30,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--navy);font-size:16px;line-height:1.75}
+.screen{display:none}
+.screen.active{display:block}
 
-  /* ─── HOME ─── */
-  #screen-home { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; min-height: 100vh; padding: 40px 20px 60px; }
-  .home-badge { font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 3px; color: var(--accent); border: 1px solid var(--accent); border-radius: 4px; padding: 5px 14px; margin-bottom: 24px; opacity: .8; }
-  .home-title { font-size: clamp(24px, 4vw, 46px); font-weight: 700; line-height: 1.2; background: linear-gradient(135deg, #e2e8f0 0%, var(--accent) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px; text-align: center; }
-  .home-sub { color: var(--muted); font-size: 15px; margin-bottom: 36px; text-align: center; }
+/* HOME */
+#home{min-height:100vh;background:linear-gradient(155deg,#002d16 0%,#005f2e 55%,#007a3d 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;position:relative;overflow:hidden}
+#home.active{display:flex}
+#home::before{content:'';position:absolute;top:-80px;right:-80px;width:340px;height:340px;border-radius:50%;background:rgba(200,168,75,.07)}
+#home::after{content:'';position:absolute;bottom:-60px;left:-60px;width:260px;height:260px;border-radius:50%;background:rgba(255,255,255,.04)}
+.logo-ring{width:88px;height:88px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-size:38px;margin-bottom:18px;box-shadow:0 4px 20px rgba(200,168,75,.4)}
+.bank-name{font-size:12px;color:rgba(255,255,255,.5);letter-spacing:3px;text-transform:uppercase;margin-bottom:8px}
+.main-title{font-size:clamp(19px,3.5vw,28px);font-weight:800;color:#fff;text-align:center;line-height:1.4;margin-bottom:5px}
+.main-sub{font-size:13.5px;color:rgba(255,255,255,.55);margin-bottom:40px;text-align:center}
+.mode-wrap{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;max-width:760px;width:100%;margin-bottom:32px}
+.mcard{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);border-radius:16px;padding:24px 20px;cursor:pointer;transition:all .22s;text-align:left;position:relative;overflow:hidden}
+.mcard::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--gold2));transform:scaleX(0);transform-origin:left;transition:transform .22s}
+.mcard:hover{background:rgba(255,255,255,.12);border-color:var(--gold);transform:translateY(-3px)}
+.mcard:hover::after{transform:scaleX(1)}
+.mc-i{font-size:30px;margin-bottom:10px}.mc-t{font-size:16px;font-weight:700;color:#fff;margin-bottom:4px}
+.mc-d{font-size:12px;color:rgba(255,255,255,.5);line-height:1.65;margin-bottom:10px}
+.mc-b{display:inline-block;background:rgba(200,168,75,.2);border:1px solid rgba(200,168,75,.4);color:var(--gold2);font-size:11px;padding:2px 11px;border-radius:18px;font-weight:600}
+.home-stats{display:flex;gap:28px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:18px 32px}
+.hs{text-align:center}.hs-n{display:block;font-size:24px;font-weight:800;color:var(--gold2)}.hs-l{font-size:11px;color:rgba(255,255,255,.45)}
 
-  .section-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 3px; color: var(--muted); margin-bottom: 14px; text-align: left; width: 100%; max-width: 860px; padding: 0 4px; }
-  .mode-cards { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; max-width: 860px; width: 100%; margin-bottom: 40px; }
-  .mode-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px 26px; cursor: pointer; transition: all .25s; flex: 1; min-width: 220px; max-width: 280px; text-align: left; position: relative; overflow: hidden; }
-  .mode-card::before { content: ''; position: absolute; inset: 0; opacity: 0; transition: opacity .25s; }
-  .mode-card.general::before { background: linear-gradient(135deg, rgba(0,212,170,.1), transparent); }
-  .mode-card.specific::before { background: linear-gradient(135deg, rgba(59,130,246,.1), transparent); }
-  .mode-card.management::before { background: linear-gradient(135deg, rgba(168,85,247,.1), transparent); }
-  .mode-card.exam2563::before { background: linear-gradient(135deg, rgba(249,115,22,.1), transparent); }
-  .mode-card:hover { transform: translateY(-4px); }
-  .mode-card.general:hover { border-color: rgba(0,212,170,.5); }
-  .mode-card.specific:hover { border-color: rgba(59,130,246,.5); }
-  .mode-card.management:hover { border-color: rgba(168,85,247,.5); }
-  .mode-card.exam2563:hover { border-color: rgba(249,115,22,.5); }
-  .mode-card:hover::before { opacity: 1; }
-  .mode-icon { font-size: 28px; margin-bottom: 12px; }
-  .mode-title { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
-  .mode-desc { color: var(--muted); font-size: 12px; line-height: 1.6; }
-  .mode-meta { margin-top: 14px; display: flex; gap: 8px; flex-wrap: wrap; }
-  .meta-chip { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--accent); background: rgba(0,212,170,.1); border-radius: 4px; padding: 3px 8px; }
-  .meta-chip.blue { color: var(--accent2); background: rgba(59,130,246,.1); }
-  .meta-chip.purple { color: var(--accent3); background: rgba(168,85,247,.1); }
-  .meta-chip.orange { color: var(--accent4); background: rgba(249,115,22,.1); }
+/* EXAM */
+#exam-screen.active{display:flex;flex-direction:column;min-height:100vh}
+.ehdr{background:var(--g1);color:#fff;height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+.eh-l{display:flex;align-items:center;gap:10px}
+.eh-dot{width:9px;height:9px;border-radius:50%;background:var(--gold)}
+.eh-tt{font-size:13.5px;font-weight:700}
+.eh-tg{font-size:11px;background:rgba(255,255,255,.12);padding:2px 9px;border-radius:11px;color:rgba(255,255,255,.8)}
+.timer{font-size:21px;font-weight:800;letter-spacing:2px;font-variant-numeric:tabular-nums;padding:4px 14px;border:1.5px solid rgba(255,255,255,.2);border-radius:8px}
+.timer.warn{color:#fbbf24;border-color:rgba(251,191,36,.4)}
+.timer.danger{color:#f87171;border-color:rgba(248,113,113,.4);animation:blink 1s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.5}}
+.bsub{background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.22);color:#fff;padding:6px 16px;border-radius:8px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:600;transition:all .18s}
+.bsub:hover{background:rgba(255,255,255,.22)}
+.pbar{height:3px;background:rgba(0,95,46,.15)}
+.pfill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));transition:width .4s}
+.ebody{display:flex;flex:1;max-width:1080px;margin:0 auto;width:100%;padding:18px 14px;gap:18px}
 
-  /* ─── RESOURCES SECTION ─── */
-  .resources-wrap { max-width: 860px; width: 100%; }
-  .res-tabs { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
-  .res-tab { padding: 7px 18px; border-radius: 6px; border: 1px solid var(--border); background: transparent; color: var(--muted); font-family: 'Sarabun', sans-serif; font-size: 13px; cursor: pointer; transition: all .18s; }
-  .res-tab.active { background: var(--surface2); border-color: var(--accent); color: var(--accent); }
-  .res-panel { display: none; }
-  .res-panel.active { display: block; animation: fadeIn .25s ease; }
-  .res-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; }
-  .res-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; display: flex; align-items: flex-start; gap: 12px; text-decoration: none; color: var(--text); transition: all .18s; }
-  .res-card:hover { border-color: var(--accent); background: var(--surface2); transform: translateY(-2px); }
-  .res-icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
-  .res-info { flex: 1; min-width: 0; }
-  .res-title { font-size: 13px; font-weight: 600; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .res-url { font-size: 11px; color: var(--muted); font-family: 'IBM Plex Mono', monospace; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* Question */
+.qpanel{flex:1;min-width:0}
+.qmeta{display:flex;gap:9px;align-items:center;margin-bottom:14px;flex-wrap:wrap}
+.qnum{background:var(--g1);color:#fff;font-size:12px;font-weight:700;padding:3px 13px;border-radius:18px}
+.qcat{font-size:11.5px;color:var(--gray);background:var(--gray2);padding:3px 11px;border-radius:18px}
+.qflg{font-size:11.5px;color:#d97706;background:#fef3c7;padding:3px 10px;border-radius:11px;display:none}
+.qflg.on{display:inline-block}
+.qcard{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:24px;box-shadow:var(--shadow);margin-bottom:14px}
+.qtxt{font-size:16px;font-weight:500;line-height:1.85;color:var(--navy);margin-bottom:20px}
+.choices{display:flex;flex-direction:column;gap:8px}
+.ch{display:flex;align-items:flex-start;gap:11px;padding:12px 15px;border:2px solid var(--border);border-radius:11px;cursor:pointer;transition:all .16s;background:#fff}
+.ch:hover:not(.dis){border-color:var(--g2);background:#f0fdf4;transform:translateX(3px)}
+.ch.sel{border-color:var(--g1);background:#f0fdf4}
+.ch.cor{border-color:var(--ok);background:#f0fdf4}
+.ch.wrg{border-color:var(--red);background:#fef2f2}
+.ch.dis{cursor:default}
+.ck{width:25px;height:25px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;margin-top:1px;transition:all .16s}
+.ch.sel .ck{background:var(--g1);border-color:var(--g1);color:#fff}
+.ch.cor .ck{background:var(--ok);border-color:var(--ok);color:#fff}
+.ch.wrg .ck{background:var(--red);border-color:var(--red);color:#fff}
+.ct{font-size:14.5px;line-height:1.65;flex:1}
+.expl{background:#fffbeb;border:1px solid #fde68a;border-left:4px solid var(--gold);border-radius:11px;padding:16px;margin-top:12px;display:none}
+.expl.on{display:block}
+.expl-ttl{font-weight:700;color:#92400e;font-size:13px;margin-bottom:5px}
+.expl-body{font-size:13.5px;color:#78350f;line-height:1.8}
+.navrow{display:flex;justify-content:space-between;align-items:center;gap:9px}
+.btn{padding:9px 20px;border:none;border-radius:9px;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:all .16s}
+.btn-p{background:var(--g1);color:#fff}.btn-p:hover{background:var(--g2);transform:translateY(-1px)}
+.btn-s{background:#fff;color:var(--navy);border:2px solid var(--border)}.btn-s:hover{border-color:var(--g1)}
+.btn-g{background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy)}.btn-g:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(200,168,75,.4)}
+.btn-d{background:var(--red);color:#fff}
+.btn:disabled{opacity:.38;cursor:not-allowed;transform:none!important}
 
-  /* competency card */
-  .competency-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
-  .comp-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 18px 20px; }
-  .comp-title { font-size: 13px; font-weight: 700; color: var(--accent); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
-  .comp-title.blue { color: var(--accent2); }
-  .comp-title.purple { color: var(--accent3); }
-  .comp-title.gold { color: var(--gold); }
-  .comp-list { list-style: none; }
-  .comp-list li { font-size: 13px; line-height: 1.7; color: #b0c4de; padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,.04); }
-  .comp-list li:last-child { border-bottom: none; }
-  .comp-list li::before { content: '▸ '; color: var(--muted); }
-  .topics-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px; }
-  .topic-chip { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 10px 14px; font-size: 13px; display: flex; align-items: center; gap: 8px; }
-  .topic-chip .tc-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+/* Sidebar */
+.sbar{width:220px;flex-shrink:0}
+.scard{background:var(--white);border:1px solid var(--border);border-radius:13px;padding:16px;box-shadow:var(--shadow);margin-bottom:13px}
+.scard h4{font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:1px;margin-bottom:11px}
+.srow{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--gray2);font-size:12.5px}
+.srow:last-child{border:none}.sv{font-weight:700;color:var(--g1)}
+.qgrd{display:grid;grid-template-columns:repeat(5,1fr);gap:5px}
+.qd{aspect-ratio:1;border-radius:6px;border:1.5px solid var(--border);background:#fff;cursor:pointer;font-size:9.5px;font-weight:700;color:var(--gray);display:flex;align-items:center;justify-content:center;transition:all .12s}
+.qd:hover{border-color:var(--g1);color:var(--g1)}
+.qd.cur{background:var(--g1);color:#fff;border-color:var(--g1)}
+.qd.ans{background:#d1fae5;border-color:#6ee7b7;color:#065f46}
+.qd.cor2{background:#bbf7d0;border-color:#34d399}
+.qd.wrg2{background:#fecaca;border-color:#fca5a5}
+.qd.flg{background:#fef3c7;border-color:#fcd34d}
 
-  /* ─── EXAM ─── */
-  #screen-exam { display: none; min-height: 100vh; }
-  .exam-header { position: sticky; top: 0; z-index: 100; background: rgba(10,14,26,.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 12px 20px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
-  .exam-title { font-weight: 600; font-size: 14px; flex: 1; min-width: 120px; }
-  .timer-box { font-family: 'IBM Plex Mono', monospace; font-size: 20px; font-weight: 600; color: var(--accent); background: rgba(0,212,170,.1); border: 1px solid rgba(0,212,170,.3); border-radius: 8px; padding: 5px 14px; min-width: 88px; text-align: center; }
-  .timer-box.warn { color: var(--gold); background: rgba(245,158,11,.1); border-color: rgba(245,158,11,.3); }
-  .timer-box.danger { color: var(--danger); background: rgba(239,68,68,.1); border-color: rgba(239,68,68,.3); animation: pulse 1s infinite; }
-  @keyframes pulse { 0%,100%{opacity:1}50%{opacity:.5} }
-  .progress-info { font-size: 12px; color: var(--muted); font-family: 'IBM Plex Mono', monospace; }
-  .progress-bar-wrap { height: 3px; background: var(--border); }
-  .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); transition: width .3s; }
-  .exam-body { max-width: 820px; margin: 0 auto; padding: 32px 20px 120px; }
-  .question-nav-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(36px, 1fr)); gap: 5px; margin-bottom: 28px; background: var(--surface); border-radius: var(--radius); padding: 14px; border: 1px solid var(--border); }
-  .qnav-btn { width: 36px; height: 36px; border-radius: 5px; border: 1px solid var(--border); background: var(--surface2); color: var(--muted); font-size: 10px; font-family: 'IBM Plex Mono', monospace; cursor: pointer; transition: all .15s; display: flex; align-items: center; justify-content: center; }
-  .qnav-btn.answered { background: rgba(0,212,170,.15); border-color: var(--accent); color: var(--accent); }
-  .qnav-btn.current { background: var(--accent); border-color: var(--accent); color: #000; font-weight: 700; }
-  .qnav-btn.wrong { background: rgba(239,68,68,.15); border-color: var(--danger); color: var(--danger); }
-  .qnav-btn.correct { background: rgba(34,197,94,.15); border-color: var(--success); color: var(--success); }
-  .question-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 26px 28px; margin-bottom: 18px; }
-  .question-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--accent); letter-spacing: 2px; margin-bottom: 10px; }
-  .question-text { font-size: 16px; line-height: 1.75; font-weight: 500; margin-bottom: 22px; }
-  .options { display: flex; flex-direction: column; gap: 9px; }
-  .option-btn { background: var(--surface2); border: 1.5px solid var(--border); border-radius: 8px; padding: 13px 16px; text-align: left; cursor: pointer; transition: all .18s; display: flex; align-items: flex-start; gap: 12px; font-size: 14px; line-height: 1.6; color: var(--text); width: 100%; }
-  .option-btn:hover:not(:disabled) { border-color: var(--accent); background: rgba(0,212,170,.07); }
-  .option-btn.selected { border-color: var(--accent2); background: rgba(59,130,246,.12); }
-  .option-btn.correct-ans { border-color: var(--success); background: rgba(34,197,94,.12); }
-  .option-btn.wrong-ans { border-color: var(--danger); background: rgba(239,68,68,.12); }
-  .option-btn:disabled { cursor: default; }
-  .option-letter { font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700; min-width: 20px; height: 20px; border-radius: 3px; background: var(--border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
-  .option-btn.selected .option-letter { background: var(--accent2); color: #fff; }
-  .option-btn.correct-ans .option-letter { background: var(--success); color: #fff; }
-  .option-btn.wrong-ans .option-letter { background: var(--danger); color: #fff; }
-  .explanation-box { background: linear-gradient(135deg, rgba(0,212,170,.05), rgba(59,130,246,.05)); border: 1px solid rgba(0,212,170,.2); border-radius: 8px; padding: 16px 18px; margin-top: 14px; display: none; }
-  .explanation-box.show { display: block; animation: fadeIn .3s ease; }
-  .explanation-title { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--accent); letter-spacing: 1px; margin-bottom: 8px; }
-  .explanation-text { font-size: 13px; line-height: 1.8; color: #b0c4de; }
-  @keyframes fadeIn { from{opacity:0;transform:translateY(-8px)} to{opacity:1;transform:translateY(0)} }
-  .nav-buttons { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(10,14,26,.96); backdrop-filter: blur(12px); border-top: 1px solid var(--border); padding: 12px 20px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
-  .btn { padding: 9px 20px; border-radius: 8px; border: none; cursor: pointer; font-family: 'Sarabun', sans-serif; font-size: 13px; font-weight: 600; transition: all .18s; }
-  .btn-outline { background: transparent; border: 1.5px solid var(--border); color: var(--muted); }
-  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
-  .btn-primary { background: var(--accent); color: #000; }
-  .btn-primary:hover { background: #00b891; }
-  .btn-danger { background: var(--danger); color: #fff; }
-  .btn-danger:hover { background: #dc2626; }
-  .btn-gold { background: var(--gold); color: #000; }
-  .btn-gold:hover { background: #d97706; }
-  .btn-purple { background: var(--accent3); color: #fff; }
-  .btn-purple:hover { background: #9333ea; }
+/* RESULT */
+#result-screen.active{display:block}
+.rhdr{background:linear-gradient(145deg,var(--g1),var(--g2));padding:44px 24px 84px;text-align:center;position:relative}
+.rhdr h2{font-size:22px;font-weight:800;color:var(--gold2);margin-bottom:5px}
+.rhdr p{color:rgba(255,255,255,.55);font-size:13px}
+.scwrap{position:absolute;bottom:-65px;left:50%;transform:translateX(-50%)}
+.sccircle{width:130px;height:130px;border-radius:50%;background:#fff;border:4px solid var(--gold);box-shadow:0 8px 28px rgba(0,95,46,.2);display:flex;flex-direction:column;align-items:center;justify-content:center}
+.spct{font-size:32px;font-weight:800;color:var(--navy);line-height:1}
+.slbl{font-size:11px;color:var(--gray);margin-top:3px}
+.rbody{max-width:820px;margin:96px auto 40px;padding:0 14px}
+.pbanner{text-align:center;padding:13px;border-radius:11px;margin-bottom:18px;font-size:17px;font-weight:700}
+.pbanner.pass{background:#f0fdf4;border:2px solid #4ade80;color:var(--ok)}
+.pbanner.fail{background:#fef2f2;border:2px solid #f87171;color:var(--red)}
+.rcgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:22px}
+.rcc{background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center;box-shadow:var(--shadow)}
+.rn{font-size:26px;font-weight:800;display:block;margin-bottom:2px}
+.rl{font-size:12px;color:var(--gray)}
+.rc1 .rn{color:var(--ok)}.rc2 .rn{color:var(--red)}.rc3 .rn{color:var(--gray)}.rc4 .rn{color:var(--g1)}
+.ract{display:flex;gap:10px;justify-content:center;margin-bottom:26px;flex-wrap:wrap}
+.revhdr{font-size:17px;font-weight:700;margin-bottom:12px}
+.ftabs{display:flex;gap:7px;margin-bottom:12px;flex-wrap:wrap}
+.ft{padding:5px 15px;border-radius:18px;border:1.5px solid var(--border);font-size:12px;cursor:pointer;transition:all .16s;background:#fff;font-family:inherit}
+.ft.on{background:var(--g1);color:#fff;border-color:var(--g1)}
+.ri{background:#fff;border:1px solid var(--border);border-left:4px solid var(--border);border-radius:11px;padding:16px;margin-bottom:9px}
+.ri.c{border-left-color:var(--ok)}.ri.w{border-left-color:var(--red)}.ri.s{border-left-color:var(--gray)}
+.ri-q{font-size:14px;font-weight:500;margin-bottom:9px}
+.ri-ans{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:7px}
+.ri-ans span{font-size:12px;padding:5px 11px;border-radius:7px}
+.ru{background:#fef2f2;color:var(--red)}.rcr{background:#f0fdf4;color:var(--ok)}.rcs{background:#f0fdf4;color:var(--ok)}
+.ri-ex{font-size:12.5px;color:#78350f;background:#fffbeb;padding:8px 12px;border-radius:8px;line-height:1.75}
 
-  /* ─── RESULT ─── */
-  #screen-result { display: none; min-height: 100vh; padding: 40px 20px; max-width: 900px; margin: 0 auto; }
-  .result-header { text-align: center; margin-bottom: 40px; }
-  .result-score-ring { width: 150px; height: 150px; margin: 0 auto 20px; position: relative; display: flex; align-items: center; justify-content: center; }
-  .result-score-ring svg { position: absolute; top: 0; left: 0; transform: rotate(-90deg); }
-  .result-score-inner { text-align: center; }
-  .result-pct { font-size: 38px; font-weight: 700; font-family: 'IBM Plex Mono', monospace; }
-  .result-label { font-size: 12px; color: var(--muted); }
-  .result-verdict { font-size: 19px; font-weight: 700; margin-bottom: 6px; background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-  .result-sub { color: var(--muted); font-size: 14px; }
-  .result-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-bottom: 28px; }
-  .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
-  .stat-val { font-size: 26px; font-weight: 700; font-family: 'IBM Plex Mono', monospace; }
-  .stat-key { font-size: 11px; color: var(--muted); margin-top: 4px; }
-  .review-section { margin-top: 28px; }
-  .review-title { font-size: 17px; font-weight: 700; margin-bottom: 14px; }
-  .review-item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; }
-  .review-item.wr { border-left: 3px solid var(--danger); }
-  .review-q { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
-  .review-ans { font-size: 13px; color: var(--muted); line-height: 1.6; }
-  .review-expl { font-size: 13px; color: #94a3b8; margin-top: 10px; line-height: 1.7; padding: 10px 14px; background: rgba(0,212,170,.04); border-radius: 6px; border-left: 2px solid var(--accent); }
-  .loading-box { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 60vh; gap: 20px; }
-  .spinner { width: 44px; height: 44px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin .8s linear infinite; }
-  @keyframes spin { to{transform:rotate(360deg)} }
-  .loading-text { color: var(--muted); font-size: 14px; }
-  .error-box { text-align: center; padding: 36px; color: var(--danger); }
-  ::-webkit-scrollbar { width: 5px; }
-  ::-webkit-scrollbar-track { background: var(--bg); }
-  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-  .divider { width: 100%; max-width: 860px; height: 1px; background: var(--border); margin: 8px 0 28px; }
+/* MODAL */
+.moverlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:center;justify-content:center}
+.moverlay.on{display:flex}
+.modal{background:#fff;border-radius:18px;padding:30px;max-width:380px;width:90%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+.modal h3{font-size:18px;font-weight:700;margin-bottom:9px}
+.modal p{font-size:13.5px;color:var(--gray);margin-bottom:20px;line-height:1.65}
+.mbts{display:flex;gap:10px;justify-content:center}
+
+@media(max-width:720px){.sbar{display:none}.ebody{padding:10px}.qcard{padding:16px 13px}.ri-ans{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-<div id="app">
 
-<!-- ══════════ HOME ══════════ -->
-<div id="screen-home">
-  <div class="home-badge">ธ.ก.ส. · IT-BAAC EXAM SIMULATOR v2</div>
-  <h1 class="home-title">ข้อสอบจำลองเลื่อนตำแหน่ง<br>คอมพิวเตอร์ Software ระดับ 8</h1>
-  <p class="home-sub">ข้อสอบสร้างโดย AI · 100 ข้อ · จับเวลา 150 นาที · พร้อมเฉลยอย่างละเอียด</p>
-
-  <div class="section-label">— เลือกชุดข้อสอบ</div>
-  <div class="mode-cards">
-    <div class="mode-card general" onclick="startExam('general')">
-      <div class="mode-icon">📘</div>
-      <div class="mode-title">ความรู้เนื้อหากลาง</div>
-      <div class="mode-desc">นโยบายรัฐ · วิสัยทัศน์ ธ.ก.ส. · SE-AM · PDPA · Cyber Security · Risk · CG · Market Conduct</div>
-      <div class="mode-meta"><span class="meta-chip">100 ข้อ</span><span class="meta-chip">150 นาที</span></div>
+<!-- ===== HOME ===== -->
+<div id="home" class="screen active">
+  <div class="logo-ring">🌾</div>
+  <div class="bank-name">ธนาคารเพื่อการเกษตรและสหกรณ์การเกษตร</div>
+  <h1 class="main-title">จำลองข้อสอบเลื่อนตำแหน่ง<br>กลุ่มตำแหน่ง Computer Software ระดับ 8</h1>
+  <p class="main-sub">ตรงตามขอบเขตเนื้อหาที่ออกสอบจริง · เฉลยอย่างละเอียดทุกข้อ</p>
+  <div class="mode-wrap">
+    <div class="mcard" onclick="startExam('general')">
+      <div class="mc-i">📋</div>
+      <div class="mc-t">ความรู้กลาง</div>
+      <div class="mc-d">ESG · SE-AM · วิสัยทัศน์ ธ.ก.ส. · Risk Culture · PDPA · Market Conduct · ปปง. · CG · Data Governance</div>
+      <span class="mc-b">50 ข้อ · 75 นาที</span>
     </div>
-    <div class="mode-card specific" onclick="startExam('specific')">
-      <div class="mode-icon">💻</div>
-      <div class="mode-title">ความรู้เฉพาะตำแหน่ง</div>
-      <div class="mode-desc">Hardware · OS · Network · SDLC · Database · API · Docker · IT Project Mgmt · EA · แนวโน้ม IT</div>
-      <div class="mode-meta"><span class="meta-chip blue">100 ข้อ</span><span class="meta-chip blue">150 นาที</span></div>
+    <div class="mcard" onclick="startExam('specific')">
+      <div class="mc-i">💻</div>
+      <div class="mc-t">ความรู้เฉพาะตำแหน่ง</div>
+      <div class="mc-d">Core Competency (Coach) · OS · Network · SDLC · DevOps · Database · IT Security · Cloud · AI/ML · Enterprise Architecture</div>
+      <span class="mc-b">50 ข้อ · 75 นาที</span>
     </div>
-    <div class="mode-card management" onclick="startExam('management')">
-      <div class="mode-icon">🎯</div>
-      <div class="mode-title">หลักบริหาร &amp; Competency</div>
-      <div class="mode-desc">Strategic Mgmt · POLC/PDCA · SWOT · OKR/KPI · 4M · Future Skills · Core &amp; Mgmt Competency ปี 69</div>
-      <div class="mode-meta"><span class="meta-chip purple">100 ข้อ</span><span class="meta-chip purple">150 นาที</span></div>
-    </div>
-    <div class="mode-card exam2563" onclick="startExam('exam2563')">
-      <div class="mode-icon">📋</div>
-      <div class="mode-title">จำลองข้อสอบจริง ปี 2563</div>
-      <div class="mode-desc">สร้างจาก pattern ข้อสอบจริง: OS · SSD/RAID · Database SQL · SDLC · CMMI · Big Data · Cloud · IoT · Blockchain · EA · วิสัยทัศน์ ธ.ก.ส.</div>
-      <div class="mode-meta"><span class="meta-chip orange">60 ข้อ IT</span><span class="meta-chip orange">+ 20 ข้อ วิสัยทัศน์</span></div>
+    <div class="mcard" onclick="startExam('both')">
+      <div class="mc-i">🎯</div>
+      <div class="mc-t">สอบรวมทั้ง 2 ส่วน</div>
+      <div class="mc-d">จำลองการสอบจริงครบทั้ง 2 ส่วน ครอบคลุมทุกหัวข้อตามขอบเขตเนื้อหา</div>
+      <span class="mc-b">100 ข้อ · 150 นาที</span>
     </div>
   </div>
+  <div class="home-stats">
+    <div class="hs"><span class="hs-n">100</span><span class="hs-l">ข้อรวม</span></div>
+    <div class="hs"><span class="hs-n">60%</span><span class="hs-l">เกณฑ์ผ่าน</span></div>
+    <div class="hs"><span class="hs-n">เฉลย</span><span class="hs-l">ทุกข้อ</span></div>
+  </div>
+</div>
 
-  <!-- RESOURCES -->
-  <div class="section-label">— แหล่งเรียนรู้ประกอบการสอบ</div>
-  <div class="resources-wrap">
-    <div class="res-tabs">
-      <button class="res-tab active" onclick="switchTab('yt')">▶ YouTube</button>
-      <button class="res-tab" onclick="switchTab('drive')">📁 เอกสาร PDF</button>
-      <button class="res-tab" onclick="switchTab('competency')">🎯 Competency</button>
-      <button class="res-tab" onclick="switchTab('ex2563')">📋 ข้อสอบจริง 2563</button>
-      <button class="res-tab" onclick="switchTab('topics')">📂 สรุปหัวข้อ</button>
-    </div>
-
-    <!-- YouTube -->
-    <div class="res-panel active" id="tab-yt">
-      <div class="res-grid">
-        <a class="res-card" href="https://youtu.be/jLo-wtqbmZM?si=VoZWYAT19K6Uqujg" target="_blank">
-          <span class="res-icon">🎬</span>
-          <div class="res-info"><div class="res-title">EP.1 · ภาพรวมหลักบริหาร &amp; Competency ปี 69</div><div class="res-url">youtu.be/jLo-wtqbmZM</div></div>
-        </a>
-        <a class="res-card" href="https://youtu.be/7eNqNTINBDg?si=_0FsbC6i78uEHTE8" target="_blank">
-          <span class="res-icon">🎬</span>
-          <div class="res-info"><div class="res-title">EP.2 · วีดีโอการเรียนรู้</div><div class="res-url">youtu.be/7eNqNTINBDg</div></div>
-        </a>
-        <a class="res-card" href="https://youtu.be/59-3IrzWAkM?si=FA288ZvLnp48pFEG" target="_blank">
-          <span class="res-icon">🎬</span>
-          <div class="res-info"><div class="res-title">EP.3 · วีดีโอการเรียนรู้</div><div class="res-url">youtu.be/59-3IrzWAkM</div></div>
-        </a>
-        <a class="res-card" href="https://youtu.be/KDLUVGrUjQo?si=ZLl-3mGJH76b8ouB" target="_blank">
-          <span class="res-icon">🎬</span>
-          <div class="res-info"><div class="res-title">EP.4 · วีดีโอการเรียนรู้</div><div class="res-url">youtu.be/KDLUVGrUjQo</div></div>
-        </a>
-        <a class="res-card" href="https://youtu.be/idRn89bXAqo?si=Gb9qEI9w6rw_C-lw" target="_blank">
-          <span class="res-icon">🎬</span>
-          <div class="res-info"><div class="res-title">EP.5 · วีดีโอการเรียนรู้</div><div class="res-url">youtu.be/idRn89bXAqo</div></div>
-        </a>
-        <a class="res-card" href="https://youtu.be/6LRO1EHetro?si=4KvFBP3lCE4GA_2c" target="_blank">
-          <span class="res-icon">🎬</span>
-          <div class="res-info"><div class="res-title">EP.6 · วีดีโอการเรียนรู้</div><div class="res-url">youtu.be/6LRO1EHetro</div></div>
-        </a>
-        <a class="res-card" href="https://youtu.be/zAlK5yXor1k?si=3u9WQcEeLKKv9o1K" target="_blank">
-          <span class="res-icon">🎬</span>
-          <div class="res-info"><div class="res-title">EP.7 · วีดีโอการเรียนรู้</div><div class="res-url">youtu.be/zAlK5yXor1k</div></div>
-        </a>
-        <a class="res-card" href="https://youtu.be/J4TuthTr2dQ?si=fxiM7pBjkIARNsUO" target="_blank">
-          <span class="res-icon">🎬</span>
-          <div class="res-info"><div class="res-title">EP.8 · วีดีโอการเรียนรู้</div><div class="res-url">youtu.be/J4TuthTr2dQ</div></div>
-        </a>
-        <a class="res-card" href="https://www.facebook.com/share/v/1FaQxcbgTq/" target="_blank">
-          <span class="res-icon">📘</span>
-          <div class="res-info"><div class="res-title">วีดีโอ Facebook</div><div class="res-url">facebook.com/share/v/1FaQxcbgTq</div></div>
-        </a>
+<!-- ===== EXAM ===== -->
+<div id="exam-screen" class="screen">
+  <div class="ehdr">
+    <div class="eh-l">
+      <div class="eh-dot"></div>
+      <div>
+        <div class="eh-tt">ข้อสอบ ธ.ก.ส. · Computer Software ระดับ 8</div>
+        <div class="eh-tg" id="sec-tag">ความรู้กลาง</div>
       </div>
     </div>
-
-    <!-- Drive PDFs -->
-    <div class="res-panel" id="tab-drive">
-      <div class="res-grid">
-        <a class="res-card" href="https://drive.google.com/file/d/1-aEyFHSxOobehHuLh7jSsZ55UQi-_vHZ/view?usp=drive_link" target="_blank">
-          <span class="res-icon">📄</span>
-          <div class="res-info"><div class="res-title">เอกสารประกอบการสอบ 1</div><div class="res-url">drive.google.com · 1-aEyFH...</div></div>
-        </a>
-        <a class="res-card" href="https://drive.google.com/file/d/1HvSRjovyL-SqdNd82Wtda8WFxH2Xudxe/view?usp=drive_link" target="_blank">
-          <span class="res-icon">📄</span>
-          <div class="res-info"><div class="res-title">เอกสารประกอบการสอบ 2</div><div class="res-url">drive.google.com · 1HvSRj...</div></div>
-        </a>
-        <a class="res-card" href="https://drive.google.com/file/d/1EULxKSnErX3Kx_eNRXM0oFYG4F_Rwvz3/view?usp=drive_link" target="_blank">
-          <span class="res-icon">📄</span>
-          <div class="res-info"><div class="res-title">เอกสารประกอบการสอบ 3</div><div class="res-url">drive.google.com · 1EULxK...</div></div>
-        </a>
-        <a class="res-card" href="https://drive.google.com/file/d/1jVa7M9hHN0FWNbvwhMKmQXnVYMiMXAnS/view?usp=drive_link" target="_blank">
-          <span class="res-icon">📄</span>
-          <div class="res-info"><div class="res-title">เอกสารประกอบการสอบ 4</div><div class="res-url">drive.google.com · 1jVa7M...</div></div>
-        </a>
-        <a class="res-card" href="https://drive.google.com/file/d/1TmFSheoSqMaOs2wkxK9-E2vWnlAbCL56/view?usp=drive_link" target="_blank">
-          <span class="res-icon">📄</span>
-          <div class="res-info"><div class="res-title">เอกสารประกอบการสอบ 5</div><div class="res-url">drive.google.com · 1TmFSh...</div></div>
-        </a>
-        <a class="res-card" href="https://drive.google.com/file/d/1pUT6l9boZwVQ3iwvyN2MYo36WqkB_NN0/view?usp=drive_link" target="_blank">
-          <span class="res-icon">📄</span>
-          <div class="res-info"><div class="res-title">เอกสารประกอบการสอบ 6</div><div class="res-url">drive.google.com · 1pUT6l...</div></div>
-        </a>
-        <a class="res-card" href="https://drive.google.com/file/d/1XVViDPvDVIv8Rk-wDigpO_fP4KNLAfsR/view?usp=drive_link" target="_blank">
-          <span class="res-icon">📄</span>
-          <div class="res-info"><div class="res-title">เอกสารประกอบการสอบ 7</div><div class="res-url">drive.google.com · 1XVViD...</div></div>
-        </a>
-        <a class="res-card" href="https://docs.google.com/document/d/1vIHgyGrEBe0C9rB_saYjxmQ4ELt34nC5/edit?usp=drive_link" target="_blank">
-          <span class="res-icon">📝</span>
-          <div class="res-info"><div class="res-title">เอกสาร Google Docs (Word)</div><div class="res-url">docs.google.com · 1vIHgyGr...</div></div>
-        </a>
-        <a class="res-card" href="https://drive.google.com/drive/folders/1ulTyUICsXi4O5hoNzXRQo7ByNQi1dohY" target="_blank">
-          <span class="res-icon">📂</span>
-          <div class="res-info"><div class="res-title">โฟลเดอร์เอกสารทั้งหมด</div><div class="res-url">drive.google.com · folder</div></div>
-        </a>
+    <div class="timer" id="timer">01:15:00</div>
+    <button class="bsub" onclick="confirmSub()">ส่งข้อสอบ</button>
+  </div>
+  <div class="pbar"><div class="pfill" id="pfill" style="width:0%"></div></div>
+  <div class="ebody">
+    <div class="qpanel">
+      <div class="qmeta">
+        <div class="qnum" id="qnum-lbl">ข้อ 1 / 50</div>
+        <div class="qcat" id="qcat-lbl">หมวด</div>
+        <div class="qflg" id="qflg-lbl">🚩 ทำเครื่องหมาย</div>
+      </div>
+      <div class="qcard">
+        <div class="qtxt" id="qtxt">กำลังโหลด...</div>
+        <div class="choices" id="choices"></div>
+        <div class="expl" id="expl">
+          <div class="expl-ttl">💡 เฉลยและคำอธิบาย</div>
+          <div class="expl-body" id="expl-body"></div>
+        </div>
+      </div>
+      <div class="navrow">
+        <button class="btn btn-s" id="btn-prev" onclick="prevQ()">← ก่อนหน้า</button>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-s" onclick="toggleFlag()">🚩</button>
+          <button class="btn btn-s" id="btn-ans" onclick="showAns()" style="display:none">ดูเฉลย</button>
+        </div>
+        <button class="btn btn-p" id="btn-next" onclick="nextQ()">ถัดไป →</button>
       </div>
     </div>
-
-    <!-- Competency -->
-    <div class="res-panel" id="tab-competency">
-      <div class="competency-grid">
-        <div class="comp-card">
-          <div class="comp-title">💚 Core Competency (5 ด้าน)</div>
-          <ul class="comp-list">
-            <li>ร่วมพลังร่วมใจ</li>
-            <li>สร้างสรรค์สิ่งใหม่</li>
-            <li>ใส่ใจลูกค้า</li>
-            <li>มีความเป็นมืออาชีพ</li>
-            <li>ยึดมั่นหลักจริยธรรมและความโปร่งใส</li>
-          </ul>
-        </div>
-        <div class="comp-card">
-          <div class="comp-title blue">🔵 Management Competency (3 ด้าน)</div>
-          <ul class="comp-list">
-            <li>วิสัยทัศน์เชิงกลยุทธ์</li>
-            <li>ผู้นำการเปลี่ยนแปลง</li>
-            <li>การพัฒนาคน</li>
-          </ul>
-        </div>
-        <div class="comp-card">
-          <div class="comp-title purple">🟣 Future Skills (4 กลุ่ม)</div>
-          <ul class="comp-list">
-            <li>ตัดสินใจอย่างรอบคอบ (Strategic Decision-Making)</li>
-            <li>มองหาโอกาสและสร้างความแตกต่าง (Opportunity Seeking)</li>
-            <li>บริหารงานด้วยข้อมูล (Data Optimization)</li>
-            <li>บูรณาการด้วยเทคโนโลยีดิจิทัล (Technology Utilization)</li>
-          </ul>
-        </div>
-        <div class="comp-card">
-          <div class="comp-title gold">🟡 ทักษะจำเป็นผู้บริหาร (Katz)</div>
-          <ul class="comp-list">
-            <li>Conceptual Skills — ทักษะด้านความคิด</li>
-            <li>Human Skills — ทักษะด้านมนุษย์สัมพันธ์</li>
-            <li>Technical Skills — ทักษะทางเทคนิค</li>
-          </ul>
-          <div style="margin-top:12px;font-size:12px;color:var(--muted);">ทักษะหลัก: วางแผน · จัดองค์กร · สื่อสาร · โค้ช · สร้างแรงจูงใจ</div>
-        </div>
-        <div class="comp-card" style="grid-column: span 2;">
-          <div class="comp-title">💥 หัวข้อหลักบริหาร Ep.1 ปี 69</div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px 16px;margin-top:4px;">
-            <ul class="comp-list">
-              <li>Strategic Management</li>
-              <li>POLC vs PDCA</li>
-              <li>Organization Transformation</li>
-              <li>5W1H (Who/What/Where/When/Why/How)</li>
-              <li>SWOT Analysis</li>
-              <li>SMART Goal</li>
-            </ul>
-            <ul class="comp-list">
-              <li>People Management</li>
-              <li>Budget Management</li>
-              <li>Strategic Plan (3-5 ปี)</li>
-              <li>Action Plan</li>
-              <li>4M (Man/Machine/Material/Method)</li>
-              <li>OKR vs KPI</li>
-            </ul>
-          </div>
-        </div>
+    <div class="sbar">
+      <div class="scard">
+        <h4>สถิติ</h4>
+        <div class="srow"><span>ตอบแล้ว</span><span class="sv" id="st-a">0</span></div>
+        <div class="srow"><span>ยังไม่ตอบ</span><span class="sv" id="st-r">50</span></div>
+        <div class="srow"><span>ทำเครื่องหมาย</span><span class="sv" id="st-f">0</span></div>
       </div>
-    </div>
-
-    <!-- ข้อสอบจริง 2563 panel -->
-    <div class="res-panel" id="tab-ex2563">
-      <div style="font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.7;">
-        📋 ข้อสอบจริงปี 2563 (คอมพิวเตอร์ 60 ข้อ + พันธกิจ/วิสัยทัศน์ 20 ข้อ) — แสดงข้อที่มีเฉลยชัดเจน เพื่อใช้เป็น pattern การเตรียมตัว
-      </div>
-      <div style="display:flex;flex-direction:column;gap:10px;" id="real-q-list"></div>
-    </div>
-
-    <!-- Topics summary -->
-    <div class="res-panel" id="tab-topics">
-      <div style="margin-bottom:14px;font-size:13px;color:var(--muted);">สรุปขอบเขตเนื้อหาที่ออกสอบทั้งหมด</div>
-      <div style="font-size:12px;font-family:'IBM Plex Mono',monospace;color:var(--accent);margin-bottom:8px;letter-spacing:1px;">📘 ความรู้กลาง (100 ข้อ)</div>
-      <div class="topics-grid" style="margin-bottom:20px;">
-        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent)"></span>นโยบายและทิศทางภาครัฐ</div>
-        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent)"></span>วิสัยทัศน์ พันธกิจ ธ.ก.ส.</div>
-        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent)"></span>SE-AM ปี 2565</div>
-        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent)"></span>บริหารความเสี่ยง & ปปง.</div>
-        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent)"></span>Risk Culture</div>
-        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent)"></span>Market Conduct</div>
-        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent)"></span>PDPA พ.ร.บ. 2562</div>
-        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent)"></span>Cyber Security</div>
-        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent)"></span>Corporate Governance & Data Governance</div>
-      </div>
-      <div style="font-size:12px;font-family:'IBM Plex Mono',monospace;color:var(--accent2);margin-bottom:8px;letter-spacing:1px;">💻 ความรู้เฉพาะตำแหน่ง (100 ข้อ)</div>
-      <div class="topics-grid" style="margin-bottom:20px;">
-        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent2)"></span>Hardware (CPU/RAM/ROM/I/O)</div>
-        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent2)"></span>Operating System & Driver</div>
-        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent2)"></span>Network (LAN/MAN/WAN/อุปกรณ์)</div>
-        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent2)"></span>SDLC วงจรพัฒนาระบบ</div>
-        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent2)"></span>Mobile App Development</div>
-        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent2)"></span>โครงสร้างข้อมูล (Array/Stack/Queue/Tree)</div>
-        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent2)"></span>Database SQL & NoSQL</div>
-        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent2)"></span>API & Docker & Container</div>
-        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent2)"></span>แนวโน้ม IT (AI/IoT/Metaverse/DeFi)</div>
-        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent2)"></span>IT Project Management</div>
-        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent2)"></span>Enterprise Architecture</div>
-      </div>
-      <div style="font-size:12px;font-family:'IBM Plex Mono',monospace;color:var(--accent3);margin-bottom:8px;letter-spacing:1px;">🎯 หลักบริหาร & Competency (100 ข้อ)</div>
-      <div class="topics-grid" style="margin-bottom:20px;">
-        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent3)"></span>Strategic Management</div>
-        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent3)"></span>POLC / PDCA</div>
-        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent3)"></span>SWOT / 5W1H / SMART Goal</div>
-        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent3)"></span>OKR vs KPI</div>
-        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent3)"></span>4M Resource Management</div>
-        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent3)"></span>People & Budget Management</div>
-        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent3)"></span>Quality Management Principles</div>
-        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent3)"></span>Core Competency 5 ด้าน</div>
-        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent3)"></span>Management Competency 3 ด้าน</div>
-        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent3)"></span>Future Skills 4 กลุ่ม</div>
-        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent3)"></span>Organization Transformation</div>
-        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent3)"></span>Katz Skills (Conceptual/Human/Technical)</div>
-      </div>
-      <div style="font-size:12px;font-family:'IBM Plex Mono',monospace;color:var(--accent4);margin-bottom:8px;letter-spacing:1px;">📋 จำลองข้อสอบจริง ปี 2563 (80 ข้อ)</div>
-      <div class="topics-grid">
-        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent4)"></span>SSD / RAID / Blade Server</div>
-        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent4)"></span>ER Diagram & Relationships</div>
-        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent4)"></span>SQL: SELECT / UPDATE / DROP / TRUNCATE</div>
-        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent4)"></span>Data Warehouse & Multidimensional DB</div>
-        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent4)"></span>Stack LIFO / Queue FIFO / Sorting</div>
-        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent4)"></span>RESTful+JSON vs SOAP+XML</div>
-        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent4)"></span>Unit/Integration/System/Acceptance Test</div>
-        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent4)"></span>Direct/Parallel/Phase/Pilot Installation</div>
-        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent4)"></span>Corrective/Adaptive/Perfective/Preventive Maintenance</div>
-        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent4)"></span>CMMI Level / DFD / PERT คำนวณ</div>
-        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent4)"></span>Big Data / Cloud / IoT / Blockchain / EA</div>
-        <div class="topic-chip"><span class="tc-dot" style="background:var(--accent4)"></span>วิสัยทัศน์ ธ.ก.ส. / Financial Literacy / FinTech</div>
+      <div class="scard">
+        <h4>ภาพรวม</h4>
+        <div class="qgrd" id="qgrd"></div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ══════════ EXAM ══════════ -->
-<div id="screen-exam">
-  <div class="exam-header">
-    <div class="exam-title" id="exam-title">ข้อสอบ</div>
-    <div class="progress-info" id="progress-info">0/100</div>
-    <div class="timer-box" id="timer">2:30:00</div>
-    <button class="btn btn-danger" onclick="confirmSubmit()" style="font-size:12px;padding:7px 14px;">ส่งคำตอบ</button>
-  </div>
-  <div class="progress-bar-wrap">
-    <div class="progress-bar-fill" id="progress-bar" style="width:0%"></div>
-  </div>
-  <div class="exam-body">
-    <div class="loading-box" id="loading-questions">
-      <div class="spinner"></div>
-      <div class="loading-text" id="loading-text">กำลังสร้างชุดข้อสอบ กรุณารอสักครู่…</div>
-    </div>
-    <div id="questions-area" style="display:none"></div>
-  </div>
-  <div class="nav-buttons">
-    <button class="btn btn-outline" onclick="goToQuestion(currentQ - 1)">◀ ก่อนหน้า</button>
-    <button class="btn btn-outline" onclick="goToQuestion(currentQ + 1)">ถัดไป ▶</button>
-    <button class="btn btn-gold" onclick="toggleExplanation()">💡 ดูเฉลย</button>
-    <button class="btn btn-outline" onclick="goHome()">⬅ กลับหน้าหลัก</button>
-  </div>
-</div>
-
-<!-- ══════════ RESULT ══════════ -->
-<div id="screen-result">
-  <div class="result-header">
-    <div class="result-score-ring">
-      <svg width="150" height="150" viewBox="0 0 150 150">
-        <circle cx="75" cy="75" r="64" fill="none" stroke="#1c2333" stroke-width="11"/>
-        <circle cx="75" cy="75" r="64" fill="none" stroke="url(#gr)" stroke-width="11"
-          stroke-dasharray="402" stroke-dashoffset="402" id="ring-circle" stroke-linecap="round"/>
-        <defs><linearGradient id="gr" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stop-color="#00d4aa"/><stop offset="100%" stop-color="#3b82f6"/>
-        </linearGradient></defs>
-      </svg>
-      <div class="result-score-inner">
-        <div class="result-pct" id="res-pct">0%</div>
-        <div class="result-label" id="res-fraction">0/100</div>
+<!-- ===== RESULT ===== -->
+<div id="result-screen" class="screen">
+  <div class="rhdr">
+    <h2>ผลการสอบ</h2>
+    <p id="rsub">ข้อสอบ ธ.ก.ส. Computer Software ระดับ 8</p>
+    <div class="scwrap">
+      <div class="sccircle">
+        <span class="spct" id="rpct">-</span>
+        <span class="slbl" id="rraw">-</span>
       </div>
     </div>
-    <div class="result-verdict" id="res-verdict"></div>
-    <div class="result-sub" id="res-sub"></div>
   </div>
-  <div class="result-stats" id="result-stats"></div>
-  <div style="text-align:center;margin-bottom:28px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
-    <button class="btn btn-primary" onclick="startExam(currentMode)">🔄 ทำข้อสอบใหม่</button>
-    <button class="btn btn-outline" onclick="goHome()">⬅ กลับหน้าหลัก</button>
+  <div class="rbody">
+    <div class="pbanner" id="pbanner">-</div>
+    <div class="rcgrid">
+      <div class="rcc rc1"><span class="rn" id="rcor">0</span><span class="rl">ตอบถูก</span></div>
+      <div class="rcc rc2"><span class="rn" id="rwrg">0</span><span class="rl">ตอบผิด</span></div>
+      <div class="rcc rc3"><span class="rn" id="rskp">0</span><span class="rl">ไม่ตอบ</span></div>
+      <div class="rcc rc4"><span class="rn" id="rtime">-</span><span class="rl">เวลาที่ใช้</span></div>
+    </div>
+    <div class="ract">
+      <button class="btn btn-p" onclick="goHome()">🏠 กลับหน้าหลัก</button>
+      <button class="btn btn-g" onclick="restart()">🔄 สอบใหม่</button>
+    </div>
+    <div class="revhdr">ทบทวนข้อสอบ</div>
+    <div class="ftabs">
+      <button class="ft on" onclick="frev('all')">ทั้งหมด</button>
+      <button class="ft" onclick="frev('wrong')">ตอบผิด</button>
+      <button class="ft" onclick="frev('skip')">ไม่ตอบ</button>
+      <button class="ft" onclick="frev('correct')">ตอบถูก</button>
+    </div>
+    <div id="revlist"></div>
   </div>
-  <div class="review-section" id="review-section"></div>
 </div>
 
-</div><!-- #app -->
+<!-- MODALS -->
+<div class="moverlay" id="msub">
+  <div class="modal">
+    <h3>ยืนยันส่งข้อสอบ</h3>
+    <p id="mmsg">ต้องการส่งข้อสอบหรือไม่?</p>
+    <div class="mbts">
+      <button class="btn btn-s" onclick="closeM('msub')">ยกเลิก</button>
+      <button class="btn btn-d" onclick="submitExam()">ส่งข้อสอบ</button>
+    </div>
+  </div>
+</div>
+<div class="moverlay" id="mtime">
+  <div class="modal">
+    <h3>⏰ หมดเวลาสอบ</h3>
+    <p>ระบบจะแสดงผลคะแนนอัตโนมัติ</p>
+    <div class="mbts"><button class="btn btn-d" onclick="submitExam()">ดูผลคะแนน</button></div>
+  </div>
+</div>
 
 <script>
-const API_URL = "https://api.anthropic.com/v1/messages";
-let questions = [], userAnswers = [], currentQ = 0, currentMode = '';
-let timerInterval = null, timeLeft = 0, examStartTime = null;
-let examSubmitted = false, explanationVisible = false;
-
-// ─── Tab switching ───
-function switchTab(id) {
-  const ids = ['yt','drive','competency','ex2563','topics'];
-  document.querySelectorAll('.res-tab').forEach((t,i) => {
-    t.classList.toggle('active', ids[i] === id);
-  });
-  document.querySelectorAll('.res-panel').forEach(p => {
-    p.classList.toggle('active', p.id === 'tab-'+id);
-  });
-}
-
-// ─── Real 2563 Q list ───
-const REAL_Q_2563 = [
-  {no:1, topic:'OS / Hardware', q:'เทคโนโลยีที่นำหน่วยความจำประเภท Flash Memory (เก็บข้อมูลใน ChipSet) มาใช้เก็บข้อมูลแทนจานแม่เหล็ก เรียกว่าอะไร', options:['SCSI — Small Computer System Interface สำหรับเชื่อมต่ออุปกรณ์','SSD — Solid State Drive ใช้ Flash Memory เก็บข้อมูล','HDD — Hard Disk Drive ใช้จานแม่เหล็กหมุน','FKSI — ไม่มีอยู่จริงในมาตรฐานอุตสาหกรรม'], ans:1, expl:'SSD (Solid State Drive) ใช้ Flash Memory ในการเก็บข้อมูล ต่างจาก HDD ที่ใช้จานแม่เหล็กหมุน SSD ทำงานได้เร็วกว่า ทนทานกว่า และไม่มีชิ้นส่วนที่เคลื่อนไหว'},
-  {no:2, topic:'Hardware', q:'เทคโนโลยีนำฮาร์ดดิสก์หลายอันมาต่อเข้าด้วยกัน เพื่อเพิ่มความน่าเชื่อถือของข้อมูล ด้วยการ mirroring, striping และ error correction เรียกว่าอะไร', options:['Ghost — เครื่องมือสำหรับสำเนาข้อมูลระหว่างดิสก์','Raid — Redundant Array of Independent Disks รวมฮาร์ดดิสก์','Clone — การทำสำเนาดิสก์ทั้งก้อนแบบ 1:1','Merge — การรวมพาร์ทิชันของดิสก์เข้าด้วยกัน'], ans:1, expl:'RAID (Redundant Array of Independent Disks) คือเทคโนโลยีรวมฮาร์ดดิสก์หลายลูกเพื่อเพิ่ม Performance หรือ Fault Tolerance มีหลาย Level เช่น RAID 0 (striping), RAID 1 (mirroring), RAID 5 (parity)'},
-  {no:3, topic:'OS', q:'หน้าที่ของ OS ครอบคลุมข้อใดต่อไปนี้', options:['Utility — โปรแกรมเสริมประสิทธิภาพคอมพิวเตอร์','Monitor — การตรวจสอบสถานะฮาร์ดแวร์ทั้งหมด','แปล Source Code — การแปลภาษาโปรแกรมเป็นภาษาเครื่อง','User Interface — ส่วนติดต่อผู้ใช้เพื่อสื่อสารกับระบบ'], ans:3, expl:'หนึ่งในหน้าที่หลักของ OS คือ User Interface (UI) ทั้งแบบ CLI และ GUI เพื่อให้ผู้ใช้สั่งงานคอมพิวเตอร์ได้ นอกจากนี้ OS ยังจัดการ Process, Memory, File System, I/O และความปลอดภัย'},
-  {no:5, topic:'Hardware / Server', q:'ธนาคารมีเครื่อง Server หลายเครื่องทำให้มีปัญหาพื้นที่จัดวางจำกัด ควรเปลี่ยนเป็น Server แบบใด', options:['Blade Server — เซิร์ฟเวอร์แบบใบมีดรวมหลายโหนดในตู้เดียว','Rack Server — เซิร์ฟเวอร์มาตรฐานติดตั้งในตู้ Rack','Tower Server — เซิร์ฟเวอร์แบบตั้งโต๊ะทรงสี่เหลี่ยม','Cloud Server — เซิร์ฟเวอร์เสมือนบน Cloud Computing'], ans:0, expl:'Blade Server คือเซิร์ฟเวอร์แบบ "ใบมีด" บรรจุหลาย Server Node ในตู้ Chassis เดียว ประหยัดพื้นที่มากที่สุด ลดการใช้ไฟและระบบระบายความร้อนได้ดีกว่า Tower/Rack Server'},
-  {no:6, topic:'Database', q:'ความสัมพันธ์ระหว่างนักเรียนกับรายวิชาที่ลงทะเบียนเป็นแบบใด', options:['ความสัมพันธ์ one to many ระหว่าง attribute ของตาราง','ความสัมพันธ์ many to many ระหว่าง attribute ของตาราง','ความสัมพันธ์ one to many ระหว่าง entity สองตาราง','ความสัมพันธ์ many to many ระหว่าง entity สองตาราง'], ans:3, expl:'นักเรียน 1 คนลงทะเบียนได้หลายรายวิชา และ 1 รายวิชามีนักเรียนหลายคน จึงเป็น many-to-many ระหว่าง entity (Student และ Course) ในการออกแบบ DB จะต้องสร้างตาราง Junction เพิ่ม'},
-  {no:7, topic:'Database', q:'ความสัมพันธ์ระหว่างลูกค้ากับสินค้าที่สั่งซื้อเป็นแบบใด', options:['one to one — ลูกค้า 1 คนสั่งสินค้าได้ 1 รายการ','one to many — ลูกค้า 1 คนสั่งสินค้าได้หลายรายการ','many to one — ลูกค้าหลายคนสั่งสินค้าได้ 1 รายการ','many to many — ลูกค้าหลายคนสั่งสินค้าได้หลายรายการ'], ans:1, expl:'ลูกค้า 1 คนสามารถสั่งซื้อสินค้าได้หลายรายการ (one-to-many) แต่สินค้าแต่ละรายการในคำสั่งซื้อเป็นของลูกค้าคนใดคนหนึ่ง ต่างจาก many-to-many ที่ลูกค้าสามารถสั่งสินค้าซ้ำกันหลายคน'},
-  {no:8, topic:'Database', q:'Data Warehouse ควรใช้ Database แบบใด', options:['OLTP Database — สำหรับงาน Transaction ประจำวัน','Object Oriented Database — สำหรับเก็บ Object ซับซ้อน','Relational Database — สำหรับงาน Query ทั่วไปแบบตาราง','Multidimensional Database — สำหรับวิเคราะห์ข้อมูลหลายมิติ'], ans:3, expl:'Data Warehouse ใช้ Multidimensional Database (OLAP) เพื่อรองรับการวิเคราะห์ข้อมูลหลายมิติ (Dimension) เช่น ยอดขายแยกตามเวลา ภูมิภาค และสินค้า ทำให้ Query สรุปข้อมูลขนาดใหญ่ได้เร็ว'},
-  {no:10, topic:'Database / SQL', q:'คำสั่งใดที่ดำเนินการในฐานข้อมูลแล้วไม่สามารถกู้คืนข้อมูลกลับได้', options:['DELETE — ลบแถวข้อมูล สามารถ Rollback ได้ถ้ายังไม่ Commit','TRUNCATE — ลบข้อมูลทุกแถว บางระบบ Rollback ไม่ได้','DROP — ลบตารางพร้อมโครงสร้างทั้งหมด กู้คืนไม่ได้','INSERT — เพิ่มข้อมูลใหม่ สามารถ Rollback ได้ก่อน Commit'], ans:2, expl:'DROP เป็นคำสั่ง DDL ที่ลบทั้งตาราง (โครงสร้าง+ข้อมูล) ออกจากฐานข้อมูลโดยสมบูรณ์ ไม่สามารถ Rollback ได้ ต่างจาก DELETE/TRUNCATE ที่เป็น DML และ TRUNCATE ที่บาง DBMS สามารถ Rollback ได้'},
-  {no:11, topic:'Database / SQL', q:'จากตาราง Employee คำสั่ง UPDATE ใดประมวลผลได้ถูกต้อง ไม่กระทบ Record อื่น', options:['UPDATE Employee SET Surname="Koffman" WHERE ID="6666" — ID ที่ไม่มีอยู่จริง','UPDATE Employee SET Surname="Cantona" WHERE Department_Name="Logistic" — Department ไม่มีในตาราง','UPDATE Employee SET Name="Bovy" WHERE Department_ID="2" — กระทบหลาย Record','UPDATE Employee SET Department_ID="3" WHERE ID="4444" — ใช้ Primary Key ระบุแถวเดียว'], ans:3, expl:'การ UPDATE ที่ปลอดภัยที่สุดคือใช้ Primary Key (ID="4444") เป็นเงื่อนไข เพราะ Primary Key ไม่ซ้ำกัน จึงกระทบเพียง 1 แถว ตัวเลือกอื่นใช้คอลัมน์ที่ซ้ำได้หรือข้อมูลที่ไม่มีอยู่'},
-  {no:12, topic:'Database / SQL', q:'คำสั่ง SQL ใดไม่ถูกต้อง ถ้าต้องการ SELECT ข้อมูล salary < 50,000', options:['WHERE Salary <= 49999 — ใช้ได้ถ้า salary เป็น Integer','WHERE Salary BETWEEN 0 AND 49999 — ระบุช่วงรวม 0-49999','WHERE NOT (salary >= 50000) — ตรงกับ salary < 50000','WHERE Salary > 0 OR salary < 50000 — ผิด OR ควรเป็น AND'], ans:1, expl:'BETWEEN 0 AND 49999 ไม่ครอบคลุม Salary ที่ติดลบ และไม่ครอบคลุมค่า 49999.50 ถ้า Salary เป็น Decimal ส่วน "Salary > 0 OR salary < 50000" ผิดตรรกะ ควรใช้ AND ไม่ใช่ OR'},
-  {no:14, topic:'Data Structure', q:'ข้อใดเป็นลักษณะของโครงสร้างข้อมูลแบบ Stack', options:['FIFO (First In First Out) — เข้าก่อนออกก่อนเหมือนแถวคิว','LIFO (Last In First Out) — เข้าหลังออกก่อนเหมือนกองจาน','FKSC — ไม่มีอยู่จริงในโครงสร้างข้อมูลมาตรฐาน','Flow — การไหลของข้อมูลตามเส้นทางที่กำหนด'], ans:1, expl:'Stack ใช้หลัก LIFO (Last In First Out) ข้อมูลที่เพิ่มเข้ามาล่าสุด (push) จะถูกดึงออกก่อน (pop) เปรียบเหมือนกองจานหรือ undo history ใน Text Editor'},
-  {no:15, topic:'Data Structure', q:'โครงสร้างข้อมูลแบบใดใช้หลักการ "เข้าก่อน (First In) ออกก่อน (First Out)"', options:['Stack — โครงสร้างแบบ LIFO เข้าหลังออกก่อน','Queue — โครงสร้างแบบ FIFO เข้าก่อนออกก่อน','Linked List — โครงสร้างแบบ Linear เชื่อมโยงด้วย Pointer','Push — คำสั่งเพิ่มข้อมูลใน Stack ไม่ใช่โครงสร้าง'], ans:1, expl:'Queue ใช้หลัก FIFO (First In First Out) ข้อมูลที่เข้ามาก่อนจะออกก่อน เปรียบเหมือนแถวคิวซื้อของ ใช้ในระบบ Print Spooler, Task Scheduling, Message Queue'},
-  {no:16, topic:'Integration', q:'รูปแบบไฟล์ที่เหมาะสมที่สุดสำหรับการเชื่อมข้อมูลระหว่างระบบที่ต่างแพลตฟอร์ม', options:['CSV — Comma Separated Values เหมาะ Spreadsheet','Text File — ไฟล์ข้อความธรรมดา ไม่มีโครงสร้าง','XML — Extensible Markup Language รองรับข้อมูลซับซ้อน','SOAP — Protocol ไม่ใช่ format ไฟล์'], ans:2, expl:'XML เป็นมาตรฐานสากลสำหรับแลกเปลี่ยนข้อมูลระหว่างระบบ รองรับโครงสร้างซับซ้อน มี Schema validation และทำงานข้ามแพลตฟอร์มได้ดี แม้ปัจจุบัน JSON นิยมมากขึ้นสำหรับ REST API'},
-  {no:17, topic:'Integration / API', q:'การเชื่อมโยงระบบ Mobile Application บนระบบที่ไม่เสถียร ควรใช้การเชื่อมโยงแบบใด', options:['RESTful + JSON — เบา ยืดหยุ่น เหมาะ Mobile ที่ไม่เสถียร','RESTful + XML — ใหญ่กว่า JSON ทำงานหนักกว่าบน Mobile','SOAP + JSON — SOAP ไม่รองรับ JSON เป็น Native','SOAP + XML — หนักมาก ไม่เหมาะเครือข่ายไม่เสถียร'], ans:0, expl:'RESTful API + JSON เบาที่สุด ใช้ Bandwidth น้อย Parse เร็ว เหมาะกับ Mobile Application โดยเฉพาะเครือข่ายไม่เสถียร ต่างจาก SOAP+XML ที่ Overhead สูงและซับซ้อนกว่า'},
-  {no:18, topic:'SDLC / Testing', q:'ลำดับการทดสอบระบบที่ถูกต้องที่สุดคือข้อใด', options:['Unit Test → Integration Test → System Test → Acceptance Test','Integration Test → System Test → Acceptance Test → Unit Test','Unit Test → System Test → Acceptance Test → Integration Test','Integration Test → Acceptance Test → System Test → Unit Test'], ans:0, expl:'ลำดับมาตรฐาน: Unit Test (ทดสอบแต่ละโมดูล) → Integration Test (ทดสอบการเชื่อมต่อ) → System Test (ทดสอบทั้งระบบ) → Acceptance Test (ผู้ใช้ยืนยัน) ตามแนวทาง V-Model'},
-  {no:19, topic:'SDLC / Installation', q:'การติดตั้งระบบแบบใดที่หยุดระบบงานเดิมและใช้ระบบใหม่ทันที เนื่องจากระบบเก่าและใหม่แตกต่างกันมาก', options:['Direct Installation — หยุดระบบเก่า เริ่มระบบใหม่ทันที ความเสี่ยงสูง','Parallel Installation — รันระบบเก่าและใหม่พร้อมกันสักระยะ','Phase Installation — ค่อยๆ เปลี่ยนทีละส่วนตามแผนงาน','Pilot Project — ทดลองในพื้นที่/ส่วนงานเดียวก่อน'], ans:0, expl:'Direct Installation (หรือ Direct Cutover) คือหยุดระบบเก่าและเปิดระบบใหม่ทันที มีความเสี่ยงสูงที่สุดแต่ต้นทุนต่ำที่สุด เหมาะเมื่อระบบเก่าและใหม่ไม่สามารถทำงานร่วมกันได้'},
-  {no:20, topic:'SDLC / Maintenance', q:'ป่วยแล้วไปพบแพทย์ แพทย์จ่ายยามาให้กิน เปรียบได้กับการบำรุงรักษาระบบแบบใด', options:['Corrective Maintenance — แก้ไขข้อผิดพลาดที่เกิดขึ้น','Adaptive Maintenance — ปรับระบบรองรับสภาพแวดล้อมใหม่','Perfective Maintenance — ปรับปรุงประสิทธิภาพให้ดีขึ้น','Preventive Maintenance — บำรุงรักษาเชิงป้องกันล่วงหน้า'], ans:0, expl:'Corrective Maintenance คือการแก้ไขข้อผิดพลาดหรือ Bug ที่เกิดขึ้นในระบบ เปรียบเหมือนการรักษาอาการป่วย ต่างจาก Preventive (ฉีดวัคซีนป้องกัน) และ Perfective (ออกกำลังกายให้แข็งแรงขึ้น)'},
-  {no:22, topic:'SDLC / Requirements', q:'ข้อใดไม่ใช่ความต้องการด้านฟังก์ชัน (Functional Requirement)', options:['ระบบต้องประมวลผลได้อย่างรวดเร็วภายใน 2 วินาที (Non-Functional)','ระบบสามารถออกรายงานสรุปยอดรายเดือนได้ (Functional)','ระบบสามารถคำนวณดอกเบี้ยตามสูตรได้ (Functional)','ระบบสามารถเปลี่ยนค่า Configuration ผ่านหน้าจอได้ (Functional)'], ans:0, expl:'Non-Functional Requirement คือคุณสมบัติเชิงคุณภาพ เช่น ความเร็ว ความปลอดภัย ความน่าเชื่อถือ Functional Requirement คือสิ่งที่ระบบต้องทำได้ เช่น ออกรายงาน คำนวณ เปลี่ยน Config'},
-  {no:23, topic:'CMMI', q:'CMMI ของธนาคาร ธ.ก.ส. ปัจจุบันอยู่ในระดับใด', options:['ระดับ 3 นิยาม — กระบวนการถูกกำหนดไว้เป็นลายลักษณ์อักษร','ระดับ 5 นิยาม — กระบวนการมีการปรับปรุงอย่างต่อเนื่อง','ระดับ 3 กำหนด — Defined Process มีมาตรฐานทั่วองค์กร','ระดับ 5 กำหนด — Optimizing ปรับปรุงด้วยข้อมูล'], ans:2, expl:'ธ.ก.ส. อยู่ที่ CMMI Level 3 (Defined) หมายความว่าองค์กรมีกระบวนการพัฒนาซอฟต์แวร์ที่กำหนดเป็นมาตรฐานทั่วทั้งองค์กร มีการนำ Best Practice ไปใช้อย่างสม่ำเสมอ'},
-  {no:24, topic:'SDLC / DFD', q:'ประโยชน์หลักของการเขียน Data Flow Diagram (DFD) คืออะไร', options:['วาดเป็นภาพง่ายกว่าเขียนเป็นตัวอักษรและข้อความ','สามารถแก้ไขข้อผิดพลาดในระบบได้อย่างถูกจุด','สามารถเห็นขั้นตอนและการไหลของข้อมูลได้ชัดเจน','เรียงลำดับความสำคัญของฟังก์ชันในระบบ'], ans:2, expl:'DFD ใช้แสดงขั้นตอนการไหลของข้อมูล (Data Flow) ระหว่าง Process, Data Store และ External Entity ทำให้ทีมพัฒนาและผู้ใช้เห็นภาพรวมระบบ เข้าใจง่าย ก่อนเขียน Code'},
-  {no:27, topic:'Technology / Big Data', q:'ข้อใดกล่าวถึง Big Data ได้ถูกต้องที่สุด', options:['ข้อมูลที่เติบโตอย่างรวดเร็วในช่วงเวลาหนึ่งแล้วหมดความสำคัญ','ข้อมูลขนาดใหญ่ที่มีความหลากหลาย ปริมาณมาก และเปลี่ยนเร็ว','ข้อมูลที่ถูก Encrypt เก็บไว้ในระบบ Cloud ขนาดใหญ่','ข้อมูลที่ต้องการ Server ขนาดใหญ่ในการจัดเก็บ'], ans:1, expl:'Big Data มีลักษณะ 5V: Volume (ปริมาณมาก), Velocity (เปลี่ยนเร็ว), Variety (หลากหลาย), Veracity (ความถูกต้อง), Value (มีคุณค่า) ไม่ใช่แค่ข้อมูลขนาดใหญ่เท่านั้น'},
-  {no:29, topic:'Technology / Cloud', q:'ข้อใดคือประโยชน์ของ Cloud Computing', options:['เข้าถึงข้อมูลจากที่ใดก็ได้ผ่าน Internet เพียงอย่างเดียว','ขยายขนาด Resource ได้ง่ายและรวดเร็วตามความต้องการ','ประหยัดต้นทุนการลงทุนด้าน Hardware เท่านั้น','ถูกต้องทุกข้อที่กล่าวมาข้างต้น'], ans:3, expl:'Cloud Computing มีประโยชน์หลายด้านพร้อมกัน: Accessibility (เข้าถึงได้ทุกที่), Scalability (ขยายลดทรัพยากรได้), Cost Saving (ลงทุนน้อยกว่า On-Premise) จึงถูกต้องทุกข้อ'},
-  {no:30, topic:'Technology / IoT', q:'ข้อใดกล่าวถึง Internet of Things (IoT) ได้ถูกต้องที่สุด', options:['เทคโนโลยีที่ช่วยเข้าถึงโครงสร้างพื้นฐานเครือข่าย','การใช้อินเทอร์เน็ตในอุตสาหกรรมขนาดใหญ่','เทคโนโลยี RFID และ Sensor ที่ใช้ตรวจวัดสิ่งแวดล้อม','การเชื่อมต่ออุปกรณ์ผ่าน Sensor และอินเทอร์เน็ต'], ans:3, expl:'IoT (Internet of Things) คือการเชื่อมต่ออุปกรณ์ต่างๆ (เช่น เครื่องใช้ไฟฟ้า รถยนต์ เซ็นเซอร์) เข้ากับอินเทอร์เน็ตเพื่อรับส่งข้อมูลและควบคุมจากระยะไกลได้อัตโนมัติ'},
-  {no:32, topic:'Technology / Blockchain', q:'ข้อใดกล่าวถึง Blockchain ได้ถูกต้องที่สุด', options:['เทคโนโลยีเกี่ยวกับการทำธุรกรรมการเงินโดยตรง','เทคโนโลยีเกี่ยวกับการทำบัญชีในองค์กรขนาดใหญ่','เทคโนโลยีเข้ารหัสข้อมูลการเงินในรูปแบบบล็อก','ระบบโครงข่ายเก็บบัญชีธุรกรรมออนไลน์แบบกระจายศูนย์'], ans:3, expl:'Blockchain คือระบบบัญชีแบบกระจายศูนย์ (Distributed Ledger) ที่ข้อมูลถูกเก็บในหลาย Node พร้อมกัน ทำให้แก้ไขยาก มีความโปร่งใสสูง ใช้ใน Cryptocurrency, Smart Contract และการตรวจสอบซัพพลายเชน'},
-  {no:35, topic:'วิสัยทัศน์ / Financial', q:'ข้อใดตรงกับ Financial Literacy ตามนโยบาย ธ.ก.ส.', options:['ให้ความรู้การบริหารเงินแก่เกษตรกรและประชาชน','สนับสนุนแหล่งเงินทุนให้แก่เกษตรกรโดยตรง','สนับสนุนเกษตรกรด้านเงินฝากและออมทรัพย์','สนับสนุนนวัตกรรมทางการเงินใหม่ๆ'], ans:0, expl:'Financial Literacy หมายถึงการส่งเสริมความรู้ทางการเงิน เช่น การออม การลงทุน การวางแผนการเงิน การบริหารหนี้ ให้แก่เกษตรกรและประชาชน เพื่อให้สามารถดูแลการเงินของตนเองได้อย่างมีประสิทธิภาพ'},
+// ============================================================
+// QUESTION BANKS
+// ============================================================
+const GQ = [
+{id:1,cat:"ESG / นโยบายภาครัฐ",
+q:"ESG ในบริบทของ ธ.ก.ส. ประกอบด้วยองค์ประกอบสำคัญใด และมีความหมายอย่างไร",
+c:["Economic, Strategic, Governance — เศรษฐกิจ กลยุทธ์ ธรรมาภิบาล ของรัฐวิสาหกิจ",
+   "Environmental, Social, Governance — สิ่งแวดล้อม สังคม ธรรมาภิบาล กรอบดำเนินงานยั่งยืน",
+   "Enterprise, Stability, Growth — ความมั่นคง เสถียรภาพ เติบโตขององค์กร",
+   "Efficiency, Sustainability, Governance — ประสิทธิภาพ ความยั่งยืน การกำกับดูแล"],
+a:1,e:"ESG ย่อมาจาก Environmental (สิ่งแวดล้อม), Social (สังคม), Governance (ธรรมาภิบาล) เป็นกรอบที่ ธ.ก.ส. ใช้ประเมินและรายงานผลการดำเนินงานด้านความยั่งยืน ซึ่งสอดคล้องกับวิสัยทัศน์ 'ธนาคารพัฒนาชนบทที่ยั่งยืน' ครอบคลุมการลดผลกระทบสิ่งแวดล้อม การดูแลสังคมชุมชน และการกำกับดูแลกิจการที่ดี"},
+{id:2,cat:"ESG / นโยบายภาครัฐ",
+q:"BCG Economy ที่รัฐบาลขับเคลื่อนอยู่มีความเชื่อมโยงกับ ธ.ก.ส. อย่างไรมากที่สุด",
+c:["เฉพาะ B (Bio-economy) เนื่องจาก ธ.ก.ส. ให้สินเชื่อภาคเกษตรอย่างเดียว",
+   "ทั้ง B, C, G เชื่อมโยงกับภารกิจ ธ.ก.ส. ในมิติที่แตกต่างกัน",
+   "เฉพาะ G (Green Economy) เนื่องจาก ธ.ก.ส. ลงทุนธุรกิจสีเขียวล้วน",
+   "BCG ไม่เกี่ยวกับ ธ.ก.ส. เพราะเป็นนโยบายของภาคอุตสาหกรรมเท่านั้น"],
+a:1,e:"ธ.ก.ส. เชื่อมโยงกับ BCG ครบทั้ง 3 มิติ ได้แก่ B (Bio-economy) สนับสนุนเกษตรกรในอุตสาหกรรมฐานชีวภาพ, C (Circular Economy) ส่งเสริมการใช้ทรัพยากรหมุนเวียนในชุมชน, G (Green Economy) สนับสนุนโครงการสีเขียวและพลังงานทดแทน"},
+{id:3,cat:"SE-AM / CG",
+q:"SE-AM (State Enterprise Assessment Model) ที่ ธ.ก.ส. ต้องปฏิบัติตาม มีวัตถุประสงค์หลักอย่างไร",
+c:["ประเมินประสิทธิภาพพนักงานรายบุคคลเพื่อขึ้นเงินเดือน",
+   "ประเมินกระบวนการปฏิบัติงานและจัดการ Core Business Enablers ของรัฐวิสาหกิจ",
+   "ตรวจสอบการใช้งบประมาณประจำปีของหน่วยงานรัฐวิสาหกิจ",
+   "วัดความพึงพอใจของลูกค้าต่อบริการรัฐวิสาหกิจ"],
+a:1,e:"SE-AM คือหลักเกณฑ์การประเมินกระบวนการปฏิบัติงานและการจัดการ Core Business Enablers ของรัฐวิสาหกิจ (ฉบับปรับปรุง ปี 2569) กำหนดโดย สคร. มุ่งยกระดับการบริหารรัฐวิสาหกิจให้มีประสิทธิภาพ ธรรมาภิบาล และสร้างคุณค่าให้ผู้มีส่วนได้เสีย"},
+{id:4,cat:"SE-AM / CG",
+q:"หลักธรรมาภิบาลสำหรับรัฐวิสาหกิจ (PRIDE) ที่ สคร. กำหนด ตัว P หมายถึงอะไร",
+c:["Profitability — การสร้างกำไรสูงสุดเพื่อนำส่งรัฐ",
+   "Performance — การมุ่งเน้นผลสัมฤทธิ์และผลการดำเนินงาน",
+   "Privacy — การคุ้มครองข้อมูลส่วนบุคคลของลูกค้า",
+   "Participation — การมีส่วนร่วมของผู้ถือหุ้นในการตัดสินใจ"],
+a:1,e:"PRIDE ของรัฐวิสาหกิจ ได้แก่ P=Performance (มุ่งเน้นผลสัมฤทธิ์), R=Responsibility (ความรับผิดชอบ), I=Integrity (ความซื่อสัตย์โปร่งใส), D=Disclosure (การเปิดเผยข้อมูล), E=Equity (ความเป็นธรรม) เป็นรากฐานของการกำกับดูแลกิจการที่ดีสำหรับรัฐวิสาหกิจไทย"},
+{id:5,cat:"PDPA",
+q:"ตาม พ.ร.บ. คุ้มครองข้อมูลส่วนบุคคล 2562 ธ.ก.ส. ในฐานะ Data Controller ต้องแจ้งเหตุละเมิดข้อมูลต่อ PDPC ภายในกี่ชั่วโมง",
+c:["ภายใน 24 ชั่วโมง นับแต่ทราบเหตุการณ์",
+   "ภายใน 48 ชั่วโมง นับแต่ทราบเหตุการณ์",
+   "ภายใน 72 ชั่วโมง นับแต่ทราบเหตุการณ์",
+   "ภายใน 7 วันทำการ นับแต่ทราบเหตุการณ์"],
+a:2,e:"PDPA มาตรา 37(4) กำหนดให้ Data Controller แจ้งเหตุละเมิดข้อมูลส่วนบุคคลต่อสำนักงาน PDPC ภายใน 72 ชั่วโมง นับแต่ทราบเหตุ เว้นแต่จะพิสูจน์ได้ว่าไม่น่าจะก่อให้เกิดความเสี่ยงต่อสิทธิและเสรีภาพ"},
+{id:6,cat:"PDPA",
+q:"ฐานทางกฎหมายในการประมวลผลข้อมูลส่วนบุคคลตาม PDPA มาตรา 24 มีกี่ฐาน",
+c:["4 ฐาน ได้แก่ ความยินยอม สัญญา กฎหมาย ประโยชน์โดยชอบ",
+   "5 ฐาน ได้แก่ ความยินยอม สัญญา หน้าที่กฎหมาย ประโยชน์สำคัญ งานสาธารณะ",
+   "6 ฐาน ได้แก่ ความยินยอม สัญญา หน้าที่กฎหมาย ประโยชน์สำคัญ งานสาธารณะ ประโยชน์โดยชอบ",
+   "7 ฐาน รวมถึงฐานการวิจัยและสถิติเพิ่มเติม"],
+a:2,e:"PDPA มาตรา 24 กำหนดฐานทางกฎหมาย 6 ฐาน ได้แก่ 1.Consent 2.Contract 3.Legal Obligation 4.Vital Interest 5.Public Task 6.Legitimate Interest ซึ่งองค์กรต้องระบุฐานที่ใช้ก่อนประมวลผลข้อมูลทุกครั้ง"},
+{id:7,cat:"Cyber Security / ปปง.",
+q:"Zero Trust Architecture ยึดหลักการสำคัญใดในการรักษาความปลอดภัยไซเบอร์",
+c:["Trust but Verify — ไว้วางใจแต่ยังตรวจสอบอยู่เสมอ",
+   "Never Trust, Always Verify — ไม่ไว้วางใจ ตรวจสอบทุกครั้ง",
+   "Perimeter Defense — ป้องกันขอบเขตระบบเท่านั้น",
+   "Security through Obscurity — ซ่อนระบบไม่ให้ผู้โจมตีพบ"],
+a:1,e:"Zero Trust Architecture (ZTA) ยึดหลัก 'Never Trust, Always Verify' ไม่ไว้วางใจการเชื่อมต่อใดๆ ทั้งจากภายในและภายนอกองค์กร ทุก Request ต้องผ่านการยืนยันตัวตน ตรวจสอบสิทธิ์ และตรวจสอบพฤติกรรมทุกครั้ง ลดความเสี่ยงจาก Insider Threats"},
+{id:8,cat:"Cyber Security / ปปง.",
+q:"การรายงาน STR (Suspicious Transaction Report) ตามกฎหมาย ปปง. พนักงาน ธ.ก.ส. ต้องปฏิบัติอย่างไร",
+c:["แจ้งลูกค้าทันทีว่ากำลังรายงานธุรกรรมน่าสงสัย",
+   "รายงานตรงต่อ ปปง. ด้วยตัวเองภายใน 1 วัน",
+   "รายงานผู้บังคับบัญชาทันทีโดยไม่แจ้งลูกค้า ให้ธนาคารส่ง STR ต่อ ปปง. ภายใน 3 วันทำการ",
+   "เก็บบันทึกไว้ภายในและรายงานในรายงานประจำปี"],
+a:2,e:"พนักงานที่พบธุรกรรมน่าสงสัยต้องรายงานผู้บังคับบัญชาทันทีโดยไม่แจ้งลูกค้า (Tipping Off ถือเป็นความผิด) เพื่อให้ธนาคารในฐานะสถาบันการเงินที่ต้องรายงาน ส่ง STR ต่อ ปปง. ภายใน 3 วันทำการนับแต่ทราบ"},
+{id:9,cat:"Cyber Security / ปปง.",
+q:"Ransomware คืออะไร และวิธีรับมือที่ดีที่สุดเมื่อเกิดเหตุใน ธ.ก.ส. คืออะไร",
+c:["สแปมอีเมลที่รบกวนระบบ รับมือด้วยการเปลี่ยนรหัสผ่าน",
+   "มัลแวร์เข้ารหัสข้อมูลเรียกค่าไถ่ รับมือด้วยการ Restore จาก Backup ที่ปลอดภัย",
+   "ไวรัสที่ลบไฟล์ระบบ รับมือด้วยการติดตั้ง OS ใหม่",
+   "การโจมตี DDoS ทำระบบล่ม รับมือด้วยการเพิ่ม Bandwidth"],
+a:1,e:"Ransomware เป็น Malware เข้ารหัสไฟล์และเรียกค่าไถ่ การรับมือที่ดีที่สุดคือ 1.แยกระบบที่ติดออกจากเครือข่ายทันที 2.ไม่จ่ายค่าไถ่ 3.Restore ข้อมูลจาก Offline/Immutable Backup สิ่งป้องกันสำคัญคือการสำรองข้อมูลสม่ำเสมอและ Patch ระบบ"},
+{id:10,cat:"วิสัยทัศน์ ธ.ก.ส.",
+q:"วิสัยทัศน์ของ ธ.ก.ส. ในปัจจุบันคืออะไร",
+c:["ธนาคารดิจิทัลชั้นนำสำหรับเกษตรกรทั่วประเทศ",
+   "ธนาคารพัฒนาชนบทที่ยั่งยืน",
+   "สถาบันการเงินเฉพาะกิจที่มีกำไรสูงสุด",
+   "ธนาคารสำหรับเกษตรกรที่ใหญ่ที่สุดในอาเซียน"],
+a:1,e:"วิสัยทัศน์ของ ธ.ก.ส. คือ 'ธนาคารพัฒนาชนบทที่ยั่งยืน' สะท้อนพันธกิจในการพัฒนาคุณภาพชีวิตเกษตรกรและชุมชนชนบท ควบคู่กับความยั่งยืนด้านเศรษฐกิจ สังคม และสิ่งแวดล้อม สอดคล้องกับ ESG และ SDGs"},
+{id:11,cat:"วิสัยทัศน์ ธ.ก.ส.",
+q:"ยุทธศาสตร์ชาติ 20 ปี (พ.ศ. 2561-2580) ที่เกี่ยวข้องกับภารกิจ ธ.ก.ส. มากที่สุดคือข้อใด",
+c:["ยุทธศาสตร์ที่ 1 ด้านความมั่นคงของชาติ",
+   "ยุทธศาสตร์ที่ 4 ด้านการสร้างโอกาสและความเสมอภาคทางสังคม",
+   "ยุทธศาสตร์ที่ 2 ด้านการสร้างความสามารถในการแข่งขัน",
+   "ยุทธศาสตร์ที่ 6 ด้านการปรับสมดุลระบบบริหารจัดการภาครัฐ"],
+a:1,e:"ยุทธศาสตร์ที่ 4 ด้านการสร้างโอกาสและความเสมอภาคทางสังคม มุ่งลดความเหลื่อมล้ำ พัฒนาคนทุกช่วงวัย โดยเฉพาะเกษตรกรและชุมชนรากหญ้า ตรงกับพันธกิจหลักของ ธ.ก.ส. ในการให้สินเชื่อและพัฒนาคุณภาพชีวิตเกษตรกร"},
+{id:12,cat:"Risk Culture / การบริหารความเสี่ยง",
+q:"วัฒนธรรมองค์กรที่คำนึงถึงความเสี่ยง (Risk Culture) ของ ธ.ก.ส. มีความสำคัญอย่างไร",
+c:["ทำให้พนักงานหลีกเลี่ยงความเสี่ยงทุกรูปแบบ ไม่กล้าตัดสินใจ",
+   "ให้เฉพาะผู้บริหารระดับสูงรับผิดชอบด้านความเสี่ยง",
+   "สร้างให้พนักงานทุกระดับตระหนัก วิเคราะห์ และจัดการความเสี่ยงในหน้าที่ตน",
+   "ลดต้นทุนการดำเนินงานโดยยกเว้นการประเมินความเสี่ยงในงานเล็ก"],
+a:2,e:"Risk Culture ที่ดีทำให้พนักงานทุกระดับตั้งแต่ผู้บริหารถึงพนักงานหน้างาน ตระหนักถึงความเสี่ยงในงานตนเอง สามารถวิเคราะห์และจัดการได้โดยไม่ต้องรอคำสั่ง ช่วยลดโอกาสเกิดความเสียหายและสร้างความมั่นคงขององค์กรในระยะยาว"},
+{id:13,cat:"Risk Culture / การบริหารความเสี่ยง",
+q:"3 Lines of Defense ในการบริหารความเสี่ยงของ ธ.ก.ส. กำหนดว่า IT Audit อยู่ใน Line ใด",
+c:["Line 1 เป็นเจ้าของความเสี่ยง IT โดยตรง",
+   "Line 2 ออกนโยบายและกำกับดูแล IT Risk",
+   "Line 3 ตรวจสอบอิสระ ไม่อยู่ในสายบริหาร",
+   "Line 1 และ Line 2 ขึ้นอยู่กับขนาดของหน่วยงาน"],
+a:2,e:"3 Lines of Defense: Line 1 = ฝ่ายปฏิบัติการ IT เป็นเจ้าของความเสี่ยง / Line 2 = ฝ่าย IT Risk ออกนโยบายกำกับดูแล / Line 3 = IT Internal Audit ตรวจสอบอิสระ รายงานตรงต่อ Audit Committee ไม่อยู่ในสายบริหาร"},
+{id:14,cat:"Market Conduct / CG",
+q:"Market Conduct ที่ ธปท. กำหนดให้ ธ.ก.ส. ปฏิบัติ เน้นการคุ้มครองลูกค้าในด้านใดหลัก",
+c:["การกำหนดดอกเบี้ยสินเชื่อให้ต่ำกว่าธนาคารพาณิชย์ทุกกรณี",
+   "การให้ข้อมูลถูกต้องครบถ้วนโปร่งใส และปฏิบัติต่อลูกค้าอย่างเป็นธรรม",
+   "การให้สินเชื่อแก่ลูกค้าที่มีเครดิตดีเท่านั้น",
+   "การยกเว้นค่าธรรมเนียมทุกประเภทสำหรับเกษตรกร"],
+a:1,e:"Market Conduct เน้น 4 ด้านหลัก คือ 1.การให้ข้อมูลที่ถูกต้องครบถ้วนก่อนทำสัญญา 2.ค่าธรรมเนียมและดอกเบี้ยโปร่งใส 3.การจัดการข้อร้องเรียนที่มีประสิทธิภาพ 4.ปฏิบัติต่อลูกค้าอย่างเป็นธรรมไม่เลือกปฏิบัติ"},
+{id:15,cat:"Market Conduct / CG",
+q:"Data Governance ของ ธ.ก.ส. ครอบคลุมสิ่งใดบ้าง",
+c:["เฉพาะการเข้ารหัสข้อมูลลับของธนาคาร",
+   "กรอบนโยบายกระบวนการมาตรฐานในการบริหารจัดการข้อมูลให้มีคุณภาพปลอดภัยและใช้ประโยชน์ได้",
+   "เฉพาะการสำรองข้อมูลตามระยะเวลาที่กำหนด",
+   "เฉพาะการควบคุมการเข้าถึงของพนักงานแต่ละฝ่าย"],
+a:1,e:"Data Governance คือกรอบนโยบาย กระบวนการ และมาตรฐานในการบริหารจัดการข้อมูลขององค์กร ครอบคลุม Data Quality, Data Security, Data Privacy, Data Ownership, Data Lifecycle Management เพื่อให้ข้อมูลมีคุณภาพและนำไปใช้ตัดสินใจได้อย่างมีประสิทธิภาพ"},
+{id:16,cat:"ESG / นโยบายภาครัฐ",
+q:"เป้าหมาย Carbon Neutrality ของประเทศไทย กำหนดให้บรรลุในปีใด",
+c:["ปี ค.ศ. 2030 ตามเป้าหมาย Paris Agreement",
+   "ปี ค.ศ. 2050 และ Net Zero Emission ปี ค.ศ. 2065",
+   "ปี ค.ศ. 2040 ตามยุทธศาสตร์ชาติ 20 ปี",
+   "ปี ค.ศ. 2060 ตามที่คณะรัฐมนตรีมีมติ"],
+a:1,e:"ไทยประกาศเป้าหมาย Carbon Neutrality ปี 2050 และ Net Zero Greenhouse Gas Emissions ปี 2065 ซึ่งส่งผลต่อ ธ.ก.ส. ในการสนับสนุนเกษตรอินทรีย์ พลังงานทดแทน และ Climate Finance สำหรับเกษตรกร"},
+{id:17,cat:"Cyber Security / ปปง.",
+q:"KYC (Know Your Customer) ของ ธ.ก.ส. มีวัตถุประสงค์หลักคืออะไร",
+c:["เพื่อแนะนำผลิตภัณฑ์ที่ตรงกับความต้องการลูกค้า",
+   "เพื่อยืนยันตัวตนลูกค้า ประเมินความเสี่ยง และป้องกัน AML/CFT",
+   "เพื่อวิเคราะห์พฤติกรรมการใช้จ่ายเพื่อการตลาด",
+   "เพื่อกรอกข้อมูลในระบบฐานข้อมูลให้ครบถ้วน"],
+a:1,e:"KYC คือกระบวนการยืนยันตัวตนลูกค้า ประเมินระดับความเสี่ยง และติดตามธุรกรรม เพื่อป้องกัน AML (Anti-Money Laundering) และ CFT (Counter Financing of Terrorism) ตามกฎหมาย ปปง. และข้อกำหนด ธปท."},
+{id:18,cat:"วิสัยทัศน์ ธ.ก.ส.",
+q:"Financial Inclusion ในบริบทของ ธ.ก.ส. หมายถึงอะไร",
+c:["การรวมบริการทางการเงินทุกประเภทไว้ในแอปเดียว",
+   "การให้บริการทางการเงินแก่ทุกกลุ่มรวมถึงผู้ด้อยโอกาสและคนในชนบท",
+   "การรวมธนาคารรัฐทุกแห่งให้บริการภายใต้แบรนด์เดียว",
+   "การโอนเงินระหว่างธนาคารได้โดยไม่มีค่าธรรมเนียม"],
+a:1,e:"Financial Inclusion หมายถึงการทำให้ประชาชนทุกกลุ่มรวมถึงเกษตรกร คนในชนบท ผู้ไม่มีหลักประกัน ผู้สูงอายุ สามารถเข้าถึงบริการทางการเงินได้อย่างเป็นธรรม ซึ่งเป็นพันธกิจสำคัญของ ธ.ก.ส. ตามหลัก 'ธนาคารไม่ทิ้งใคร'"},
+{id:19,cat:"Risk Culture / การบริหารความเสี่ยง",
+q:"Operational Risk ของ ธ.ก.ส. ตามนิยาม Basel ครอบคลุมสิ่งใด",
+c:["เฉพาะความเสี่ยงจากอัตราดอกเบี้ยและอัตราแลกเปลี่ยน",
+   "ความเสี่ยงจากกระบวนการ บุคลากร ระบบ IT และเหตุการณ์ภายนอก",
+   "เฉพาะความเสี่ยงจากการที่ลูกหนี้ไม่ชำระหนี้",
+   "เฉพาะความเสี่ยงจากการลงทุนในหลักทรัพย์"],
+a:1,e:"Operational Risk ตามนิยาม Basel II/III ครอบคลุม 4 ด้าน ได้แก่ People (บุคลากร), Process (กระบวนการ), System (ระบบ IT รวมถึง Cyber Risk), External Events (เหตุการณ์ภายนอก เช่น ภัยพิบัติ การฉ้อโกง)"},
+{id:20,cat:"PDPA",
+q:"สิทธิ Right to Erasure (ขอลบข้อมูล) ตาม PDPA มีข้อยกเว้นกรณีใด",
+c:["ไม่มีข้อยกเว้นใดๆ ลบได้ทุกกรณีตามความต้องการเจ้าของข้อมูล",
+   "เมื่อการประมวลผลจำเป็นต้องปฏิบัติตามกฎหมายหรือเพื่อก่อตั้งสิทธิทางกฎหมาย",
+   "เมื่อผู้ควบคุมข้อมูลเห็นว่ายังมีประโยชน์ทางธุรกิจ",
+   "เมื่อข้อมูลนั้นผ่านการเข้ารหัสไว้แล้ว"],
+a:1,e:"Right to Erasure มีข้อยกเว้น เช่น เมื่อจำเป็นต้องปฏิบัติตามกฎหมาย เพื่อก่อตั้งสิทธิเรียกร้องทางกฎหมาย เพื่อประโยชน์สาธารณะ หรือเพื่อการวิจัยสถิติ เช่น ธ.ก.ส. ยังต้องเก็บข้อมูลสินเชื่อแม้ลูกค้าขอให้ลบ เพราะมีภาระผูกพันตามกฎหมาย"},
+{id:21,cat:"SE-AM / CG",
+q:"การตรวจสอบภายใน (Internal Audit) มีบทบาทอย่างไรตามหลัก CG ของ ธ.ก.ส.",
+c:["รายงานตรงต่อผู้บริหารและช่วยปรับปรุงกระบวนการทำงาน",
+   "ทำหน้าที่อิสระประเมินระบบควบคุมภายในและบริหารความเสี่ยง รายงานต่อ Audit Committee",
+   "รับผิดชอบการปฏิบัติตามกฎหมายทุกฉบับของธนาคาร",
+   "ออกรายงานการเงินประจำปีให้คณะกรรมการพิจารณา"],
+a:1,e:"Internal Audit ทำหน้าที่อิสระในการประเมินความเพียงพอและประสิทธิผลของระบบควบคุมภายใน การบริหารความเสี่ยง และ CG รายงานตรงต่อ Audit Committee เพื่อรักษาความเป็นกลาง ไม่ขึ้นกับผู้บริหาร"},
+{id:22,cat:"Cyber Security / ปปง.",
+q:"Multi-Factor Authentication (MFA) ช่วยเพิ่มความปลอดภัยอย่างไร",
+c:["ทำให้รหัสผ่านยาวขึ้นอัตโนมัติ",
+   "ต้องยืนยันตัวตนหลายปัจจัย แม้รหัสผ่านหลุดก็เข้าระบบไม่ได้",
+   "เปลี่ยนรหัสผ่านอัตโนมัติทุก 30 วัน",
+   "ล็อก Account หลังพิมพ์รหัสผิดเพียง 3 ครั้ง"],
+a:1,e:"MFA กำหนดยืนยันตัวตนด้วยหลายปัจจัย เช่น รหัสผ่าน + OTP + Biometric ทำให้แม้ผู้โจมตีทราบรหัสผ่านก็ยังต้องผ่านปัจจัยอื่น ลด Attack Surface ของการโจมตีด้วย Credential Stuffing และ Phishing"},
+{id:23,cat:"วิสัยทัศน์ ธ.ก.ส.",
+q:"Future Skills ทั้ง 4 กลุ่มของพนักงาน ธ.ก.ส. ประกอบด้วยอะไรบ้าง",
+c:["Leadership, Communication, Teamwork, Problem-Solving",
+   "Strategic Decision-Making, Opportunity Seeking, Data Optimization, Technology & Digital Utilization",
+   "Financial Analysis, Risk Management, Customer Service, Digital Literacy",
+   "Agile, DevOps, Data Science, Cloud Computing"],
+a:1,e:"Future Skills 4 กลุ่มของ ธ.ก.ส. ได้แก่ 1.Strategic Decision-Making (ตัดสินใจอย่างรอบคอบ) 2.Opportunity Seeking & Differentiation (มองหาโอกาสสร้างความแตกต่าง) 3.Data Optimization (บริหารงานด้วยข้อมูล) 4.Technology & Digital Utilization (บูรณาการเทคโนโลยีดิจิทัล)"},
+{id:24,cat:"Risk Culture / การบริหารความเสี่ยง",
+q:"Stress Testing ในการบริหารความเสี่ยงของ ธ.ก.ส. มีวัตถุประสงค์อะไร",
+c:["ทดสอบประสิทธิภาพระบบ IT ภายใต้ปริมาณผู้ใช้สูงสุด",
+   "ทดสอบความสามารถดำรงฐานะการเงินภายใต้สถานการณ์วิกฤต",
+   "ทดสอบความรู้ความสามารถของพนักงาน",
+   "ทดสอบระบบ BCP ในสภาพแวดล้อมจำลอง"],
+a:1,e:"Stress Testing คือการทดสอบว่าธนาคารจะดำรงฐานะการเงินได้หรือไม่ภายใต้สถานการณ์วิกฤต เช่น ภาวะเศรษฐกิจถดถอย ราคาสินค้าเกษตรตกต่ำ ภัยแล้งครั้งใหญ่ ซึ่ง ธปท. กำหนดให้สถาบันการเงินจัดทำเป็นประจำ"},
+{id:25,cat:"Market Conduct / CG",
+q:"ผลประโยชน์ทับซ้อน (Conflict of Interest) เมื่อพบว่าตนเองอยู่ในสถานการณ์นี้ ต้องดำเนินการอย่างไร",
+c:["ปิดบังไว้หากมูลค่าน้อยและไม่กระทบงาน",
+   "เปิดเผยต่อผู้บังคับบัญชาทันทีและขอถอนตัวจากการพิจารณาเรื่องนั้น",
+   "ดำเนินการต่อแต่บันทึกไว้ในรายงานประจำวัน",
+   "ปรึกษาเพื่อนร่วมงานก่อนแล้วค่อยตัดสินใจ"],
+a:1,e:"เมื่อพบว่าตนเองมีผลประโยชน์ทับซ้อน ต้องเปิดเผยต่อผู้บังคับบัญชาและขอถอนตัวจากการพิจารณาหรือตัดสินใจในเรื่องนั้น ตามหลักจริยธรรม CG และประมวลจริยธรรมของ ธ.ก.ส. เพื่อรักษาความเป็นกลาง"},
+{id:26,cat:"ESG / นโยบายภาครัฐ",
+q:"SDG ข้อใดสอดคล้องกับภารกิจหลักของ ธ.ก.ส. มากที่สุด",
+c:["SDG 9 อุตสาหกรรม นวัตกรรม โครงสร้างพื้นฐาน",
+   "SDG 1 ขจัดความยากจน และ SDG 2 ขจัดความหิวโหย",
+   "SDG 16 สถาบันที่มีประสิทธิผลและสังคมสงบสุข",
+   "SDG 7 พลังงานสะอาดในราคาที่เข้าถึงได้"],
+a:1,e:"SDG 1 (No Poverty) และ SDG 2 (Zero Hunger) สอดคล้องกับภารกิจหลักของ ธ.ก.ส. โดยตรง ในการลดความยากจนของเกษตรกร พัฒนาคุณภาพชีวิต และสร้างความมั่นคงทางอาหาร"},
+{id:27,cat:"Cyber Security / ปปง.",
+q:"Social Engineering Attack คืออะไร และวิธีป้องกันที่ดีที่สุดคืออะไร",
+c:["การโจมตีผ่านโซเชียลมีเดีย ป้องกันด้วยการปิดบัญชี",
+   "การหลอกลวงทางจิตวิทยาเพื่อให้เปิดเผยข้อมูลลับ ป้องกันด้วยการฝึกอบรม Security Awareness",
+   "การโจมตีด้วยซอฟต์แวร์อัตโนมัติ ป้องกันด้วย Antivirus",
+   "การโจมตีระบบเครือข่าย ป้องกันด้วย Firewall"],
+a:1,e:"Social Engineering คือการหลอกลวงโดยใช้จิตวิทยา เช่น Phishing, Pretexting, Baiting เพื่อให้บุคคลเปิดเผยข้อมูลลับหรือดำเนินการที่เป็นประโยชน์ต่อผู้โจมตี วิธีป้องกันที่ดีที่สุดคือ Security Awareness Training เพราะมนุษย์คือจุดอ่อนหลัก"},
+{id:28,cat:"SE-AM / CG",
+q:"หลักการ 'ประโยชน์สุขสูงสุดของผู้มีส่วนได้เสีย' ในการกำกับดูแลกิจการที่ดีของ ธ.ก.ส. หมายถึงอะไร",
+c:["เน้นผลประโยชน์ผู้ถือหุ้นใหญ่ (รัฐบาล) เป็นหลัก",
+   "คำนึงถึงผลประโยชน์ของผู้มีส่วนได้เสียทุกกลุ่มอย่างสมดุล รวมถึงเกษตรกรและสังคม",
+   "เน้นผลกำไรสูงสุดเพื่อนำส่งรัฐเป็นลำดับแรก",
+   "คำนึงเฉพาะผลประโยชน์ของพนักงานและผู้บริหาร"],
+a:1,e:"CG ที่ดีต้องคำนึงถึง Stakeholders ทุกกลุ่ม ได้แก่ ผู้ถือหุ้น (รัฐบาล) ลูกค้า (เกษตรกร) พนักงาน ชุมชน และสังคมโดยรวม ธ.ก.ส. ในฐานะ Policy Bank มีพันธกิจสาธารณะจึงต้องสร้างสมดุลระหว่างภารกิจสังคมและความยั่งยืนทางการเงิน"},
+{id:29,cat:"วิสัยทัศน์ ธ.ก.ส.",
+q:"ธ.ก.ส. กำกับดูแลโดยกระทรวงใดและมีสถานะทางกฎหมายเป็นอะไร",
+c:["กระทรวงเกษตรฯ สถานะองค์การมหาชน",
+   "กระทรวงการคลัง สถานะรัฐวิสาหกิจตาม พ.ร.บ. ธ.ก.ส. 2509",
+   "กระทรวงพาณิชย์ สถานะบริษัทมหาชนจำกัด",
+   "ทั้งกระทรวงการคลังและกระทรวงเกษตรร่วมกำกับ"],
+a:1,e:"ธ.ก.ส. จัดตั้งตาม พ.ร.บ. ธนาคารเพื่อการเกษตรและสหกรณ์การเกษตร พ.ศ. 2509 มีสถานะรัฐวิสาหกิจ อยู่ภายใต้กำกับดูแลของกระทรวงการคลัง (ถือหุ้น 100%) โดยรัฐมนตรีว่าการกระทรวงการคลังเป็นประธานคณะกรรมการโดยตำแหน่ง"},
+{id:30,cat:"Risk Culture / การบริหารความเสี่ยง",
+q:"Climate Risk ในการบริหารความเสี่ยงของ ธ.ก.ส. แบ่งเป็น 2 ประเภทหลักคือ",
+c:["Acute Risk และ Chronic Risk เท่านั้น",
+   "Physical Risk และ Transition Risk",
+   "Environmental Risk และ Social Risk เท่านั้น",
+   "Systematic Risk และ Unsystematic Risk"],
+a:1,e:"Climate Risk แบ่งเป็น 1.Physical Risk = ผลกระทบทางกายภาพ (ภัยแล้ง น้ำท่วม พายุ) กระทบสินเชื่อเกษตรกรโดยตรง 2.Transition Risk = ความเสี่ยงจากการเปลี่ยนผ่านสู่เศรษฐกิจคาร์บอนต่ำ (นโยบาย เทคโนโลยี ตลาด)"},
+{id:31,cat:"ESG / นโยบายภาครัฐ",
+q:"Digital Economy ของรัฐบาลที่ส่งผลต่อ ธ.ก.ส. มากที่สุดคือด้านใด",
+c:["การบังคับให้ธนาคารรัฐปิดสาขาและเปลี่ยนเป็น Digital Only",
+   "การพัฒนาโครงสร้างพื้นฐานดิจิทัลและ e-Payment สำหรับชุมชนชนบท",
+   "การบังคับใช้ Blockchain ในธุรกรรมทุกประเภท",
+   "การยกเว้นภาษีสำหรับธุรกรรมดิจิทัลทุกประเภท"],
+a:1,e:"Digital Economy ที่ส่งผลต่อ ธ.ก.ส. มากที่สุดคือการพัฒนาโครงสร้างพื้นฐานดิจิทัลในชนบทและ e-Payment ทำให้เกษตรกรเข้าถึงบริการผ่าน PromptPay, QR Code, Mobile Banking ได้สะดวก"},
+{id:32,cat:"PDPA",
+q:"PII (Personally Identifiable Information) ในบริบท ธ.ก.ส. ครอบคลุมข้อมูลประเภทใด",
+c:["เฉพาะชื่อและนามสกุลของลูกค้าเท่านั้น",
+   "ข้อมูลที่สามารถระบุตัวตนบุคคลได้ทั้งทางตรงและทางอ้อม เช่น ชื่อ เลขบัตร ที่อยู่ IP",
+   "เฉพาะข้อมูลทางการเงินและยอดเงินในบัญชี",
+   "เฉพาะข้อมูลที่ลูกค้ากรอกในแบบฟอร์มสินเชื่อเท่านั้น"],
+a:1,e:"PII ครอบคลุมข้อมูลทุกรูปแบบที่ระบุตัวตนได้ ทั้งทางตรง (ชื่อ เลขบัตรประชาชน) และทางอ้อม (ที่อยู่ เบอร์โทร IP Address พิกัด GPS) รวมถึงข้อมูลอ่อนไหว เช่น สุขภาพ ความเชื่อศาสนา ซึ่งต้องคุ้มครองตาม PDPA"},
+{id:33,cat:"Market Conduct / CG",
+q:"Open Banking มีผลต่อ ธ.ก.ส. อย่างไร",
+c:["บังคับให้เปิดสาขา 24 ชั่วโมง",
+   "เปิดให้ผู้ให้บริการที่สามเข้าถึง API ข้อมูลลูกค้าโดยได้รับอนุญาต ส่งเสริมนวัตกรรมทางการเงิน",
+   "บังคับให้เปิดเผยข้อมูลทางการเงินทั้งหมดต่อสาธารณะ",
+   "ยกเลิกข้อกำหนดกำกับดูแลธนาคาร"],
+a:1,e:"Open Banking คือการเปิดให้ Third-Party Providers เข้าถึงข้อมูลบัญชีและทำธุรกรรมผ่าน API ที่ปลอดภัยโดยลูกค้ายินยอม ธ.ก.ส. ต้องเตรียมพร้อมด้านโครงสร้าง API, PDPA Compliance และความปลอดภัยของข้อมูล"},
+{id:34,cat:"SE-AM / CG",
+q:"BCP (Business Continuity Plan) ของ ธ.ก.ส. สำหรับระบบ IT กำหนด RTO และ RPO คืออะไร",
+c:["RTO คือต้นทุนกู้คืนระบบสูงสุด RPO คือรอบเวลาสำรองข้อมูล",
+   "RTO คือระยะเวลาสูงสุดที่ยอมรับให้ระบบล่ม RPO คือปริมาณข้อมูลที่ยอมรับการสูญหาย",
+   "RTO และ RPO เป็นชื่อเรียกอื่นของ MTTR และ MTBF",
+   "RTO คือจำนวนบุคลากรที่ต้องการ RPO คือระยะเวลาทดสอบระบบ"],
+a:1,e:"RTO (Recovery Time Objective) = ระยะเวลาสูงสุดที่ยอมรับได้ตั้งแต่เกิดเหตุจนระบบกลับมาปกติ RPO (Recovery Point Objective) = ปริมาณข้อมูลสูงสุดที่ยอมรับการสูญหาย (วัดเป็นเวลา) ใช้กำหนดกลยุทธ์ Backup และ DR"},
+{id:35,cat:"Cyber Security / ปปง.",
+q:"Phishing Attack ประเภทที่กำหนดเป้าหมายเฉพาะผู้บริหารระดับสูงเรียกว่าอะไร",
+c:["Spear Phishing",
+   "Whaling Attack",
+   "Vishing Attack",
+   "Smishing Attack"],
+a:1,e:"Whaling Attack (CEO Fraud) คือ Phishing ที่กำหนดเป้าหมายเฉพาะผู้บริหารระดับสูง เพราะมีอำนาจอนุมัติธุรกรรมขนาดใหญ่ ต่างจาก Spear Phishing ที่กำหนดเป้าบุคคลทั่วไป Vishing ใช้เสียง Smishing ใช้ SMS"},
+{id:36,cat:"วิสัยทัศน์ ธ.ก.ส.",
+q:"Fintech ที่ส่งผลกระทบต่อ ธ.ก.ส. มากที่สุดในปัจจุบันคือกลุ่มใด",
+c:["Cryptocurrency และ NFT",
+   "AI-Powered Credit Scoring, Digital Lending และ Mobile Payment",
+   "High Frequency Trading",
+   "Robo-Advisor สำหรับการลงทุน"],
+a:1,e:"Fintech กลุ่ม Digital Lending ที่ใช้ AI ประเมินเครดิตแทนหลักประกัน, Mobile Payment ที่แข่งในชนบท และ Insurtech ด้านประกันเกษตร เป็นทั้งคู่แข่งและพันธมิตรที่ ธ.ก.ส. ต้องปรับตัว"},
+{id:37,cat:"Risk Culture / การบริหารความเสี่ยง",
+q:"NPL (Non-Performing Loan) ตามมาตรฐานสากล หมายถึงสินเชื่อที่ค้างชำระเกินกี่วัน",
+c:["30 วัน",
+   "60 วัน",
+   "90 วัน",
+   "120 วัน"],
+a:2,e:"NPL หรือหนี้ที่ไม่ก่อให้เกิดรายได้ ตามมาตรฐาน Basel และ ธปท. คือสินเชื่อที่ค้างชำระเกิน 90 วัน ธ.ก.ส. ต้องตั้งสำรองหนี้สงสัยจะสูญและมีมาตรการบริหาร NPL เพื่อรักษาเสถียรภาพการเงิน"},
+{id:38,cat:"SE-AM / CG",
+q:"Whistleblower Policy ของ ธ.ก.ส. มีวัตถุประสงค์หลักอะไร",
+c:["ลงโทษพนักงานที่รายงานปัญหาต่อสื่อมวลชน",
+   "ส่งเสริมให้พนักงานรายงานการทุจริตอย่างปลอดภัยและเป็นความลับ",
+   "ให้ลูกค้าสามารถร้องเรียนได้โดยตรงต่อผู้บริหาร",
+   "บังคับให้พนักงานรายงานทุกเหตุการณ์ต่อผู้บังคับบัญชา"],
+a:1,e:"Whistleblower Policy สร้างช่องทางให้พนักงานแจ้งเบาะแสการทุจริต ฝ่าฝืนจริยธรรม หรือละเมิดกฎหมายได้อย่างปลอดภัยและเป็นความลับ โดยได้รับการคุ้มครองจากการตอบโต้ เป็นส่วนสำคัญของระบบ CG"},
+{id:39,cat:"Market Conduct / CG",
+q:"Greenwashing คืออะไร และ ธ.ก.ส. ควรระวังอย่างไร",
+c:["การใช้สีเขียวในโลโก้และสื่อการตลาดของธนาคาร",
+   "การอ้างความเป็นมิตรกับสิ่งแวดล้อมโดยไม่มีหลักฐานข้อเท็จจริงรองรับ",
+   "การลงทุนในโครงการพลังงานสีเขียวอย่างแท้จริง",
+   "การรายงาน Carbon Footprint ที่เกินความเป็นจริง"],
+a:1,e:"Greenwashing คือการอ้างความรับผิดชอบด้านสิ่งแวดล้อมโดยไม่มีหลักฐานจริง ธ.ก.ส. ต้องระวังไม่ให้โครงการ Green Finance หรือรายงาน ESG ของตนเป็น Greenwashing โดยต้องมีการวัดผลจริงและรายงานอย่างโปร่งใส"},
+{id:40,cat:"PDPA",
+q:"หลักการ Data Minimization ตาม PDPA หมายความว่าอะไร",
+c:["เก็บข้อมูลให้น้อยที่สุดเพื่อลดต้นทุนการจัดเก็บ",
+   "เก็บรวบรวมข้อมูลเฉพาะที่จำเป็นและสัมพันธ์กับวัตถุประสงค์ที่ระบุไว้เท่านั้น",
+   "บีบอัดข้อมูลให้มีขนาดเล็กที่สุดก่อนจัดเก็บ",
+   "ลบข้อมูลที่ไม่ได้ใช้งานออกทุก 30 วัน"],
+a:1,e:"Data Minimization เป็นหลักการสำคัญของ PDPA กำหนดให้เก็บรวบรวมข้อมูลส่วนบุคคลเฉพาะที่จำเป็นสำหรับวัตถุประสงค์ที่ระบุไว้ ไม่เก็บข้อมูลเกินความจำเป็น ช่วยลดความเสี่ยงจากการรั่วไหลของข้อมูล"},
+{id:41,cat:"ESG / นโยบายภาครัฐ",
+q:"Precision Agriculture (เกษตรแม่นยำ) มีความเกี่ยวข้องกับ ธ.ก.ส. อย่างไร",
+c:["ไม่เกี่ยวข้อง เป็นเรื่องของกระทรวงเกษตรฯ เท่านั้น",
+   "ธ.ก.ส. สนับสนุนเงินทุนและให้ความรู้เกษตรกรในการใช้เทคโนโลยีเกษตรแม่นยำ",
+   "ใช้เฉพาะตรวจสอบสินเชื่อในระบบ IT เท่านั้น",
+   "เกี่ยวข้องเฉพาะเกษตรกรพื้นที่เกิน 100 ไร่เท่านั้น"],
+a:1,e:"Precision Agriculture ใช้ IoT, Drone, Satellite, AI เพิ่มผลผลิตลดต้นทุน ธ.ก.ส. มีบทบาทสนับสนุนด้านเงินทุน (Agri-Tech Loan) ให้ความรู้เกษตรกรผ่าน Smart Farmer ตอบโจทย์วิสัยทัศน์ 'ธนาคารพัฒนาชนบทที่ยั่งยืน'"},
+{id:42,cat:"Risk Culture / การบริหารความเสี่ยง",
+q:"Concentration Risk ในพอร์ตสินเชื่อของ ธ.ก.ส. หมายถึงอะไร",
+c:["การมีสาขามากเกินในพื้นที่เดียวกัน",
+   "ความเสี่ยงจากการกระจุกตัวของสินเชื่อในกลุ่มลูกหนี้ ภาค หรือพื้นที่ใดมากเกินไป",
+   "ความเสี่ยงจากการเก็บข้อมูลในที่เดียว",
+   "ความเสี่ยงจากการจ้างพนักงานพื้นที่เดียวมากเกินไป"],
+a:1,e:"Concentration Risk คือความเสี่ยงจากการกระจุกตัวของพอร์ตสินเชื่อในกลุ่มลูกหนี้รายเดียวหรือกลุ่มที่เกี่ยวข้อง ภาคธุรกิจเดียว หรือพื้นที่ภูมิศาสตร์เดียว ธ.ก.ส. มีความเสี่ยงนี้สูงเนื่องจากพอร์ตกระจุกในภาคเกษตร"},
+{id:43,cat:"PDPA",
+q:"Right to Data Portability ตาม PDPA ให้สิทธิ์เจ้าของข้อมูลอย่างไร",
+c:["สิทธิ์ขอให้ลบข้อมูลออกจากทุกระบบ",
+   "สิทธิ์ขอรับข้อมูลส่วนตัวในรูปแบบที่อ่านได้ด้วยเครื่องและโอนไปยังผู้ควบคุมรายอื่น",
+   "สิทธิ์แก้ไขข้อมูลที่ไม่ถูกต้องได้ตลอดเวลา",
+   "สิทธิ์เข้าถึงข้อมูลส่วนบุคคลทุกอย่างที่ธนาคารเก็บไว้"],
+a:1,e:"Right to Data Portability ให้เจ้าของข้อมูลสิทธิ์ขอรับข้อมูลในรูปแบบที่อ่านได้ด้วยเครื่อง (Machine-readable) เช่น JSON, CSV และโอนไปยัง Data Controller รายอื่นได้ เช่น ย้ายธนาคาร"},
+{id:44,cat:"SE-AM / CG",
+q:"Master Data Management (MDM) ใน ธ.ก.ส. มีวัตถุประสงค์อะไร",
+c:["จัดเก็บข้อมูลงบประมาณประจำปีของทุกฝ่าย",
+   "บริหารจัดการข้อมูลหลักขององค์กรให้มีมาตรฐานและสอดคล้องกันทั่วทั้งองค์กร",
+   "สำรองข้อมูลหลักขององค์กรทุกวัน",
+   "ตรวจสอบข้อมูลก่อนนำเสนอผู้บริหาร"],
+a:1,e:"MDM คือกระบวนการบริหารจัดการข้อมูลหลัก (ข้อมูลลูกค้า ผลิตภัณฑ์ พนักงาน) ให้มีความสอดคล้อง ถูกต้อง เป็นมาตรฐานเดียวกันทั่วทั้งองค์กร ป้องกันข้อมูลซ้ำซ้อนและขัดแย้งกันระหว่างระบบ"},
+{id:45,cat:"Market Conduct / CG",
+q:"Compliance ของ ธ.ก.ส. ครอบคลุมกฎหมายและระเบียบใดบ้าง",
+c:["เฉพาะ พ.ร.บ. ธ.ก.ส. และระเบียบภายในเท่านั้น",
+   "พ.ร.บ. ธ.ก.ส., พ.ร.บ. ธุรกิจสถาบันการเงิน, PDPA, ปปง., SE-AM และกฎหมายอื่นที่เกี่ยวข้อง",
+   "เฉพาะกฎหมายที่ ธปท. กำหนดเท่านั้น",
+   "เฉพาะกฎหมายไทยไม่รวมมาตรฐานสากล"],
+a:1,e:"Compliance ของ ธ.ก.ส. ครอบคลุม พ.ร.บ. ธ.ก.ส., พ.ร.บ. ธุรกิจสถาบันการเงิน, PDPA, กฎหมาย ปปง., ประมวลรัษฎากร, SE-AM, มาตรฐาน IFRS, Basel II/III และมาตรฐานสากลที่เกี่ยวข้อง"},
+{id:46,cat:"ESG / นโยบายภาครัฐ",
+q:"เกษตรกรรมยั่งยืน (Sustainable Agriculture) ที่ ธ.ก.ส. ส่งเสริมมีหลักการสำคัญอย่างไร",
+c:["ใช้ปุ๋ยเคมีในปริมาณที่เหมาะสมตามคำแนะนำ",
+   "ผลิตอาหารตอบสนองปัจจุบันโดยไม่ทำลายทรัพยากรของคนรุ่นหลัง",
+   "ปลูกพืชเชิงเดี่ยวเพื่อเพิ่มผลผลิตสูงสุด",
+   "ใช้เทคโนโลยีทันสมัยแทนแรงงานคนทั้งหมด"],
+a:1,e:"เกษตรกรรมยั่งยืนตาม FAO หมายถึงการผลิตอาหารที่ตอบสนองความต้องการปัจจุบัน โดยไม่ทำลายขีดความสามารถทรัพยากรธรรมชาติที่คนรุ่นหลังจะใช้ ครอบคลุมเกษตรอินทรีย์ การจัดการดินน้ำ และความหลากหลายชีวภาพ"},
+{id:47,cat:"Cyber Security / ปปง.",
+q:"การจัดชั้นข้อมูล (Data Classification) ในระบบ IT ของ ธ.ก.ส. มีวัตถุประสงค์อะไร",
+c:["ลดพื้นที่จัดเก็บข้อมูลในระบบ",
+   "กำหนดระดับการคุ้มครองและการเข้าถึงข้อมูลตามความสำคัญและความอ่อนไหว",
+   "ทำให้ค้นหาข้อมูลได้รวดเร็วขึ้น",
+   "จัดเรียงข้อมูลตามวันที่สร้างอัตโนมัติ"],
+a:1,e:"Data Classification แบ่งข้อมูลตามระดับความสำคัญและความอ่อนไหว เช่น ลับ ปกปิด ใช้ภายใน สาธารณะ เพื่อกำหนดมาตรการคุ้มครอง การเข้าถึง การส่งต่อ และการทำลายที่เหมาะสมกับแต่ละระดับ"},
+{id:48,cat:"Risk Culture / การบริหารความเสี่ยง",
+q:"KRI (Key Risk Indicator) แตกต่างจาก KPI อย่างไร",
+c:["KRI วัดผลสำเร็จที่เกิดขึ้นแล้ว KPI วัดโอกาสเกิดความเสี่ยง",
+   "KRI ส่งสัญญาณเตือนล่วงหน้าเกี่ยวกับความเสี่ยง KPI วัดผลการดำเนินงาน",
+   "KRI และ KPI มีความหมายเหมือนกันใช้แทนกันได้",
+   "KRI ใช้เฉพาะฝ่ายบริหารความเสี่ยง KPI ใช้สำหรับทุกฝ่าย"],
+a:1,e:"KRI ส่งสัญญาณเตือนล่วงหน้าเกี่ยวกับความเสี่ยงที่กำลังเพิ่มขึ้น เช่น อัตรา NPL ที่เพิ่ม จำนวน IT Incident ที่เพิ่ม ส่วน KPI วัดผลการดำเนินงานที่เกิดขึ้นแล้ว เช่น ปริมาณสินเชื่อใหม่ ความพึงพอใจลูกค้า"},
+{id:49,cat:"SE-AM / CG",
+q:"SE-AM ฉบับปรับปรุง ปี 2569 เพิ่มเติมมิติด้านใดในการประเมิน",
+c:["ความปลอดภัยทางไซเบอร์",
+   "ESG และความยั่งยืนในการดำเนินงาน",
+   "ความสามารถทางภาษาต่างประเทศ",
+   "ความพึงพอใจของพนักงาน"],
+a:1,e:"SE-AM ฉบับปรับปรุง ปี 2569 เพิ่มมิติ ESG (Environmental, Social, Governance) เข้าไปในการประเมิน เพื่อให้รัฐวิสาหกิจดำเนินงานอย่างยั่งยืนและรับผิดชอบต่อสังคมและสิ่งแวดล้อม สอดคล้องกับเทรนด์สากล"},
+{id:50,cat:"PDPA",
+q:"หากพนักงาน ธ.ก.ส. นำข้อมูลลูกค้าออกไปใช้เพื่อประโยชน์ส่วนตัว จะมีความผิดตาม PDPA ในข้อใด",
+c:["ไม่มีความผิด หากเป็นข้อมูลที่ตนเองเข้าถึงได้ตามหน้าที่",
+   "ความผิดทางแพ่งและอาญา อาจถูกปรับสูงสุดและจำคุก",
+   "มีความผิดเฉพาะทางวินัยเท่านั้น",
+   "มีความผิดเฉพาะกรณีที่ลูกค้าได้รับความเสียหายจริง"],
+a:1,e:"PDPA กำหนดโทษหนักสำหรับการนำข้อมูลส่วนบุคคลไปใช้โดยไม่ชอบ ทั้งโทษทางแพ่ง (ค่าเสียหาย) โทษทางปกครอง (ปรับสูงสุด 5 ล้านบาท) และโทษอาญา (จำคุกไม่เกิน 1 ปี หรือปรับ หรือทั้งจำทั้งปรับ) นอกจากนี้ยังมีโทษทางวินัยของ ธ.ก.ส. ด้วย"}
 ];
 
-function buildRealQList() {
-  const container = document.getElementById('real-q-list');
-  if (!container) return;
-  REAL_Q_2563.forEach(q => {
-    const div = document.createElement('div');
-    div.style.cssText = 'background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 18px;border-left:3px solid var(--accent4)';
-    const optLetters = ['ก','ข','ค','ง'];
-    let optHtml = q.options.map((o,i) => {
-      const isAns = i === q.ans;
-      return `<div style="padding:7px 10px;border-radius:6px;margin-top:5px;font-size:13px;display:flex;gap:8px;align-items:flex-start;background:${isAns?'rgba(34,197,94,.1)':'rgba(255,255,255,.02)'};border:1px solid ${isAns?'var(--success)':'var(--border)'}">
-        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;min-width:18px;color:${isAns?'var(--success)':'var(--muted)'};">${optLetters[i]}.</span>
-        <span style="color:${isAns?'var(--text)':'#94a3b8'}">${o}${isAns?' ✓':''}</span>
-      </div>`;
-    }).join('');
-    div.innerHTML = `
-      <div style="display:flex;gap:8px;align-items:flex-start;margin-bottom:10px;">
-        <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--accent4);background:rgba(249,115,22,.1);padding:2px 8px;border-radius:4px;flex-shrink:0">ข้อ ${q.no}</span>
-        <span style="font-size:10px;color:var(--muted);background:var(--surface2);padding:2px 8px;border-radius:4px;flex-shrink:0">${q.topic}</span>
-      </div>
-      <div style="font-size:14px;font-weight:600;line-height:1.65;margin-bottom:10px">${q.q}</div>
-      ${optHtml}
-      <div style="margin-top:12px;padding:10px 12px;background:rgba(0,212,170,.04);border-radius:6px;border-left:2px solid var(--accent);font-size:12px;color:#94a3b8;line-height:1.7">
-        <span style="color:var(--accent);font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:1px">📖 EXPLANATION</span><br>${q.expl}
-      </div>`;
-    container.appendChild(div);
-  });
+const SQ = [
+{id:51,cat:"Core Competency: ร่วมพลังร่วมใจ (Coach)",
+q:"คุณเป็นหัวหน้าทีม IT ค้นพบว่าโค้ดที่พัฒนาคำนวณยอดสินเชื่อผิดพลาด ก่อน Go-Live 2 วัน ทีมงานไม่กล้าแจ้งเพราะกลัวถูกตำหนิ พฤติกรรมใดสะท้อน Coach Level ได้ดีที่สุด",
+c:["แก้ไขเองทั้งหมดโดยไม่แจ้งใครเพื่อรักษาชื่อเสียงทีม",
+   "แจ้งผู้บังคับบัญชาและฝ่ายที่เกี่ยวข้องทันที ประชุมทีมหาสาเหตุและแก้ไข พร้อมพัฒนาระบบตรวจสอบให้แข็งแกร่งขึ้น",
+   "รอดูว่าลูกค้าจะพบปัญหาหรือไม่ก่อนค่อยดำเนินการ",
+   "โยนความผิดให้นักพัฒนาคนที่เขียนโค้ดและให้รับผิดชอบเอง"],
+a:1,e:"Coach Level ด้าน 'ร่วมพลังร่วมใจ' ต้องแจ้งผู้มีส่วนได้เสียอย่างโปร่งใส (Transparency) ร่วมมือข้ามทีมเพื่อแก้ปัญหา และเปลี่ยนเหตุการณ์เป็นโอกาสพัฒนาระบบ ไม่ปกปิดหรือโยนความผิด"},
+{id:52,cat:"Core Competency: สร้างสรรค์สิ่งใหม่ (Coach)",
+q:"กระบวนการอนุมัติ Change Request ในทีม IT ใช้เวลา 3 สัปดาห์ ทำให้พัฒนาระบบล่าช้า พฤติกรรม Coach Level ที่เหมาะสมคืออะไร",
+c:["บ่นเรื่องกระบวนการซับซ้อนในกลุ่มไลน์ทีม",
+   "วิเคราะห์ขั้นตอนที่ไม่จำเป็น เสนอ Automated Workflow พร้อมข้อมูลประกอบและแผน Pilot",
+   "ข้ามกระบวนการเดิมเมื่องานเร่งด่วน",
+   "รอนโยบายใหม่จากผู้บริหารก่อนดำเนินการ"],
+a:1,e:"Coach ต้อง 'สร้างสรรค์สิ่งใหม่' (Think Innovatively) โดยวิเคราะห์ปัญหาเป็นระบบ ออกแบบแนวทางใหม่ที่สร้างคุณค่า นำเสนอพร้อมข้อมูล Business Case และผลักดันให้เกิดขึ้นจริงในทีม"},
+{id:53,cat:"Core Competency: ใส่ใจลูกค้า (Coach)",
+q:"ลูกค้าโทรร้องเรียนว่าแอป BAAC Mobile ตรวจสอบยอดหนี้ไม่ได้ Call Center ส่งเรื่องมาที่คุณ (หัวหน้า App Team) พฤติกรรม Coach Level คืออะไร",
+c:["ตอบว่าระบบปกติ ปัญหาเกิดจาก Device ลูกค้า",
+   "ตรวจสอบ System Log ทันที Escalate ทีมแก้ไข แจ้งสถานะทุก 30 นาที และป้องกันซ้ำในระยะยาว",
+   "ส่งเรื่องกลับให้ Call Center จัดการต่อเอง",
+   "แจ้งลูกค้าให้รอจนถึงวันทำการหน้า"],
+a:1,e:"Coach Level 'ใส่ใจลูกค้า' ต้องตอบสนองทันที (Response Instantly) ตรวจสอบ Root Cause รายงานสถานะอัปเดต และสร้างระบบป้องกันปัญหาซ้ำ ไม่ปัดความรับผิดชอบ"},
+{id:54,cat:"Core Competency: มีความเป็นมืออาชีพ (Coach)",
+q:"โครงการพัฒนาระบบ Data Lake ล่าช้าสามสัปดาห์ ทีมไม่กล้าแจ้งผู้บริหาร พฤติกรรม Coach Level ที่ถูกต้องคือ",
+c:["รายงานว่าใกล้เสร็จแล้วเพื่อลดความกังวล",
+   "รายงานสถานะจริงต่อผู้บริหาร วิเคราะห์สาเหตุ ปรับแผน Recovery Plan พร้อม Revised Timeline",
+   "รอให้ผู้บริหารถามก่อนค่อยรายงาน",
+   "เร่งทำงานล่วงเวลาเพื่อไล่ตามแผนเดิมโดยไม่บอกใคร"],
+a:1,e:"Professionalism Coach Level ต้องรายงานด้วยความซื่อสัตย์โปร่งใส รับผิดชอบต่อผลงานทีม วิเคราะห์สาเหตุจริง และเสนอ Recovery Plan ที่เป็นจริง ไม่รายงานข้อมูลเท็จหรือซ่อนปัญหา"},
+{id:55,cat:"Core Competency: ยึดมั่นจริยธรรม (Coach)",
+q:"ผู้ให้บริการ Software รายหนึ่งเสนอ Gift Card มูลค่า 5,000 บาทให้คุณหลังช่วยอนุมัติ PO ไป ควรทำอย่างไร",
+c:["รับไว้แต่ไม่บอกใคร เพราะมูลค่าน้อย",
+   "ปฏิเสธทันทีและรายงานเหตุการณ์ต่อผู้บังคับบัญชาและฝ่าย Compliance",
+   "รับแล้วคืนเงินให้ธนาคารภายหลัง",
+   "รับแล้วแจ้งเพื่อนร่วมงานแบ่งกัน"],
+a:1,e:"Integrity & Transparency กำหนดให้ปฏิเสธของขวัญที่อาจสร้างผลประโยชน์ทับซ้อน ไม่ว่าจะมูลค่าเท่าใด และต้องรายงานต่อผู้บังคับบัญชาและ Compliance เพื่อบันทึกและป้องกันไม่ให้เกิดซ้ำ"},
+{id:56,cat:"ระบบปฏิบัติการ",
+q:"RAID 5 มีลักษณะการทำงานและข้อดีอย่างไร",
+c:["Mirror ข้อมูล 100% ต้องใช้ Disk อย่างน้อย 2 ตัว",
+   "กระจาย Data + Parity บน Disk อย่างน้อย 3 ตัว ทนต่อ Disk เสีย 1 ตัวได้",
+   "รวมความเร็วแบบ Stripe โดยไม่มี Redundancy ใดเลย",
+   "สำรองข้อมูลซ้ำซ้อน 3 ชุดบน 3 Disk แยกกัน"],
+a:1,e:"RAID 5 กระจาย Data Stripes และ Parity ไปทุก Disk (ต้องการ 3+ ตัว) สามารถทนต่อ Disk เสีย 1 ตัวโดยคำนวณ Parity คืนมาได้ เหมาะกับการจัดเก็บข้อมูลที่ต้องการสมดุลระหว่าง Performance, Capacity และ Redundancy"},
+{id:57,cat:"ระบบปฏิบัติการ",
+q:"Virtual Memory ในระบบปฏิบัติการทำงานอย่างไร",
+c:["เพิ่มความเร็ว CPU โดยตรง",
+   "ใช้พื้นที่ Disk จำลองเป็น RAM เพิ่มเติม ทำให้โปรแกรมทำงานได้แม้ RAM ไม่เพียงพอ",
+   "ลดการสิ้นเปลืองพลังงาน",
+   "เพิ่มความปลอดภัยให้กับข้อมูล"],
+a:1,e:"Virtual Memory ใช้พื้นที่บน Hard Disk จำลองเป็น RAM เพิ่มเติม ระบบ Swap หน้าความจำที่ไม่ได้ใช้ออกไป Disk ชั่วคราว ทำให้โปรแกรมทำงานได้มากกว่า RAM จริง อย่างไรก็ตามช้ากว่า RAM จริงมาก"},
+{id:58,cat:"ระบบเครือข่าย",
+q:"OSI Model Layer 3 (Network Layer) รับผิดชอบอะไรและใช้อุปกรณ์ใดหลัก",
+c:["ส่ง Frame ระหว่างเครื่องในวง LAN ใช้ Switch",
+   "กำหนดเส้นทาง Routing ระหว่าง Network ต่างๆ ใช้ Router",
+   "เชื่อมต่อทางกายภาพ ใช้ Hub หรือสาย Cable",
+   "ควบคุม Session ระหว่างแอปพลิเคชัน ใช้ Gateway"],
+a:1,e:"Layer 3 Network Layer รับผิดชอบ Logical Addressing (IP Address) และ Routing (เลือกเส้นทางระหว่าง Network) อุปกรณ์หลักคือ Router ต่างจาก Layer 2 ที่ทำงานกับ Frame และ MAC Address"},
+{id:59,cat:"ระบบเครือข่าย",
+q:"TCP แตกต่างจาก UDP อย่างไรในบริบทระบบการเงินของ ธ.ก.ส.",
+c:["TCP เร็วกว่า UDP ทุกกรณี",
+   "TCP รับประกันการส่งข้อมูลครบถ้วน (Reliable) UDP เร็วกว่าแต่ไม่รับประกัน",
+   "UDP รับประกันความถูกต้อง TCP ไม่รับประกัน",
+   "TCP และ UDP ใช้แทนกันได้โดยไม่มีความแตกต่าง"],
+a:1,e:"TCP รับประกันการส่งข้อมูลถึงปลายทาง (Reliable) มี Handshake, Error Checking, Acknowledgment เหมาะกับ Financial Transaction UDP ไม่รับประกันแต่เร็วกว่า เหมาะกับ Streaming, DNS, VoIP"},
+{id:60,cat:"SDLC / DevOps",
+q:"DevSecOps แตกต่างจาก DevOps อย่างไร",
+c:["DevSecOps ใช้เฉพาะ Waterfall Model เท่านั้น",
+   "DevSecOps นำ Security เข้ามาตั้งแต่ต้นของ Development Cycle (Shift Left Security)",
+   "DevSecOps ลดขั้นตอนทดสอบเพื่อความรวดเร็ว",
+   "DevSecOps ใช้เฉพาะ Public Cloud Infrastructure"],
+a:1,e:"DevSecOps ขยาย DevOps โดยนำ Security เข้าทุกขั้นตอน ตั้งแต่ออกแบบ เขียนโค้ด Build จนถึง Deploy (Shift Left Security) แทนที่จะทดสอบความปลอดภัยในขั้นตอนสุดท้าย ลดต้นทุนแก้ไขช่องโหว่"},
+{id:61,cat:"SDLC / DevOps",
+q:"ลำดับขั้นตอนการทดสอบซอฟต์แวร์ที่ถูกต้องคือข้อใด",
+c:["UAT → System Test → Integration Test → Unit Test",
+   "Unit Test → Integration Test → System Test → UAT",
+   "Integration Test → Unit Test → System Test → UAT",
+   "System Test → Unit Test → Integration Test → UAT"],
+a:1,e:"ลำดับการทดสอบ: 1.Unit Test ทดสอบโค้ดหน่วยเล็ก 2.Integration Test ทดสอบการทำงานร่วมกันหลาย Module 3.System Test ทดสอบระบบทั้งหมด 4.UAT ผู้ใช้จริงทดสอบก่อน Go-Live"},
+{id:62,cat:"SDLC / DevOps",
+q:"CI/CD Pipeline มีประโยชน์ต่อการพัฒนาระบบ ธ.ก.ส. อย่างไร",
+c:["ทำให้นักพัฒนาไม่ต้องทดสอบโค้ดด้วยตัวเอง",
+   "Automate กระบวนการ Build Test Deploy ส่งมอบซอฟต์แวร์รวดเร็วและคุณภาพสม่ำเสมอ",
+   "ลดจำนวนนักพัฒนาที่ต้องการ",
+   "ทำให้ไม่ต้องมี Code Review อีกต่อไป"],
+a:1,e:"CI (Continuous Integration) รวม Code และ Build/Test อัตโนมัติทุกครั้งที่ Push CD (Continuous Delivery/Deployment) Deploy อัตโนมัติไปยัง Staging/Production ช่วยลด Human Error เร่งความเร็ว และรักษาคุณภาพ"},
+{id:63,cat:"ระบบจัดการฐานข้อมูล",
+q:"ACID Properties ของ Database Transaction หมายถึงอะไร",
+c:["Access, Control, Integrity, Durability",
+   "Atomicity, Consistency, Isolation, Durability",
+   "Authentication, Compliance, Indexing, Data",
+   "Availability, Concurrency, Integration, Distribution"],
+a:1,e:"ACID: Atomicity (Transaction เสร็จหมดหรือยกเลิกหมด), Consistency (ข้อมูลสอดคล้องเสมอ), Isolation (Transaction ไม่รบกวนกัน), Durability (เมื่อ Commit แล้วข้อมูลถาวรแม้ระบบล่ม) สำคัญมากสำหรับระบบธนาคาร"},
+{id:64,cat:"ระบบจัดการฐานข้อมูล",
+q:"SQL Injection คืออะไร และป้องกันอย่างไร",
+c:["การ Inject SQL เพื่อเพิ่มประสิทธิภาพ Query",
+   "การแทรก SQL Command อันตรายเข้าช่องรับข้อมูล ป้องกันด้วย Parameterized Query",
+   "การ Optimize SQL ให้ทำงานเร็วขึ้น",
+   "การ Backup Database ด้วย SQL Script"],
+a:1,e:"SQL Injection คือการแทรก SQL Command ในช่องรับข้อมูล เช่น ' OR 1=1-- เพื่อหลบ Authentication หรือดึงข้อมูลทั้งหมด ป้องกันด้วย Parameterized Query / Prepared Statement, Input Validation, Stored Procedure"},
+{id:65,cat:"ระบบจัดการฐานข้อมูล",
+q:"NoSQL Database เหมาะกับการใช้งานประเภทใดมากกว่า Relational Database",
+c:["ระบบบัญชีที่ต้องการ ACID Transaction เต็มรูปแบบ",
+   "ข้อมูลโครงสร้างไม่แน่นอน ขนาดใหญ่ หรือต้องการ Scale-out แนวนอน",
+   "ระบบที่ต้องการ JOIN ข้อมูลหลายตารางซับซ้อน",
+   "ระบบที่ต้องการ Foreign Key Constraint เพื่อความสมบูรณ์"],
+a:1,e:"NoSQL เหมาะกับ Big Data, Unstructured/Semi-Structured Data, High Scalability เช่น Social Media, IoT Sensor, Log Files Type หลักคือ Document (MongoDB) Key-Value (Redis) Column-Family (Cassandra) Graph (Neo4j)"},
+{id:66,cat:"IT Security",
+q:"Encryption แบบ Asymmetric (Public-Key) แตกต่างจาก Symmetric อย่างไร",
+c:["Asymmetric เร็วกว่า Symmetric เสมอ",
+   "Asymmetric ใช้ Key คู่ (Public+Private) Symmetric ใช้ Key เดียวกัน",
+   "Symmetric ปลอดภัยกว่า Asymmetric เสมอ",
+   "ทั้งสองไม่มีความแตกต่างที่มีนัยสำคัญ"],
+a:1,e:"Symmetric ใช้ Key เดียวกันเข้าและถอดรหัส (AES) เร็วกว่าแต่มีปัญหาการแจก Key Asymmetric ใช้ Key คู่ (Public เข้ารหัส Private ถอดรหัส เช่น RSA) ช้ากว่าแต่ปลอดภัยกว่าในการแลกเปลี่ยน Key ระบบจริงใช้ทั้งสองร่วมกัน (TLS)"},
+{id:67,cat:"IT Security",
+q:"Least Privilege Principle ในการบริหาร Access Control คืออะไร",
+c:["ให้สิทธิ์ Admin แก่ทุกคนเพื่อความสะดวก",
+   "ให้สิทธิ์การเข้าถึงเฉพาะที่จำเป็นสำหรับงาน ไม่มากกว่านั้น",
+   "ให้สิทธิ์ตามอาวุโสในองค์กร",
+   "ลบบัญชีที่ไม่ได้ Login นาน 30 วัน"],
+a:1,e:"Least Privilege คือให้สิทธิ์ผู้ใช้เฉพาะสิ่งที่จำเป็นสำหรับงาน ไม่มากกว่า ช่วยลด Attack Surface หากบัญชีถูกแฮก ผู้โจมตีเข้าถึงได้เฉพาะส่วนที่บัญชีนั้นมีสิทธิ์ ลดความเสี่ยงจาก Insider Threats"},
+{id:68,cat:"Cloud Computing",
+q:"IaaS, PaaS, SaaS ต่างกันอย่างไร",
+c:["IaaS ให้ Software สำเร็จรูป PaaS ให้ Platform SaaS ให้ Infrastructure",
+   "IaaS ให้ Infrastructure PaaS ให้ Platform พัฒนา SaaS ให้ Software สำเร็จรูป",
+   "ทั้งสามบริการเหมือนกัน ต่างกันเพียงราคา",
+   "IaaS ใช้ On-premise PaaS ใช้ Hybrid SaaS ใช้ Public Cloud"],
+a:1,e:"IaaS ให้ VM, Storage, Network (AWS EC2, Azure VM) ผู้ใช้จัดการ OS และ App เอง PaaS ให้ Middleware, Runtime (Google App Engine) ผู้ใช้จัดการแค่ App SaaS ให้ Software สำเร็จรูป (Office 365, Salesforce)"},
+{id:69,cat:"Cloud Computing",
+q:"Container Technology (Docker) มีประโยชน์ต่อการพัฒนา Application อย่างไร",
+c:["เพิ่มความปลอดภัยโดยป้องกัน SQL Injection",
+   "Package Application และ Dependencies เข้าด้วยกัน Deploy ได้ทุก Environment สม่ำเสมอ",
+   "ทดแทน Database ได้โดยตรง",
+   "ใช้ได้เฉพาะ Python Application เท่านั้น"],
+a:1,e:"Docker Container Package App + Dependencies เข้าด้วยกัน รับประกัน 'Works on my machine = Works Everywhere' แก้ปัญหา Environment Inconsistency รองรับ Microservices, Scale ง่าย Deploy รวดเร็ว จัดการผ่าน Kubernetes"},
+{id:70,cat:"AI / ML / RPA",
+q:"Machine Learning ประเภท Supervised Learning คืออะไร",
+c:["โมเดลเรียนรู้โดยไม่มีคำตอบที่ถูกต้องให้",
+   "โมเดลเรียนรู้จาก Labeled Data (ข้อมูลที่มีคำตอบ) เพื่อพยากรณ์ข้อมูลใหม่",
+   "โมเดลเรียนรู้จากการลองผิดลองถูก",
+   "โมเดลที่ไม่ต้องการข้อมูลฝึกอบรมใดๆ"],
+a:1,e:"Supervised Learning ฝึก Model ด้วย Labeled Data (Input + Expected Output) เช่น ฝึกโมเดลประเมิน Credit Score ด้วยประวัติลูกค้าและผลชำระหนี้ เมื่อฝึกแล้วพยากรณ์ผลสำหรับลูกค้าใหม่ได้"},
+{id:71,cat:"AI / ML / RPA",
+q:"RPA (Robotic Process Automation) เหมาะกับงานประเภทใดใน ธ.ก.ส.",
+c:["งานสร้างสรรค์ที่ต้องใช้ Human Judgment",
+   "งานซ้ำซาก Rule-based ที่มีโครงสร้างชัดเจน เช่น ป้อนข้อมูล ตรวจสอบเอกสาร โอนข้อมูล",
+   "งานวิเคราะห์เชิงซับซ้อนที่ต้องอาศัย AI ขั้นสูง",
+   "งานพัฒนา Software ทุกประเภท"],
+a:1,e:"RPA เหมาะกับงาน Rule-based ซ้ำซาก ที่มีกฎชัดเจน เช่น ป้อนข้อมูลลูกค้าจาก Excel เข้าระบบ Core Banking, ตรวจสอบเอกสาร KYC, ออกรายงาน ช่วยลดเวลาและ Human Error ไม่ต้องแก้ไข Source Code"},
+{id:72,cat:"Enterprise Architecture",
+q:"TOGAF (The Open Group Architecture Framework) คืออะไร",
+c:["ภาษาโปรแกรมสำหรับพัฒนา Enterprise System",
+   "กรอบการทำงานสำหรับออกแบบและจัดการ Enterprise Architecture ให้สอดคล้องกับกลยุทธ์",
+   "มาตรฐานความปลอดภัยของ Web Application",
+   "ระบบจัดการฐานข้อมูลขนาดใหญ่"],
+a:1,e:"TOGAF เป็น Framework มาตรฐานสำหรับพัฒนา Enterprise Architecture ประกอบด้วย ADM (Architecture Development Method) 9 Phase ในการออกแบบ Business, Data, Application และ Technology Architecture"},
+{id:73,cat:"Enterprise Architecture",
+q:"Microservices Architecture แตกต่างจาก Monolithic อย่างไร",
+c:["Microservices ทำงานได้เฉพาะบน Cloud เท่านั้น",
+   "Microservices แบ่งระบบเป็น Service ย่อยอิสระ แต่ละตัว Deploy และ Scale แยกกันได้",
+   "Monolithic ปลอดภัยกว่า Microservices เสมอทุกกรณี",
+   "ทั้งสองรูปแบบไม่มีความแตกต่างด้านประสิทธิภาพ"],
+a:1,e:"Monolithic รวมทุกฟังก์ชันในโค้ดเดียว Deploy พร้อมกัน Scale ยาก Microservices แบ่งเป็น Service ย่อยแต่ละตัวมี Codebase, Database, Deploy แยก Scale อิสระ เหมาะกับระบบที่ต้องการ High Scalability"},
+{id:74,cat:"SDLC / DevOps",
+q:"Scrum Framework ประกอบด้วย Role หลักกี่ Role และอะไรบ้าง",
+c:["2 Role: Developer และ Manager",
+   "3 Role: Product Owner, Scrum Master, Development Team",
+   "4 Role: Product Owner, Scrum Master, Developer, QA",
+   "5 Role ขึ้นไปขึ้นอยู่กับขนาดทีม"],
+a:1,e:"Scrum มี 3 Role หลัก: 1.Product Owner รับผิดชอบ Product Backlog และ Prioritization 2.Scrum Master อำนวยความสะดวก กำจัด Impediment 3.Development Team Self-organizing 3-9 คน ทำงานแบบ Sprint"},
+{id:75,cat:"IT Security",
+q:"OWASP Top 10 คืออะไรและมีความสำคัญต่อ ธ.ก.ส. อย่างไร",
+c:["รายชื่อซอฟต์แวร์ 10 อันดับที่ ธ.ก.ส. ต้องใช้",
+   "รายการช่องโหว่ความปลอดภัยของ Web Application ที่พบบ่อยที่สุดและอันตรายที่สุด",
+   "มาตรฐาน ISO ด้านความปลอดภัยไซเบอร์",
+   "รายชื่อ Vendor ด้าน Cybersecurity ที่ได้รับการรับรอง"],
+a:1,e:"OWASP Top 10 รายการช่องโหว่ Web Application 10 รูปแบบที่พบบ่อย เช่น SQL Injection, XSS, Broken Authentication ธ.ก.ส. ต้องป้องกันในระบบ Web Banking, Mobile App และ API ทุกตัว"},
+{id:76,cat:"ระบบจัดการฐานข้อมูล",
+q:"Data Warehouse แตกต่างจาก Operational Database อย่างไร",
+c:["Data Warehouse เหมาะสำหรับธุรกรรม Real-time ส่วน DB เหมาะ Analytics",
+   "Data Warehouse ออกแบบสำหรับ Analytical Query และการรายงาน ส่วน DB เหมาะธุรกรรมประจำวัน",
+   "Data Warehouse และ Operational DB มีฟังก์ชันเหมือนกันทั้งหมด",
+   "Data Warehouse ใช้เฉพาะบน Cloud ส่วน DB ใช้ On-premise"],
+a:1,e:"Data Warehouse ออกแบบสำหรับ OLAP (Online Analytical Processing) รองรับ Analytical Query ขนาดใหญ่ ดึงข้อมูลจากหลายแหล่ง ใช้รายงานและ BI Operational DB ออกแบบสำหรับ OLTP ธุรกรรมประจำวัน"},
+{id:77,cat:"Cloud Computing",
+q:"Hybrid Cloud เหมาะกับ ธ.ก.ส. อย่างไร",
+c:["ใช้ Cloud 2 Provider พร้อมกัน",
+   "ผสาน On-Premise/Private Cloud กับ Public Cloud เก็บข้อมูลลับ On-premise ใช้ Public Cloud ยืดหยุ่น",
+   "ใช้ Cloud เฉพาะงาน IT ส่วนงานธนาคาร On-premise",
+   "ระบบ Cloud ที่ให้บริการหลายองค์กรพร้อมกัน"],
+a:1,e:"Hybrid Cloud เหมาะกับ ธ.ก.ส. เพราะต้องเก็บข้อมูลลูกค้าตาม PDPA และ ธปท. ใน Private Cloud แต่ใช้ Public Cloud สำหรับ Dev/Test หรืองานที่ต้องการ Scale สูง เช่น ช่วงจ่ายเงินเกษตรกร"},
+{id:78,cat:"AI / ML / RPA",
+q:"NLP (Natural Language Processing) ประยุกต์ใช้กับ ธ.ก.ส. ได้อย่างไร",
+c:["ใช้เฉพาะการแปลเอกสารภาษาต่างประเทศ",
+   "Chatbot ตอบลูกค้า วิเคราะห์ Sentiment จากร้องเรียน สรุปเอกสารสัญญา",
+   "ใช้เฉพาะระบบ Voice Recognition สำหรับ Call Center",
+   "ใช้เฉพาะการค้นหาข้อมูลในฐานข้อมูล"],
+a:1,e:"NLP ประยุกต์ใช้ใน ธ.ก.ส. ได้หลายด้าน เช่น AI Chatbot ตอบคำถามสินเชื่อ, Sentiment Analysis วิเคราะห์ความพึงพอใจลูกค้า, Document Summarization สรุปสัญญา, Named Entity Recognition ดึงข้อมูลจากเอกสาร"},
+{id:79,cat:"ระบบเครือข่าย",
+q:"HTTPS แตกต่างจาก HTTP อย่างไร",
+c:["HTTPS ทำงานบน Port 80 ส่วน HTTP ทำงานบน Port 443",
+   "HTTPS เข้ารหัสข้อมูลด้วย SSL/TLS ทำให้สื่อสารปลอดภัยกว่า HTTP",
+   "HTTPS ช้ากว่า HTTP และไม่เหมาะกับระบบ Banking",
+   "HTTPS ใช้ได้เฉพาะ Internal Network ส่วน HTTP ใช้ Internet"],
+a:1,e:"HTTPS ใช้ SSL/TLS เข้ารหัสข้อมูลระหว่าง Client และ Server ทำงานบน Port 443 ป้องกัน Man-in-the-Middle Attack ระบบ Web Banking ของ ธ.ก.ส. ต้องใช้ HTTPS เสมอ HTTP ทำงานบน Port 80 ไม่มีการเข้ารหัส"},
+{id:80,cat:"IT Security",
+q:"Hash Function ที่ใช้ตรวจสอบความสมบูรณ์ของข้อมูลควรมีคุณสมบัติอะไร",
+c:["แปลงข้อมูลกลับเป็นต้นฉบับได้ง่าย",
+   "One-way Function Collision-resistant Fixed Output Size ไม่สามารถย้อนกลับได้",
+   "ให้ผล Hash เดิมเฉพาะบน Windows",
+   "เข้ารหัสด้วย Key ลับเสมอ"],
+a:1,e:"Cryptographic Hash Function ต้องมี: One-way (ไม่สามารถย้อนกลับ), Deterministic (Input เดิม Hash เดิม), Collision-resistant (หาสอง Input ให้ Hash เดิมยากมาก), Fixed Output ตัวอย่าง SHA-256, SHA-3 ใช้ใน Digital Signature, Blockchain"},
+{id:81,cat:"Enterprise Architecture",
+q:"API Gateway ในสถาปัตยกรรม Microservices มีบทบาทอะไร",
+c:["เก็บ Source Code ของ Microservices ทุกตัว",
+   "จุดรับ Request จากภายนอก ทำ Auth, Rate Limiting, Load Balancing, Routing ไปยัง Service ต่างๆ",
+   "จัดการ Database ของแต่ละ Microservice",
+   "ทดสอบ Microservices อัตโนมัติ"],
+a:1,e:"API Gateway เป็น Single Entry Point สำหรับ Client Request ทำหน้าที่ Authentication, Authorization, Rate Limiting, Load Balancing, Request Routing ไปยัง Microservice ที่เหมาะสม และ Response Aggregation"},
+{id:82,cat:"SDLC / DevOps",
+q:"Technical Debt ในการพัฒนาซอฟต์แวร์หมายถึงอะไร",
+c:["หนี้สินที่เกิดจากการซื้อ Software License",
+   "ต้นทุนแฝงจากการเลือกทางลัดในการพัฒนา ที่ต้องแก้ไขในอนาคต",
+   "ค่าใช้จ่ายในการจ้างนักพัฒนาเพิ่มเติม",
+   "งบประมาณที่ใช้เกินแผนในโครงการ IT"],
+a:1,e:"Technical Debt คือต้นทุนในอนาคตที่เกิดจากการเลือกทางลัดในการพัฒนา (เช่น เขียนโค้ดเร็วแต่คุณภาพต่ำ) ทำให้ต้องใช้เวลาและทรัพยากรเพิ่มขึ้นในการแก้ไขภายหลัง ถ้าปล่อยสะสมจะทำให้ระบบยากต่อการบำรุงรักษา"},
+{id:83,cat:"ระบบจัดการฐานข้อมูล",
+q:"Normalization ของ Database มีวัตถุประสงค์อะไร",
+c:["เพิ่มความเร็วในการ Query",
+   "ลดความซ้ำซ้อนของข้อมูลและป้องกัน Data Anomalies",
+   "เพิ่มความปลอดภัยของข้อมูล",
+   "ทำให้ Query SQL เขียนง่ายขึ้น"],
+a:1,e:"Normalization แบ่งตารางให้ลดความซ้ำซ้อน (Data Redundancy) และป้องกัน Anomalies 3 ประเภท ได้แก่ Insert, Update, Delete Anomaly มี Normal Form ตั้งแต่ 1NF ถึง BCNF อย่างไรก็ตาม Normalization สูงอาจทำให้ Query ช้าลงเพราะต้อง JOIN หลายตาราง"},
+{id:84,cat:"AI / ML / RPA",
+q:"Deep Learning แตกต่างจาก Traditional Machine Learning อย่างไร",
+c:["Deep Learning ต้องการข้อมูลน้อยกว่า",
+   "Deep Learning ใช้ Neural Network หลายชั้น เรียนรู้ Feature อัตโนมัติจากข้อมูลดิบ",
+   "Deep Learning ทำงานได้เร็วกว่าทุกกรณี",
+   "Deep Learning ใช้ได้เฉพาะกับข้อมูลตัวเลข"],
+a:1,e:"Deep Learning ใช้ Neural Network หลาย Layer สามารถ Extract Feature จากข้อมูลดิบได้เอง (เช่น รูปภาพ เสียง ข้อความ) ต่างจาก Traditional ML ที่ต้อง Feature Engineering ด้วยมือ DL ต้องการข้อมูลและ Computational Power สูงกว่ามาก"},
+{id:85,cat:"ระบบเครือข่าย",
+q:"Firewall ประเภท Stateful Inspection แตกต่างจาก Packet Filter อย่างไร",
+c:["Stateful ตรวจสอบเฉพาะ Header ของ Packet ทีละ Packet",
+   "Stateful ติดตาม State ของ Connection ทำให้ตรวจสอบได้ละเอียดกว่ามาก",
+   "Packet Filter ปลอดภัยกว่า Stateful เสมอ",
+   "ไม่มีความแตกต่างที่มีนัยสำคัญ"],
+a:1,e:"Packet Filter ตรวจสอบแค่ Header ทีละ Packet ไม่รู้ว่าเป็นส่วนหนึ่งของ Connection ใด Stateful Inspection ติดตาม State ของทุก Connection รู้ว่า Packet เป็นส่วนหนึ่งของ Session ที่ถูกต้อง ป้องกันการโจมตีได้ดีกว่า"},
+{id:86,cat:"Cloud Computing",
+q:"Kubernetes มีบทบาทอะไรในระบบ Container",
+c:["สร้าง Container Image",
+   "Orchestrate Container ทำ Auto-scaling Load Balancing Self-healing",
+   "จัดการ Source Code Repository",
+   "สร้าง Virtual Machine"],
+a:1,e:"Kubernetes เป็น Container Orchestration Platform จัดการ Container ขนาดใหญ่ ทำ Auto-scaling (ขยาย/ลด Container ตามโหลด) Load Balancing, Self-healing (รีสตาร์ท Container ที่ล้มเหลว) และ Rolling Update"},
+{id:87,cat:"IT Security",
+q:"Penetration Testing (Pentest) คืออะไร",
+c:["ทดสอบโหลดระบบด้วยผู้ใช้งานจำนวนมาก",
+   "จำลองการโจมตีระบบเพื่อค้นหาช่องโหว่ก่อนผู้ไม่หวังดี",
+   "ตรวจสอบว่าระบบได้รับการ Patch อัปเดตครบถ้วน",
+   "ทดสอบความถูกต้องของข้อมูลในฐานข้อมูล"],
+a:1,e:"Pentest คือการทดสอบความปลอดภัยโดยจำลองการโจมตีเหมือน Hacker จริง เพื่อค้นหา Vulnerabilities ก่อนผู้ไม่ประสงค์ดีค้นพบ ช่วยให้ ธ.ก.ส. แก้ไขเชิงรุก ประเภทแบ่งเป็น Black/Gray/White Box"},
+{id:88,cat:"Enterprise Architecture",
+q:"ETL Process ในการสร้าง Data Warehouse คืออะไร",
+c:["Enterprise Technology Lifecycle วงจรชีวิตเทคโนโลยีองค์กร",
+   "Extract Transform Load กระบวนการดึงแปลงและโหลดข้อมูลเข้า Data Warehouse",
+   "Encryption Transfer Logic การส่งข้อมูลเข้ารหัส",
+   "Enterprise Testing Layer ชั้นทดสอบซอฟต์แวร์"],
+a:1,e:"ETL: Extract ดึงข้อมูลจากแหล่งต่างๆ เช่น Core Banking, CRM, Transaction DB → Transform แปลงทำความสะอาดข้อมูล → Load โหลดเข้า Data Warehouse เพื่อใช้ Analytics และ Business Intelligence"},
+{id:89,cat:"SDLC / DevOps",
+q:"Agile Methodology เหมาะกับงานพัฒนาประเภทใด",
+c:["งานก่อสร้างสาขาที่มีแบบแผนชัดเจนตายตัว",
+   "งานที่ความต้องการเปลี่ยนแปลงบ่อยและต้องการผลลัพธ์รวดเร็ว",
+   "งานจัดซื้อจัดจ้างตาม พ.ร.บ.",
+   "งานตรวจสอบบัญชีประจำปี"],
+a:1,e:"Agile เหมาะกับงานที่ความต้องการไม่แน่นอน แบ่งงานเป็น Sprint สั้นๆ 1-4 สัปดาห์ ส่งมอบผลทีละส่วน รับ Feedback ปรับปรุงได้รวดเร็ว เช่น การพัฒนา Mobile App, Digital Banking Feature"},
+{id:90,cat:"AI / ML / RPA",
+q:"BI (Business Intelligence) ของ ธ.ก.ส. ช่วยในด้านใด",
+c:["เพิ่มความเร็วในการประมวลผลธุรกรรม",
+   "วิเคราะห์ข้อมูลเพื่อสนับสนุนการตัดสินใจทางธุรกิจและการวางแผนกลยุทธ์",
+   "จัดการ Source Code ของระบบ",
+   "ตรวจสอบความถูกต้องของธุรกรรม"],
+a:1,e:"BI (Business Intelligence) ช่วยรวบรวม วิเคราะห์ และนำเสนอข้อมูลในรูปแบบที่เข้าใจง่าย เช่น Dashboard, Report ช่วยผู้บริหาร ธ.ก.ส. ตัดสินใจด้านสินเชื่อ การตลาด บริหารความเสี่ยง และวางแผนกลยุทธ์"},
+{id:91,cat:"Core Competency: ร่วมพลังร่วมใจ (Coach)",
+q:"ฝ่ายสาขาร้องเรียนว่าระบบ Core Banking ช้าและล่มบ่อยช่วงเร่งด่วน คุณเป็นหัวหน้าทีม Application พฤติกรรม Coach ที่ดีที่สุดคืออะไร",
+c:["ส่งอีเมลชี้แจงว่าระบบปกติ ปัญหาเกิดจากผู้ใช้งาน",
+   "ลงพื้นที่สอบถามสาขา วิเคราะห์ Root Cause ร่วมกับทีม Infra และ DBA แจ้งแผนและกำหนดเวลาแก้ไข",
+   "รอให้สาขาส่งหนังสือร้องเรียนอย่างเป็นทางการก่อน",
+   "มอบให้ลูกน้องไปสอบสวนโดยไม่เข้าไปเกี่ยวข้อง"],
+a:1,e:"Coach ต้องแสดง Empathy ลงไปสัมผัสปัญหาจริง ร่วมมือข้ามทีม (Infra+DBA+App) วิเคราะห์หาสาเหตุจริง (Root Cause) และสื่อสารแผนแก้ไขอย่างชัดเจน แสดงความรับผิดชอบต่อผู้มีส่วนได้เสีย"},
+{id:92,cat:"IT Security",
+q:"Defense in Depth Strategy ในการรักษาความปลอดภัยระบบ IT คืออะไร",
+c:["ใช้ Firewall ที่แข็งแกร่งเพียงชั้นเดียว",
+   "ใช้มาตรการรักษาความปลอดภัยหลายชั้น ถ้าผ่านชั้นหนึ่งได้ยังมีชั้นถัดไปป้องกัน",
+   "ซ่อนระบบไม่ให้ผู้โจมตีพบ",
+   "ป้องกันเฉพาะขอบเขตภายนอก"],
+a:1,e:"Defense in Depth คือกลยุทธ์ใช้มาตรการรักษาความปลอดภัยหลายชั้น เช่น Firewall, IDS/IPS, Endpoint Security, Access Control, Encryption, Monitoring หากผู้โจมตีผ่านชั้นหนึ่งได้ ยังมีชั้นถัดไปป้องกัน"},
+{id:93,cat:"ระบบปฏิบัติการ",
+q:"Process Scheduling แบบ Round Robin มีลักษณะอย่างไร",
+c:["จัดลำดับตาม Priority สูงสุดได้ CPU ก่อน",
+   "จัดสรร CPU ให้แต่ละ Process ทีละช่วงเวลาเท่ากัน (Time Quantum) หมุนเวียน",
+   "Process ที่รออยู่นานสุดได้ CPU ก่อน",
+   "Process สั้นสุดได้ CPU ก่อนเสมอ"],
+a:1,e:"Round Robin กำหนด Time Quantum (เช่น 10ms) ให้แต่ละ Process ได้ CPU เท่ากัน เมื่อหมด Quantum ไปต่อท้าย Queue รอรอบถัดไป เหมาะกับ Time-Sharing System เพราะ Fair และป้องกัน Starvation"},
+{id:94,cat:"Enterprise Architecture",
+q:"SOA (Service-Oriented Architecture) มีหลักการสำคัญอย่างไร",
+c:["รวมทุกฟังก์ชันไว้ในโค้ดเดียวเพื่อประสิทธิภาพ",
+   "ออกแบบระบบเป็น Service ที่ Loosely Coupled สื่อสารผ่าน Standard Interface",
+   "ใช้เฉพาะ Database แบบ Relational เท่านั้น",
+   "ทุก Service ต้องใช้ Programming Language เดียวกัน"],
+a:1,e:"SOA ออกแบบระบบเป็น Business Service ที่ Loosely Coupled มี Standard Interface (เช่น WSDL, SOAP, REST) สื่อสารผ่าน ESB (Enterprise Service Bus) แต่ละ Service ทำงานอิสระ แก้ไขได้โดยไม่กระทบส่วนอื่น"},
+{id:95,cat:"SDLC / DevOps",
+q:"Code Review ในกระบวนการพัฒนาซอฟต์แวร์มีประโยชน์อย่างไร",
+c:["ทำให้นักพัฒนาทำงานช้าลงโดยไม่จำเป็น",
+   "ตรวจสอบคุณภาพโค้ด ค้นหา Bug และแชร์ความรู้ระหว่างทีม",
+   "ทดแทน Unit Test ได้โดยตรง",
+   "ใช้เฉพาะโครงการขนาดใหญ่เท่านั้น"],
+a:1,e:"Code Review ช่วย 1.ค้นหา Bug ก่อน Deploy 2.รักษา Code Quality และมาตรฐาน 3.แชร์ความรู้และ Best Practice ในทีม 4.ลด Technical Debt 5.เป็นโอกาสเรียนรู้สำหรับนักพัฒนาใหม่"},
+{id:96,cat:"ระบบจัดการฐานข้อมูล",
+q:"Database Sharding คืออะไรและใช้เมื่อใด",
+c:["การสำรองข้อมูลไปยัง Server สำรอง",
+   "การแบ่งข้อมูลออกเป็น Shard หลายชิ้นกระจายใน Server หลายตัว ใช้เมื่อข้อมูลใหญ่มากเกินหนึ่ง Server",
+   "การเข้ารหัสข้อมูล",
+   "การรวม Database หลายตัวเป็นตัวเดียว"],
+a:1,e:"Sharding คือการแบ่ง Database ออกเป็น Shard (ชิ้น) หลายๆ ชิ้น กระจายไปใน Server หลายตัว แต่ละ Shard เก็บข้อมูลบางส่วน ใช้เมื่อข้อมูลใหญ่เกินจน Single Server ไม่สามารถรองรับได้ ช่วยเพิ่ม Read/Write Performance"},
+{id:97,cat:"Core Competency: สร้างสรรค์สิ่งใหม่ (Coach)",
+q:"เกษตรกรในพื้นที่ห่างไกลไม่สะดวกมาสาขา แต่ ธ.ก.ส. ยังไม่มี Feature ชำระสินเชื่อ Offline บนมือถือ คุณเป็น Mobile App Team Lead ควรทำอย่างไร (Coach Level)",
+c:["แจ้งว่า Feature นี้ยากเกินไปและไม่คุ้มต้นทุน",
+   "ศึกษา Use Case รวบรวม Requirement สร้าง Prototype และนำเสนอผู้บริหารพร้อม Business Case",
+   "รอให้ลูกค้าร้องเรียนอย่างเป็นทางการก่อนดำเนินการ",
+   "มอบให้นักพัฒนาสร้างเองโดยไม่ต้องขออนุมัติ"],
+a:1,e:"Coach ต้องแสดงความคิดสร้างสรรค์เชิงรุก (Proactive Innovation) วิเคราะห์ความต้องการ สร้าง Prototype เพื่อพิสูจน์แนวคิด และนำเสนอด้วย Business Case เพื่อขอทรัพยากร ไม่ปฏิเสธหรือรอให้มีปัญหาก่อน"},
+{id:98,cat:"IT Security",
+q:"Incident Response Plan สำหรับ Cybersecurity ใน ธ.ก.ส. ควรมีขั้นตอนอะไรบ้าง",
+c:["แจ้งลูกค้าทันทีและปิดระบบทั้งหมด",
+   "Prepare, Identify, Contain, Eradicate, Recover, Lessons Learned",
+   "จ้าง Hacker มาทดสอบระบบ",
+   "ส่งเรื่องให้ตำรวจดำเนินการและรอผล"],
+a:1,e:"NIST Incident Response มี 6 ขั้นตอน: 1.Prepare เตรียมพร้อม 2.Identify ระบุเหตุการณ์ 3.Contain จำกัดความเสียหาย 4.Eradicate กำจัดสาเหตุ 5.Recover กู้คืนระบบ 6.Lessons Learned เรียนรู้เพื่อป้องกันซ้ำ"},
+{id:99,cat:"Enterprise Architecture",
+q:"Event-Driven Architecture (EDA) เหมาะกับระบบ ธ.ก.ส. ประเภทใด",
+c:["ระบบที่ต้องการ Transaction แบบ Synchronous เท่านั้น",
+   "ระบบที่ต้องตอบสนองต่อเหตุการณ์ Real-time เช่น การแจ้งเตือนธุรกรรม การตรวจจับการทุจริต",
+   "ระบบที่ต้องการจัดเก็บข้อมูล Historical เท่านั้น",
+   "ระบบ Batch Processing ที่ทำงานตอนกลางคืนเท่านั้น"],
+a:1,e:"EDA เหมาะกับระบบที่ต้องตอบสนองต่อ Event แบบ Real-time เช่น การแจ้งเตือนธุรกรรมผิดปกติ (Fraud Detection), การอัปเดตยอดบัญชี, การส่ง Notification ลูกค้า ใช้ Message Broker เช่น Kafka, RabbitMQ"},
+{id:100,cat:"Core Competency: ยึดมั่นจริยธรรม (Coach)",
+q:"คุณพบว่าเพื่อนร่วมงานใช้บัญชี Test User เข้าถึงข้อมูลลูกค้าจริงใน UAT Environment พฤติกรรม Coach ที่ถูกต้องคือ",
+c:["ไม่ทำอะไรเพราะไม่ใช่เรื่องของตัวเอง",
+   "แจ้ง Security Team และผู้บังคับบัญชาทันที บันทึกหลักฐาน และดำเนินการตามระเบียบ",
+   "ตักเตือนเพื่อนด้วยวาจาและจบเรื่อง",
+   "รอดูพฤติกรรมซ้ำก่อนจึงจะรายงาน"],
+a:1,e:"การเข้าถึงข้อมูลลูกค้าโดยไม่ได้รับอนุญาตละเมิด PDPA และนโยบาย Information Security Coach ต้องแจ้ง Security Team ทันที ไม่ปิดบัง แม้จะเป็นเพื่อน ความซื่อสัตย์โปร่งใส (Integrity) ต้องมาก่อนความสัมพันธ์ส่วนตัว"}
+];
+
+// ============================================================
+// STATE
+// ============================================================
+let questions=[], mode='', curIdx=0, answers={}, flags=new Set();
+let timerSec=0, timerInterval=null, startTime=0, examMode='';
+
+function startExam(m){
+  mode=m;
+  if(m==='general') questions=[...GQ], timerSec=75*60, examMode='ความรู้กลาง';
+  else if(m==='specific') questions=[...SQ], timerSec=75*60, examMode='ความรู้เฉพาะตำแหน่ง';
+  else questions=[...GQ,...SQ], timerSec=150*60, examMode='ความรู้กลาง + เฉพาะตำแหน่ง';
+  curIdx=0; answers={}; flags=new Set(); startTime=Date.now();
+  document.getElementById('sec-tag').textContent=examMode;
+  showScreen('exam-screen');
+  renderQ();
+  buildGrid();
+  startTimer();
 }
 
-// init real Q list on load
-window.addEventListener('DOMContentLoaded', buildRealQList);
-
-// ─── Prompts ───
-const PROMPTS = {
-  general: `คุณคือผู้ออกข้อสอบสำหรับ ธ.ก.ส. สร้างข้อสอบแบบปรนัย 4 ตัวเลือก จำนวน 100 ข้อ สำหรับ "ความรู้เนื้อหากลาง" ตำแหน่งคอมพิวเตอร์ Software ระดับ 8
-
-ครอบคลุมหัวข้อ (แต่ละหัวข้อ ~11 ข้อ):
-1. นโยบายและทิศทางภาครัฐ เศรษฐกิจ สังคม เทคโนโลยีนวัตกรรม
-2. วิสัยทัศน์ พันธกิจ ยุทธศาสตร์ นโยบาย ทิศทาง ธ.ก.ส.
-3. SE-AM (State Enterprise Assessment Model) ฉบับปรับปรุง ปี 2565
-4. การบริหารความเสี่ยงและการควบคุมภายใน / Financial Literacy / ปปง.
-5. Risk Culture (วัฒนธรรมองค์กรในการบริหารความเสี่ยง)
-6. Market Conduct (หลักเกณฑ์การให้บริการลูกค้าอย่างเป็นธรรม)
-7. PDPA พระราชบัญญัติคุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562
-8. Cyber Security (ความมั่นคงปลอดภัยทางไซเบอร์)
-9. Corporate Governance (CG) และ Data Governance
-
-กฎสำคัญ: ตัวเลือก ก ข ค ง ต้องมีความยาวใกล้เคียงกันมาก เพื่อป้องกันการเดา เฉลยกระจายสม่ำเสมอ คำอธิบาย 2-4 ประโยคละเอียด
-
-ตอบเป็น JSON เท่านั้น:
-{"questions":[{"id":1,"topic":"หัวข้อ","question":"คำถาม","options":{"a":"ตัวเลือก ก","b":"ตัวเลือก ข","c":"ตัวเลือก ค","d":"ตัวเลือก ง"},"answer":"a","explanation":"คำอธิบาย"}]}`,
-
-  specific: `คุณคือผู้ออกข้อสอบสำหรับ ธ.ก.ส. สร้างข้อสอบแบบปรนัย 4 ตัวเลือก จำนวน 100 ข้อ สำหรับ "ความรู้เฉพาะตำแหน่ง" คอมพิวเตอร์ Software ระดับ 8
-
-ครอบคลุมหัวข้อ:
-1. Hardware (CPU, RAM, ROM, Register, I/O, Secondary Storage) ~10 ข้อ
-2. ระบบปฏิบัติการ (OS, Utility, Device Driver, Assembler, Interpreter, Compiler) ~10 ข้อ
-3. Network (Star/Ring/Bus, LAN/MAN/WAN, Modem, Router, Hub, Bridge, Repeater, UTP) ~10 ข้อ
-4. SDLC (Feasibility, Analysis, Design, Testing-Black/White Box, Installation types, Maintenance) ~12 ข้อ
-5. Mobile App Development (5 ขั้นตอน Plan/Design/Code/Deploy/Monitor, Agile, Testing types) ~8 ข้อ
-6. Data Structure (Array 1D/2D, Stack-LIFO, Queue-FIFO, Linked List, Tree, Graph, Sort, Search) ~12 ข้อ
-7. Database Design SQL vs NoSQL (ER Diagram, Normalization, Column/Key-Value/Document/Graph) ~10 ข้อ
-8. System Integration (API-REST/SOAP, JWT, HTTP Status Code, Docker, Container vs VM) ~10 ข้อ
-9. IT Trends (IoT, AI, Metaverse, DeFi, Virtual Bank, 5G, NFT, AR/VR) ~8 ข้อ
-10. IT Project Management (Triangle, Gantt, PERT/CPM, SDLC Waterfall, Agile, Risk Level) ~10 ข้อ
-
-กฎสำคัญ: ตัวเลือก ก ข ค ง ยาวใกล้เคียงกัน บางข้อคำนวณ เฉลยกระจาย คำอธิบาย 2-4 ประโยค
-
-ตอบเป็น JSON เท่านั้น:
-{"questions":[{"id":1,"topic":"หัวข้อ","question":"คำถาม","options":{"a":"ตัวเลือก ก","b":"ตัวเลือก ข","c":"ตัวเลือก ค","d":"ตัวเลือก ง"},"answer":"a","explanation":"คำอธิบาย"}]}`,
-
-  management: `คุณคือผู้ออกข้อสอบสำหรับ ธ.ก.ส. สร้างข้อสอบแบบปรนัย 4 ตัวเลือก จำนวน 100 ข้อ สำหรับ "หลักบริหาร & Competency ปี 69"
-
-ครอบคลุมหัวข้อ:
-1. Strategic Management (การบริหารเชิงกลยุทธ์) ~10 ข้อ
-2. POLC (Plan-Organize-Lead-Control) vs PDCA (Plan-Do-Check-Act) ~8 ข้อ
-3. Organization Transformation (การเปลี่ยนรูปองค์กร) ~7 ข้อ
-4. 5W1H เทคนิคการตั้งคำถาม 6 ประเด็น (Who/What/Where/When/Why/How) ~6 ข้อ
-5. SWOT Analysis การวิเคราะห์องค์กร ~8 ข้อ
-6. SMART Goal การตั้งเป้าหมาย (Specific/Measurable/Achievable/Relevant/Time-bound) ~7 ข้อ
-7. People Management & Budget Management ~8 ข้อ
-8. Strategic Plan (แผนกลยุทธ์ 3-5 ปี) & Action Plan ~7 ข้อ
-9. 4M (Man/Machine/Material/Method) ~6 ข้อ
-10. Katz Skills (Conceptual/Human/Technical) & ทักษะผู้บริหาร ~7 ข้อ
-11. Quality Management Principles ~6 ข้อ
-12. OKR vs KPI ความแตกต่างและการใช้งาน ~8 ข้อ
-13. Core Competency 5 ด้าน ธ.ก.ส. (ร่วมพลัง/สร้างสรรค์/ใส่ใจลูกค้า/มืออาชีพ/จริยธรรม) ~6 ข้อ
-14. Management Competency 3 ด้าน (วิสัยทัศน์กลยุทธ์/ผู้นำเปลี่ยนแปลง/พัฒนาคน) ~5 ข้อ
-15. Future Skills 4 กลุ่ม (Strategic Decision/Opportunity/Data Optimization/Digital) ~5 ข้อ
-
-กฎสำคัญ: ตัวเลือก ก ข ค ง ต้องมีความยาวใกล้เคียงกันมาก ข้อสอบวัดความเข้าใจ ไม่ใช่แค่ท่องจำ เฉลยกระจายสม่ำเสมอ คำอธิบาย 2-4 ประโยคละเอียด
-
-ตอบเป็น JSON เท่านั้น:
-{"questions":[{"id":1,"topic":"หัวข้อ","question":"คำถาม","options":{"a":"ตัวเลือก ก","b":"ตัวเลือก ข","c":"ตัวเลือก ค","d":"ตัวเลือก ง"},"answer":"a","explanation":"คำอธิบาย"}]}`,
-
-  exam2563: `คุณคือผู้ออกข้อสอบสำหรับ ธ.ก.ส. สร้างข้อสอบแบบปรนัย 4 ตัวเลือก จำนวน 80 ข้อ โดยจำลองจาก pattern ข้อสอบจริงปี 2563
-
-ส่วนที่ 1: คอมพิวเตอร์ (60 ข้อ) ครอบคลุม:
-- OS & Hardware: SSD vs HDD, RAID levels, Blade/Rack/Tower Server, หน้าที่ OS, ระบบเปิด/ปิด ~8 ข้อ
-- Database: ER Diagram relationship types (1:1, 1:N, M:N), SQL commands (SELECT/UPDATE/DELETE/DROP/TRUNCATE), Data Warehouse, Multidimensional DB, Sub/Main class ~10 ข้อ
-- Data Structure: Stack (LIFO), Queue (FIFO), Linked List, Tree, Graph, Sorting algorithms ~8 ข้อ
-- System Integration: XML vs JSON, RESTful vs SOAP, รูปแบบไฟล์แลกเปลี่ยนข้อมูล ~6 ข้อ
-- SDLC & Testing: Unit/Integration/System/Acceptance Test ลำดับ, Installation types (Direct/Parallel/Phase/Pilot), Maintenance types (Corrective/Adaptive/Perfective/Preventive) ~10 ข้อ
-- CMMI Level, DFD, Requirements (Functional vs Non-Functional), PERT/CPM calculation ~8 ข้อ
-- Technology: Big Data (5V), Cloud Computing benefits, IoT, Blockchain, Enterprise Architecture, FinTech ~10 ข้อ
-
-ส่วนที่ 2: พันธกิจ วิสัยทัศน์ เศรษฐกิจ สังคม (20 ข้อ)
-- วิสัยทัศน์/พันธกิจ ธ.ก.ส., Financial Literacy, PDPA, Cyber Security, ความเป็นธรรมลูกค้า, นโยบายรัฐบาล, FinTech ~20 ข้อ
-
-กฎสำคัญ: ตัวเลือก ก ข ค ง ยาวใกล้เคียงกัน มีข้อคำนวณ PERT อย่างน้อย 1 ข้อ เฉลยกระจายสม่ำเสมอ คำอธิบาย 2-4 ประโยคละเอียด
-
-ตอบเป็น JSON เท่านั้น:
-{"questions":[{"id":1,"topic":"หัวข้อ","question":"คำถาม","options":{"a":"ตัวเลือก ก","b":"ตัวเลือก ข","c":"ตัวเลือก ค","d":"ตัวเลือก ง"},"answer":"a","explanation":"คำอธิบาย"}]}`
-};
-
-const MODE_LABELS = {
-  general: '📘 ความรู้เนื้อหากลาง',
-  specific: '💻 ความรู้เฉพาะตำแหน่ง',
-  management: '🎯 หลักบริหาร & Competency',
-  exam2563: '📋 จำลองข้อสอบจริง ปี 2563'
-};
-
-function show(id) {
-  ['screen-home','screen-exam','screen-result'].forEach(s => {
-    document.getElementById(s).style.display = 'none';
-  });
-  const el = document.getElementById(id);
-  el.style.display = id === 'screen-home' ? 'flex' : 'block';
-  window.scrollTo(0,0);
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
 }
 
-function goHome() {
-  if (timerInterval) clearInterval(timerInterval);
-  show('screen-home');
-}
-
-async function startExam(mode) {
-  currentMode = mode;
-  questions = []; userAnswers = []; currentQ = 0;
-  examSubmitted = false; explanationVisible = false;
-  document.getElementById('exam-title').textContent = MODE_LABELS[mode] || 'ข้อสอบ';
-  show('screen-exam');
-  document.getElementById('loading-questions').style.display = 'flex';
-  document.getElementById('loading-text').textContent = 'กำลังสร้างชุดข้อสอบ กรุณารอสักครู่…';
-  document.getElementById('questions-area').style.display = 'none';
-  try {
-    const qs = await fetchQuestions(mode);
-    questions = qs;
-    userAnswers = new Array(questions.length).fill(null);
-    renderNav();
-    showQuestion(0);
-    startTimer(150 * 60);
-    document.getElementById('loading-questions').style.display = 'none';
-    document.getElementById('questions-area').style.display = 'block';
-  } catch(e) {
-    document.getElementById('loading-questions').innerHTML =
-      `<div class="error-box">❌ เกิดข้อผิดพลาด<br><small>${e.message}</small><br><br>
-       <button class="btn btn-primary" onclick="startExam('${mode}')">ลองใหม่</button>
-       <button class="btn btn-outline" style="margin-left:8px" onclick="goHome()">กลับหน้าหลัก</button></div>`;
-  }
-}
-
-async function fetchQuestions(mode) {
-  const res = await fetch(API_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 16000,
-      messages: [{ role: 'user', content: PROMPTS[mode] }]
-    })
-  });
-  if (!res.ok) throw new Error(`API ${res.status}`);
-  const data = await res.json();
-  const text = data.content.map(c => c.text||'').join('');
-  const match = text.match(/\{[\s\S]*\}/);
-  if (!match) throw new Error('ไม่พบ JSON');
-  const parsed = JSON.parse(match[0]);
-  if (!parsed.questions || parsed.questions.length < 5) throw new Error('ข้อสอบไม่ครบ');
-  return parsed.questions;
-}
-
-function startTimer(seconds) {
-  if (timerInterval) clearInterval(timerInterval);
-  timeLeft = seconds; examStartTime = Date.now();
+function startTimer(){
+  if(timerInterval) clearInterval(timerInterval);
   updateTimerDisplay();
-  timerInterval = setInterval(() => {
-    timeLeft--;
+  timerInterval=setInterval(()=>{
+    timerSec--;
     updateTimerDisplay();
-    if (timeLeft <= 0) { clearInterval(timerInterval); submitExam(); }
-  }, 1000);
+    if(timerSec<=0){ clearInterval(timerInterval); document.getElementById('mtime').classList.add('on'); }
+  },1000);
 }
 
-function updateTimerDisplay() {
-  const h = Math.floor(timeLeft/3600), m = Math.floor((timeLeft%3600)/60), s = timeLeft%60;
-  const t = document.getElementById('timer');
-  t.textContent = `${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-  t.className = 'timer-box';
-  if (timeLeft < 300) t.classList.add('danger');
-  else if (timeLeft < 900) t.classList.add('warn');
+function updateTimerDisplay(){
+  const h=Math.floor(timerSec/3600), m=Math.floor((timerSec%3600)/60), s=timerSec%60;
+  const el=document.getElementById('timer');
+  el.textContent=`${pad(h)}:${pad(m)}:${pad(s)}`;
+  el.className='timer';
+  if(timerSec<300) el.classList.add('danger');
+  else if(timerSec<600) el.classList.add('warn');
+}
+function pad(n){return n<10?'0'+n:n}
+
+function renderQ(){
+  const q=questions[curIdx];
+  document.getElementById('qnum-lbl').textContent=`ข้อ ${curIdx+1} / ${questions.length}`;
+  document.getElementById('qcat-lbl').textContent=q.cat;
+  document.getElementById('qtxt').textContent=q.q;
+  const fi=document.getElementById('qflg-lbl');
+  fi.className='qflg'+(flags.has(curIdx)?' on':'');
+  document.getElementById('expl').className='expl'+(answers[curIdx]!==undefined?' on':'');
+  document.getElementById('expl-body').textContent=q.e;
+  // Choices
+  const cc=document.getElementById('choices');
+  cc.innerHTML='';
+  q.c.forEach((c,i)=>{
+    const div=document.createElement('div');
+    div.className='ch';
+    const answered=answers[curIdx]!==undefined;
+    if(answered) div.classList.add('dis');
+    if(answered && i===q.a) div.classList.add('cor');
+    else if(answered && answers[curIdx]===i) div.classList.add('wrg');
+    else if(!answered && answers[curIdx]===i) div.classList.add('sel');
+    const ck=document.createElement('div'); ck.className='ck'; ck.textContent='ABCD'[i];
+    const ct=document.createElement('div'); ct.className='ct'; ct.textContent=c;
+    div.appendChild(ck); div.appendChild(ct);
+    if(!answered) div.onclick=()=>selectAnswer(i);
+    cc.appendChild(div);
+  });
+  document.getElementById('btn-ans').style.display=answers[curIdx]!==undefined?'none':'inline-block';
+  document.getElementById('btn-prev').disabled=curIdx===0;
+  document.getElementById('btn-next').disabled=curIdx===questions.length-1;
+  document.getElementById('pfill').style.width=((curIdx+1)/questions.length*100)+'%';
+  updateStats(); updateGrid();
 }
 
-function renderNav() {
-  const area = document.getElementById('questions-area');
-  area.innerHTML = '';
-  const grid = document.createElement('div');
-  grid.className = 'question-nav-grid'; grid.id = 'nav-grid';
-  for (let i = 0; i < questions.length; i++) {
-    const btn = document.createElement('button');
-    btn.className = 'qnav-btn'; btn.textContent = i+1;
-    btn.onclick = () => goToQuestion(i);
-    grid.appendChild(btn);
-  }
-  area.appendChild(grid);
-  const qWrap = document.createElement('div'); qWrap.id = 'q-wrap';
-  area.appendChild(qWrap);
+function selectAnswer(i){
+  if(answers[curIdx]!==undefined) return;
+  answers[curIdx]=i;
+  document.getElementById('expl').className='expl on';
+  document.getElementById('btn-ans').style.display='none';
+  renderQ();
 }
 
-function showQuestion(idx) {
-  if (idx < 0 || idx >= questions.length) return;
-  currentQ = idx; explanationVisible = false;
-  const q = questions[idx]; const answered = userAnswers[idx];
-  const total = questions.length;
-  document.getElementById('progress-info').textContent = `${idx+1}/${total}`;
-  document.getElementById('progress-bar').style.width = `${((idx+1)/total)*100}%`;
-  updateNavGrid();
-  const optLetters = {a:'ก',b:'ข',c:'ค',d:'ง'};
-  let optHtml = Object.entries(q.options).map(([key,val]) => {
-    let cls = 'option-btn';
-    if (examSubmitted) { if (key===q.answer) cls+=' correct-ans'; else if (key===answered&&answered!==q.answer) cls+=' wrong-ans'; }
-    else if (key===answered) cls+=' selected';
-    return `<button class="${cls}" onclick="selectAnswer('${key}')" ${examSubmitted?'disabled':''}>
-      <span class="option-letter">${optLetters[key]}</span><span>${val}</span></button>`;
-  }).join('');
-  const exShow = (examSubmitted||explanationVisible)?'show':'';
-  document.getElementById('q-wrap').innerHTML = `
-    <div class="question-card">
-      <div class="question-num">ข้อ ${q.id} · ${q.topic||''}</div>
-      <div class="question-text">${q.question}</div>
-      <div class="options">${optHtml}</div>
-      <div class="explanation-box ${exShow}" id="explanation-box">
-        <div class="explanation-title">📖 เฉลยและคำอธิบาย</div>
-        <div class="explanation-text"><strong>เฉลย: ตัวเลือก ${optLetters[q.answer]} — ${q.options[q.answer]}</strong><br><br>${q.explanation}</div>
-      </div>
-    </div>`;
+function showAns(){ document.getElementById('expl').className='expl on'; }
+function toggleFlag(){
+  if(flags.has(curIdx)) flags.delete(curIdx); else flags.add(curIdx);
+  document.getElementById('qflg-lbl').className='qflg'+(flags.has(curIdx)?' on':'');
+  updateGrid();
+}
+function prevQ(){ if(curIdx>0){ curIdx--; renderQ(); } }
+function nextQ(){ if(curIdx<questions.length-1){ curIdx++; renderQ(); } }
+
+function updateStats(){
+  const ans=Object.keys(answers).length;
+  document.getElementById('st-a').textContent=ans;
+  document.getElementById('st-r').textContent=questions.length-ans;
+  document.getElementById('st-f').textContent=flags.size;
 }
 
-function updateNavGrid() {
-  document.querySelectorAll('.qnav-btn').forEach((btn,i) => {
-    btn.className = 'qnav-btn';
-    if (i===currentQ) btn.classList.add('current');
-    else if (examSubmitted) { if (userAnswers[i]!==null) btn.classList.add(userAnswers[i]===questions[i].answer?'correct':'wrong'); }
-    else if (userAnswers[i]!==null) btn.classList.add('answered');
+function buildGrid(){
+  const g=document.getElementById('qgrd'); g.innerHTML='';
+  questions.forEach((_,i)=>{
+    const d=document.createElement('div'); d.className='qd'; d.textContent=i+1;
+    d.onclick=()=>{ curIdx=i; renderQ(); };
+    g.appendChild(d);
   });
 }
 
-function selectAnswer(key) {
-  if (examSubmitted) return;
-  userAnswers[currentQ] = key; showQuestion(currentQ);
-}
-
-function goToQuestion(idx) {
-  if (idx<0||idx>=questions.length) return; showQuestion(idx);
-}
-
-function toggleExplanation() {
-  explanationVisible = !explanationVisible;
-  const box = document.getElementById('explanation-box');
-  if (box) box.className = 'explanation-box'+(explanationVisible?' show':'');
-}
-
-function confirmSubmit() {
-  const unanswered = userAnswers.filter(a=>a===null).length;
-  if (unanswered>0 && !confirm(`ยังไม่ได้ตอบอีก ${unanswered} ข้อ\nต้องการส่งคำตอบหรือไม่?`)) return;
-  submitExam();
-}
-
-function submitExam() {
-  if (timerInterval) clearInterval(timerInterval);
-  examSubmitted = true; showQuestion(currentQ); showResult();
-}
-
-function showResult() {
-  const total = questions.length;
-  let correct = 0;
-  questions.forEach((q,i) => { if (userAnswers[i]===q.answer) correct++; });
-  const pct = Math.round((correct/total)*100);
-  const elapsed = Math.round((Date.now()-examStartTime)/1000);
-  const em = Math.floor(elapsed/60), es = elapsed%60;
-  const circumference = 402;
-  const offset = circumference-(pct/100)*circumference;
-  document.getElementById('res-pct').textContent = pct+'%';
-  document.getElementById('res-fraction').textContent = `${correct}/${total} ข้อ`;
-  document.getElementById('res-verdict').textContent =
-    pct>=60?'🏆 ผ่านเกณฑ์! ยอดเยี่ยม':pct>=50?'📚 ใกล้ผ่านแล้ว ฝึกต่อไป':'💪 ต้องพัฒนาเพิ่มเติม';
-  document.getElementById('res-sub').textContent =
-    pct>=60?'คุณทำได้ดีมาก พร้อมสำหรับการสอบจริง':'ทบทวนบทที่ยังอ่อนแล้วลองทำใหม่';
-  document.getElementById('result-stats').innerHTML = `
-    <div class="stat-card"><div class="stat-val" style="color:var(--success)">${correct}</div><div class="stat-key">ตอบถูก</div></div>
-    <div class="stat-card"><div class="stat-val" style="color:var(--danger)">${total-correct}</div><div class="stat-key">ตอบผิด</div></div>
-    <div class="stat-card"><div class="stat-val" style="color:var(--muted)">${userAnswers.filter(a=>a===null).length}</div><div class="stat-key">ไม่ตอบ</div></div>
-    <div class="stat-card"><div class="stat-val" style="color:var(--accent)">${pct}%</div><div class="stat-key">คะแนน</div></div>
-    <div class="stat-card"><div class="stat-val" style="color:var(--gold);font-size:18px">${em}:${String(es).padStart(2,'0')}</div><div class="stat-key">เวลาที่ใช้</div></div>`;
-  const optLetters = {a:'ก',b:'ข',c:'ค',d:'ง'};
-  const wrongs = questions.filter((q,i)=>userAnswers[i]!==q.answer);
-  let reviewHtml = `<div class="review-title">📋 สรุปข้อที่ตอบผิด (${wrongs.length} ข้อ)</div>`;
-  wrongs.forEach(q => {
-    const ua = userAnswers[q.id-1];
-    reviewHtml += `<div class="review-item wr">
-      <div class="review-q">ข้อ ${q.id} · ${q.topic||''}: ${q.question}</div>
-      <div class="review-ans">
-        คำตอบของคุณ: <span style="color:var(--danger)">${ua?`ตัวเลือก ${optLetters[ua]} — ${q.options[ua]}`:'ไม่ได้ตอบ'}</span><br>
-        เฉลยที่ถูกต้อง: <span style="color:var(--success)">ตัวเลือก ${optLetters[q.answer]} — ${q.options[q.answer]}</span>
-      </div>
-      <div class="review-expl">${q.explanation}</div>
-    </div>`;
+function updateGrid(){
+  const dots=document.querySelectorAll('#qgrd .qd');
+  dots.forEach((d,i)=>{
+    d.className='qd';
+    if(i===curIdx) d.classList.add('cur');
+    else if(answers[i]!==undefined) d.classList.add('ans');
+    if(flags.has(i)) d.classList.add('flg');
   });
-  document.getElementById('review-section').innerHTML = reviewHtml;
-  show('screen-result');
-  setTimeout(() => {
-    const circle = document.getElementById('ring-circle');
-    if (circle) { circle.style.transition='stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1)'; circle.setAttribute('stroke-dashoffset',offset); }
-  }, 100);
+}
+
+function confirmSub(){
+  const unanswered=questions.length-Object.keys(answers).length;
+  document.getElementById('mmsg').textContent=unanswered>0?`ยังมี ${unanswered} ข้อที่ยังไม่ตอบ ต้องการส่งหรือไม่?`:'ต้องการส่งข้อสอบหรือไม่?';
+  document.getElementById('msub').classList.add('on');
+}
+function closeM(id){ document.getElementById(id).classList.remove('on'); }
+
+function submitExam(){
+  clearInterval(timerInterval);
+  ['msub','mtime'].forEach(id=>document.getElementById(id).classList.remove('on'));
+  const elapsed=Math.round((Date.now()-startTime)/1000);
+  let cor=0, wrg=0, skp=0;
+  questions.forEach((q,i)=>{
+    if(answers[i]===undefined) skp++;
+    else if(answers[i]===q.a) cor++;
+    else wrg++;
+  });
+  const pct=Math.round(cor/questions.length*100);
+  document.getElementById('rpct').textContent=pct+'%';
+  document.getElementById('rraw').textContent=`${cor}/${questions.length}`;
+  document.getElementById('rcor').textContent=cor;
+  document.getElementById('rwrg').textContent=wrg;
+  document.getElementById('rskp').textContent=skp;
+  const h=Math.floor(elapsed/3600),m=Math.floor((elapsed%3600)/60),s=elapsed%60;
+  document.getElementById('rtime').textContent=`${pad(h)}:${pad(m)}:${pad(s)}`;
+  const pb=document.getElementById('pbanner');
+  if(pct>=60){ pb.className='pbanner pass'; pb.textContent=`🎉 ผ่านเกณฑ์! คะแนน ${pct}% (เกณฑ์ 60%)`; }
+  else{ pb.className='pbanner fail'; pb.textContent=`❌ ไม่ผ่านเกณฑ์ คะแนน ${pct}% (เกณฑ์ 60%)`; }
+  document.getElementById('rsub').textContent=`${examMode} · Computer Software ระดับ 8`;
+  buildReview('all'); showScreen('result-screen');
+}
+
+let curFilter='all';
+function frev(f){
+  curFilter=f;
+  document.querySelectorAll('.ft').forEach(t=>t.classList.remove('on'));
+  event.target.classList.add('on');
+  buildReview(f);
+}
+
+function buildReview(f){
+  const list=document.getElementById('revlist'); list.innerHTML='';
+  questions.forEach((q,i)=>{
+    const ua=answers[i], isCorr=ua===q.a, isSkip=ua===undefined;
+    if(f==='wrong'&&(isCorr||isSkip)) return;
+    if(f==='skip'&&!isSkip) return;
+    if(f==='correct'&&!isCorr) return;
+    const d=document.createElement('div');
+    d.className='ri '+(isSkip?'s':isCorr?'c':'w');
+    let ansHtml='';
+    if(!isSkip && !isCorr) ansHtml=`<span class="ru">คำตอบคุณ: ${q.c[ua]}</span><span class="rcr">คำตอบถูก: ${q.c[q.a]}</span>`;
+    else if(isCorr) ansHtml=`<span class="rcs">ถูก: ${q.c[q.a]}</span>`;
+    else ansHtml=`<span class="ru">ไม่ได้ตอบ — คำตอบถูก: ${q.c[q.a]}</span>`;
+    d.innerHTML=`<div class="ri-q">ข้อ ${i+1}: ${q.q}</div><div class="ri-ans">${ansHtml}</div><div class="ri-ex">💡 ${q.e}</div>`;
+    list.appendChild(d);
+  });
+}
+
+function goHome(){
+  showScreen('home');
+}
+
+function restart(){
+  startExam(mode);
 }
 </script>
 </body>
